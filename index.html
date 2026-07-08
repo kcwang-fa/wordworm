@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Word Worm 單字蟲蟲</title>
+<style>
+  /* ===== 基本版面 ===== */
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: "Segoe UI", "Noto Sans TC", sans-serif;
+    background: linear-gradient(160deg, #2c1e0f 0%, #4a3319 60%, #2c1e0f 100%);
+    color: #f5e9d0;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    user-select: none; -webkit-user-select: none;
+  }
+  h1 { font-size: 1.3rem; margin: 10px 0 2px; letter-spacing: 1px; color: #ffd97a; }
+  #subtitle { font-size: .72rem; opacity: .65; margin-bottom: 6px; }
+
+  /* ===== 資訊列 ===== */
+  #hud {
+    display: flex; gap: 14px; align-items: center;
+    background: rgba(0,0,0,.35); border-radius: 12px;
+    padding: 6px 14px; margin-bottom: 8px; font-size: .85rem;
+  }
+  #hud b { color: #ffd97a; font-size: 1.05rem; }
+  #wormface { font-size: 1.5rem; transition: transform .3s; }
+
+  /* ===== 當前拼字 ===== */
+  #current {
+    min-height: 2.1rem; font-size: 1.4rem; letter-spacing: 3px;
+    font-weight: bold; color: #fff;
+    display: flex; align-items: center; gap: 12px;
+  }
+  #current .score-preview { font-size: .85rem; color: #8fd47a; font-weight: normal; }
+  #current.invalid { color: #e2836a; }
+
+  /* ===== 棋盤（7 欄交錯蜂巢） ===== */
+  #board {
+    display: flex; gap: 4px; padding: 10px;
+    background: rgba(0,0,0,.3); border-radius: 14px;
+    touch-action: none;
+  }
+  .col { display: flex; flex-direction: column; gap: 4px; }
+  .col.offset { margin-top: 26px; }
+  .tile {
+    width: 48px; height: 48px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem; font-weight: bold; color: #4a2f10;
+    background: linear-gradient(145deg, #f7e6bf, #e0c186);
+    box-shadow: 0 3px 0 #a8834e, inset 0 1px 0 rgba(255,255,255,.6);
+    cursor: pointer; position: relative;
+    transition: transform .08s, background .15s;
+  }
+  .tile.sel {
+    background: linear-gradient(145deg, #ffe98a, #ffc93c);
+    transform: scale(1.08);
+    box-shadow: 0 0 10px #ffd97a, 0 3px 0 #a8834e;
+    z-index: 2;
+  }
+  .tile.burning {
+    background: linear-gradient(145deg, #ff9a52, #e2542a);
+    color: #fff;
+    animation: flicker .5s infinite alternate;
+  }
+  .tile.burning::after {
+    content: "🔥"; position: absolute; top: -12px; right: -4px; font-size: .9rem;
+  }
+  .tile.gem-green   { background: linear-gradient(145deg,#b8f2a1,#5fbf4a); }
+  .tile.gem-gold    { background: linear-gradient(145deg,#ffe98a,#e8b420); }
+  .tile.gem-sapphire{ background: linear-gradient(145deg,#a1c8f2,#3a6fd8); color:#fff; }
+  .tile.gem-diamond { background: linear-gradient(145deg,#e8f8ff,#9adcf0); }
+  .tile.gem-green::before, .tile.gem-gold::before, .tile.gem-sapphire::before, .tile.gem-diamond::before {
+    content: "◆"; position: absolute; top: 1px; left: 4px; font-size: .55rem; opacity: .8;
+  }
+  @keyframes flicker { from { filter: brightness(1); } to { filter: brightness(1.25); } }
+  .tile.falling { animation: drop .25s ease-in; }
+  @keyframes drop { from { transform: translateY(-56px); opacity: .3; } to { transform: none; opacity: 1; } }
+
+  /* ===== 按鈕列 ===== */
+  #controls { display: flex; gap: 10px; margin: 10px 0; }
+  button {
+    font-family: inherit; font-size: .95rem; font-weight: bold;
+    padding: 8px 20px; border: none; border-radius: 10px; cursor: pointer;
+    color: #4a2f10; background: linear-gradient(145deg, #ffd97a, #e8b420);
+    box-shadow: 0 3px 0 #a8834e;
+  }
+  button:active { transform: translateY(2px); box-shadow: 0 1px 0 #a8834e; }
+  button.secondary { background: linear-gradient(145deg, #d8cbb2, #b0a184); }
+  button:disabled { opacity: .45; cursor: default; }
+
+  /* ===== 訊息浮層 ===== */
+  #toast {
+    position: fixed; top: 18%; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,.75); color: #ffd97a; font-size: 1.1rem; font-weight: bold;
+    padding: 10px 22px; border-radius: 12px; pointer-events: none;
+    opacity: 0; transition: opacity .3s;
+    z-index: 10; text-align: center;
+  }
+  #toast.show { opacity: 1; }
+
+  /* ===== 結束畫面 ===== */
+  #gameover {
+    position: fixed; inset: 0; background: rgba(20,10,0,.88);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; z-index: 20; text-align: center; padding: 20px;
+  }
+  #gameover.show { display: flex; }
+  #gameover h2 { color: #ff9a52; font-size: 1.6rem; }
+  #gameover .stats { font-size: 1rem; line-height: 1.9; }
+  #gameover .stats b { color: #ffd97a; }
+
+  @media (max-width: 420px) {
+    .tile { width: 42px; height: 42px; font-size: 1.1rem; }
+    .col.offset { margin-top: 23px; }
+  }
+</style>
+</head>
+<body>
+  <h1>🐛 Word Worm 單字蟲蟲</h1>
+  <div id="subtitle">串起相鄰字母拼英文單字（3 字母起）．小心燃燒磚！</div>
+  <div id="rankbar" style="font-size:.75rem;opacity:.8;margin-bottom:4px;">
+    <span id="ranktitle">見習書蟲</span>　<progress id="lvprog" max="100" value="0" style="width:120px;height:8px;"></progress>
+  </div>
+  <div id="hud">
+    <span id="wormface">🐛</span>
+    <span>等級 <b id="level">1</b></span>
+    <span>分數 <b id="score">0</b></span>
+    <span>單字 <b id="wordcount">0</b></span>
+    <span>最佳 <b id="bestword">—</b></span>
+  </div>
+  <div id="current">&nbsp;</div>
+  <div id="board"></div>
+  <div id="controls">
+    <button id="submit">拼字！</button>
+    <button id="clear" class="secondary">清除</button>
+    <button id="shuffle" class="secondary">洗牌 (-燃燒)</button>
+  </div>
+  <div id="toast"></div>
+  <div id="gameover">
+    <h2>📚🔥 圖書館燒起來了！</h2>
+    <div class="stats">
+      最終等級：<b id="flevel">1</b>（<span id="frank">見習書蟲</span>）<br>
+      最終分數：<b id="fscore">0</b><br>
+      拼出單字：<b id="fwords">0</b> 個<br>
+      最佳單字：<b id="fbest">—</b>
+    </div>
+    <button id="restart">再玩一次</button>
+  </div>
+
+<script>
+/* ================= 字典載入 ================= */
+let DICT = null;
+fetch('enable1.txt').then(r => r.text()).then(t => {
+  DICT = new Set(t.split(/\r?\n/).filter(w => w.length >= 3));
+  toast('字典就緒，開拼！(' + DICT.size.toLocaleString() + ' 字)');
+});
+
+/* ================= 常數 ================= */
+const COLS = 7, ROWS = 7;
+// 字母出現權重（近似英文頻率，Qu 合併為一磚）
+const LETTER_POOL = (
+  'EEEEEEEEEEEE' + 'AAAAAAAAA' + 'IIIIIIIII' + 'OOOOOOOO' + 'NNNNNN' +
+  'RRRRRR' + 'TTTTTT' + 'LLLL' + 'SSSS' + 'UUUU' +
+  'DDDD' + 'GGG' + 'BB' + 'CC' + 'MM' + 'PP' + 'FF' + 'HH' + 'VV' + 'WW' + 'YY' +
+  'K' + 'J' + 'X' + 'Q' + 'Z'
+);
+// 字母分值（仿 Scrabble 精神）
+const LETTER_SCORE = { A:1,B:3,C:3,D:2,E:1,F:4,G:2,H:4,I:1,J:8,K:5,L:1,M:3,N:1,O:1,P:3,Q:10,R:1,S:1,T:1,U:1,V:4,W:4,X:8,Y:4,Z:10 };
+
+/* ================= 狀態 ================= */
+let grid = [];        // grid[c][r] = {letter, burning, gem}
+let sel = [];         // 已選 [{c,r}]
+let score = 0, wordCount = 0, bestWord = '', bestWordScore = 0;
+let weakStreak = 0;   // 連續拼短字計數 → 生成燃燒磚
+let over = false;
+let level = 1;
+
+/* ===== 關卡制（仿原版：分數門檻遞增、稱號、難度隨級升） ===== */
+const RANKS = ['見習書蟲','抄寫員','圖書助理','句讀學徒','辭條編輯','副館長','館長','拼字大師','活字典','傳說書蟲 Lex'];
+function levelThreshold(L) { return Math.round(1200 * Math.pow(L, 1.6)); }  // 升到 L+1 所需累積分
+function rankTitle() { return RANKS[Math.min(level - 1, RANKS.length - 1)]; }
+function checkLevelUp() {
+  while (score >= levelThreshold(level)) {
+    level++;
+    toast('🎉 升級！Lv.' + level + '「' + rankTitle() + '」', 2000);
+    document.getElementById('wormface').textContent = '🥳';
+  }
+  const prev = level === 1 ? 0 : levelThreshold(level - 1);
+  const prog = (score - prev) / (levelThreshold(level) - prev) * 100;
+  document.getElementById('lvprog').value = Math.min(100, prog);
+  document.getElementById('ranktitle').textContent = 'Lv.' + level + '　' + rankTitle();
+  document.getElementById('level').textContent = level;
+}
+
+/* ================= 工具 ================= */
+const boardEl = document.getElementById('board');
+const rand = a => a[Math.floor(Math.random() * a.length)];
+function newTile() {
+  const ch = rand(LETTER_POOL);
+  return { letter: ch === 'Q' ? 'Qu' : ch, burning: false, gem: null, fresh: true };
+}
+function toast(msg, ms = 1400) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), ms);
+}
+
+/* ================= 初始化 ================= */
+function init() {
+  grid = Array.from({length: COLS}, () => Array.from({length: ROWS}, newTile));
+  sel = []; score = 0; wordCount = 0; bestWord = ''; bestWordScore = 0;
+  weakStreak = 0; over = false; level = 1;
+  document.getElementById('gameover').classList.remove('show');
+  document.getElementById('wormface').textContent = '🐛';
+  render(); updateHud(); checkLevelUp();
+}
+
+/* ================= 相鄰判定（交錯欄） ================= */
+// 偶數欄下移半格（offset）。兩磚相鄰 = 同欄上下，或左右欄的同列/依偏移差一列。
+function adjacent(a, b) {
+  const dc = b.c - a.c, dr = b.r - a.r;
+  if (dc === 0) return Math.abs(dr) === 1;
+  if (Math.abs(dc) !== 1) return false;
+  // a 欄是否為偏移欄（畫面上往下半格）：奇數欄 offset
+  const aOff = a.c % 2 === 1;
+  return aOff ? (dr === 0 || dr === 1) : (dr === 0 || dr === -1);
+}
+
+/* ================= 渲染 ================= */
+function render() {
+  boardEl.innerHTML = '';
+  for (let c = 0; c < COLS; c++) {
+    const colEl = document.createElement('div');
+    colEl.className = 'col' + (c % 2 === 1 ? ' offset' : '');
+    for (let r = 0; r < ROWS; r++) {
+      const t = grid[c][r];
+      const el = document.createElement('div');
+      el.className = 'tile';
+      if (t.burning) el.classList.add('burning');
+      if (t.gem) el.classList.add('gem-' + t.gem);
+      if (t.fresh) { el.classList.add('falling'); t.fresh = false; }
+      if (sel.some(s => s.c === c && s.r === r)) el.classList.add('sel');
+      el.textContent = t.letter;
+      el.dataset.c = c; el.dataset.r = r;
+      colEl.appendChild(el);
+    }
+    boardEl.appendChild(colEl);
+  }
+}
+
+/* ================= 選字互動（點選 + 拖曳） ================= */
+let dragging = false;
+function tileAt(x, y) {
+  const el = document.elementFromPoint(x, y);
+  return el && el.classList.contains('tile') ? { c: +el.dataset.c, r: +el.dataset.r } : null;
+}
+function pick(p) {
+  if (over || !p) return;
+  const i = sel.findIndex(s => s.c === p.c && s.r === p.r);
+  if (i !== -1) {
+    if (i === sel.length - 2 && dragging) sel.pop();      // 拖回上一格 = 反悔
+    else if (!dragging) sel = sel.slice(0, i);            // 點已選的 = 截斷到該處之前
+  } else if (sel.length === 0 || adjacent(sel[sel.length - 1], p)) {
+    sel.push(p);
+  } else if (!dragging) {
+    sel = [p];                                            // 點不相鄰的 = 重新開始選
+  }
+  render(); updateCurrent();
+}
+boardEl.addEventListener('pointerdown', e => { dragging = true; pick(tileAt(e.clientX, e.clientY)); });
+boardEl.addEventListener('pointermove', e => { if (dragging) pick(tileAt(e.clientX, e.clientY)); });
+window.addEventListener('pointerup', () => { dragging = false; });
+
+/* ================= 目前單字與計分 ================= */
+function currentWord() { return sel.map(s => grid[s.c][s.r].letter).join(''); }
+function wordScore(word, tiles) {
+  let base = 0;
+  for (const ch of word.toUpperCase()) base += LETTER_SCORE[ch] || 0;
+  // 長度加成：4字x1.5、5字x2、6字x3、7+字x4（取整）
+  const L = word.length;
+  const mult = L >= 7 ? 4 : L >= 6 ? 3 : L >= 5 ? 2 : L >= 4 ? 1.5 : 1;
+  let s = Math.round(base * mult * 10);
+  // 寶石加成
+  for (const p of tiles) {
+    const g = grid[p.c][p.r].gem;
+    if (g === 'green') s += 100;
+    if (g === 'gold') s += 250;
+    if (g === 'sapphire') s += 500;
+    if (g === 'diamond') s += 1000;
+  }
+  return s;
+}
+function updateCurrent() {
+  const w = currentWord();
+  const cur = document.getElementById('current');
+  if (!w) { cur.innerHTML = '&nbsp;'; return; }
+  const valid = DICT && DICT.has(w.toLowerCase());
+  cur.classList.toggle('invalid', !valid);
+  cur.innerHTML = w + (valid ? ' <span class="score-preview">+' + wordScore(w, sel) + '</span>' : '');
+}
+
+/* ================= 拼字提交 ================= */
+document.getElementById('submit').onclick = submit;
+document.getElementById('clear').onclick = () => { sel = []; render(); updateCurrent(); };
+document.getElementById('shuffle').onclick = shuffle;
+document.getElementById('restart').onclick = init;
+
+function submit() {
+  if (over) return;
+  const w = currentWord();
+  if (w.length < 3) { toast('至少 3 個字母'); return; }
+  if (!DICT) { toast('字典還在載入…'); return; }
+  if (!DICT.has(w.toLowerCase())) { toast('「' + w + '」不在字典裡 🐛❓'); shake(); return; }
+
+  const s = wordScore(w, sel);
+  score += s; wordCount++;
+  if (s > bestWordScore) { bestWordScore = s; bestWord = w; }
+
+  // 蟲蟲表情
+  const face = document.getElementById('wormface');
+  face.textContent = w.length >= 6 ? '🤩' : w.length >= 5 ? '😋' : '🐛';
+  face.style.transform = 'scale(1.3)'; setTimeout(() => face.style.transform = '', 250);
+
+  toast('+' + s + '　' + praise(w.length), 1100);
+
+  // 燃燒磚邏輯：短字（3 字母）累積壓力，長字（5+）洩壓
+  if (w.length <= 3) weakStreak++;
+  else if (w.length >= 5) weakStreak = Math.max(0, weakStreak - 2);
+  const gemTier = w.length >= 8 ? 'diamond' : w.length >= 7 ? 'sapphire' : w.length >= 6 ? 'gold' : w.length >= 5 ? 'green' : null;
+
+  // 移除選中磚
+  removeTiles(sel, gemTier);
+  sel = [];
+  // 燃燒磚下沉 & 生成（等級越高，短字壓力門檻越低 + 自然出現機率越高）
+  advanceBurning();
+  const streakLimit = Math.max(2, 4 - Math.floor(level / 4));
+  if (weakStreak >= streakLimit) { spawnBurning(); weakStreak = 0; }
+  else if (Math.random() < (level - 1) * 0.015) spawnBurning();
+  render(); updateCurrent(); updateHud();
+  checkLevelUp();
+  checkOver();
+}
+
+function praise(L) {
+  return L >= 8 ? '傳說單字！💎' : L >= 7 ? '藍寶石級！' : L >= 6 ? '黃金單字！' : L >= 5 ? '漂亮！' : '不錯！';
+}
+function shake() {
+  boardEl.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}], {duration:200});
+}
+
+/* ================= 磚塊移除 / 掉落補充 ================= */
+function removeTiles(tiles, gemTier) {
+  // 依欄分組，由該欄底部往上壓縮
+  const byCol = {};
+  for (const p of tiles) (byCol[p.c] ||= []).push(p.r);
+  let gemPlaced = !gemTier;
+  for (const c in byCol) {
+    const col = grid[c];
+    const remove = new Set(byCol[c]);
+    const kept = col.filter((_, r) => !remove.has(r));
+    const need = ROWS - kept.length;
+    const fresh = Array.from({length: need}, newTile);
+    if (!gemPlaced && fresh.length) { fresh[0].gem = gemTier; gemPlaced = true; }
+    grid[c] = [...fresh, ...kept];
+  }
+}
+
+/* ================= 燃燒磚 ================= */
+function spawnBurning() {
+  const c = Math.floor(Math.random() * COLS);
+  grid[c][0].burning = true;
+  toast('🔥 燃燒磚出現了！拼長一點的字！', 1600);
+}
+function advanceBurning() {
+  // 每次提交後，所有燃燒磚往下燒一格（把下面那格變燃燒，自己熄滅成新磚）
+  const moves = [];
+  for (let c = 0; c < COLS; c++)
+    for (let r = ROWS - 1; r >= 0; r--)
+      if (grid[c][r].burning) moves.push({c, r});
+  for (const {c, r} of moves) {
+    if (r === ROWS - 1) { over = true; return; }  // 燒到底
+    grid[c][r] = newTile();
+    grid[c][r + 1].burning = true;
+  }
+}
+function shuffle() {
+  if (over) return;
+  // 洗牌代價：生成一顆燃燒磚（原版精神：躲避是有代價的）
+  const letters = [];
+  for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) letters.push(grid[c][r]);
+  for (let i = letters.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [letters[i], letters[j]] = [letters[j], letters[i]];
+  }
+  let i = 0;
+  for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) grid[c][r] = letters[i++];
+  sel = [];
+  spawnBurning();
+  render(); updateCurrent();
+}
+
+/* ================= HUD / 結束 ================= */
+function updateHud() {
+  document.getElementById('score').textContent = score.toLocaleString();
+  document.getElementById('wordcount').textContent = wordCount;
+  document.getElementById('bestword').textContent = bestWord || '—';
+}
+function checkOver() {
+  if (!over) return;
+  document.getElementById('flevel').textContent = level;
+  document.getElementById('frank').textContent = rankTitle();
+  document.getElementById('fscore').textContent = score.toLocaleString();
+  document.getElementById('fwords').textContent = wordCount;
+  document.getElementById('fbest').textContent = bestWord || '—';
+  document.getElementById('gameover').classList.add('show');
+}
+
+init();
+</script>
+</body>
+</html>
