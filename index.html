@@ -217,6 +217,7 @@
     <button id="clear" class="secondary">清除</button>
     <button id="shuffle" class="secondary">洗牌 (-燃燒)</button>
     <button id="mute" class="secondary">🔊</button>
+    <button id="mode" class="secondary">🎲 經典</button>
   </div>
   <div id="toast"></div>
   <div id="gameover">
@@ -283,16 +284,22 @@ function checkLevelUp() {
 const boardEl = document.getElementById('board');
 const rand = a => a[Math.floor(Math.random() * a.length)];
 const VOWELS = 'AEIOU';
+/* Boggle 經典 16 骰面配方（公開設計，母音與常見組合分佈經數十年驗證）
+   每次生磚＝隨機挑一顆骰擲一面，比純頻率隨機更常出「拼得起來」的盤面 */
+const BOGGLE_DICE = [
+  'AAEEGN','ABBJOO','ACHOPS','AFFKPS','AOOTTW','CIMOTU','DEILRX','DELRVY',
+  'DISTTY','EEGHNW','EEINSU','EHRTVW','EIOSST','ELRTTY','HIMNQU','HLNNRZ'
+];
 function boardVowelRatio() {
   let v = 0, n = 0;
   for (const col of grid) for (const t of col) { n++; if (VOWELS.includes(t.letter[0])) v++; }
   return n ? v / n : .4;
 }
 function newTile() {
-  // 母音平衡：棋盤母音比例低於 32% 時，新磚 65% 機率直接補母音
+  // Boggle 骰子生成 + 母音平衡保底（母音比例 < 32% 時 65% 機率補母音）
   let ch;
   if (grid.length && boardVowelRatio() < .32 && Math.random() < .65) ch = rand(VOWELS);
-  else ch = rand(LETTER_POOL);
+  else ch = rand(rand(BOGGLE_DICE));
   return { letter: ch === 'Q' ? 'Qu' : ch, burning: false, gem: null, fresh: true };
 }
 function toast(msg, ms = 1400) {
@@ -349,6 +356,19 @@ document.getElementById('mute').onclick = e => {
   e.target.textContent = muted ? '🔇' : '🔊';
 };
 
+/* ================= 模式切換（經典＝相鄰連線 / 輕鬆＝全盤任選） ================= */
+function renderModeBtn() {
+  document.getElementById('mode').textContent = easyMode ? '😌 輕鬆' : '🎲 經典';
+}
+document.getElementById('mode').onclick = () => {
+  easyMode = !easyMode;
+  localStorage.setItem('wordworm_easymode', easyMode ? '1' : '0');
+  renderModeBtn();
+  sel = []; render(); updateCurrent();
+  pickBonusWord();
+  toast(easyMode ? '😌 輕鬆模式：整個棋盤的字母都能任意選！' : '🎲 經典模式：只能連相鄰的字母', 2200);
+};
+
 /* ================= 存檔（localStorage 自動存） ================= */
 const SAVE_KEY = 'wordworm_save_v1', HI_KEY = 'wordworm_hiscore';
 function saveGame() {
@@ -394,14 +414,16 @@ function init(fromSave = false) {
   }
   sel = []; over = false; burnPhase = 0;
   document.getElementById('gameover').classList.remove('show');
-  setFace('normal');
+  setFace('normal'); renderModeBtn();
   if (DICT) pickBonusWord();
   render(); updateHud(); checkLevelUp();
   if (fromSave && score > 0) toast('讀取存檔，歡迎回來 🐛', 1600);
 }
 
 /* ================= 相鄰判定（整齊方格、含斜角 8 方向） ================= */
+let easyMode = localStorage.getItem('wordworm_easymode') === '1';
 function adjacent(a, b) {
+  if (easyMode) return !(a.c === b.c && a.r === b.r);  // 輕鬆模式：全盤任選
   const dc = Math.abs(b.c - a.c), dr = Math.abs(b.r - a.r);
   return dc <= 1 && dr <= 1 && (dc + dr > 0);
 }
@@ -513,10 +535,18 @@ function cefrPool() {
   if (level <= 8) return CEFR.b2;
   return null; // Lv9+ 用完整字典
 }
-// DFS：檢查棋盤上是否存在能拼出 word 的相鄰路徑
+// 檢查棋盤能否拼出 word：經典模式=DFS 相鄰路徑；輕鬆模式=字母庫存數量足夠
 function canSpell(word) {
   const W = word.toUpperCase().replace(/QU/g, 'Q');  // Qu 磚以 Q 代表
   const letterAt = (c, r) => grid[c][r].letter === 'Qu' ? 'Q' : grid[c][r].letter;
+  if (easyMode) {
+    const stock = {};
+    for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++)
+      stock[letterAt(c, r)] = (stock[letterAt(c, r)] || 0) + 1;
+    const need = {};
+    for (const ch of W) need[ch] = (need[ch] || 0) + 1;
+    return Object.entries(need).every(([ch, n]) => (stock[ch] || 0) >= n);
+  }
   const dfs = (i, c, r, used) => {
     if (letterAt(c, r) !== W[i]) return false;
     if (i === W.length - 1) return true;
