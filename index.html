@@ -89,6 +89,7 @@
   body.mode-adventure.adv-view-battle #mute {
     padding: 10px 15px; font-size: .86rem;
   }
+  body.mode-adventure.adv-view-battle #mute { display: none; }
   body.mode-adventure.adv-view-battle .col { gap: 7px; }
   body.mode-adventure.adv-view-battle .tile {
     width: 58px; height: 58px; border-radius: 11px;
@@ -133,6 +134,9 @@
     width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
     background: rgba(0,0,0,.25); color: #ffd97a; font-size: .8rem; font-weight: bold;
   }
+  .adv-map-node.completed .adv-node-badge { background: linear-gradient(145deg, #9bd66c, #4c9a35); color: #1d3414; }
+  .adv-map-node.available .adv-node-badge { background: linear-gradient(145deg, #ffe38b, #e8b420); color: #4a2f10; }
+  .adv-map-node.locked .adv-node-badge { background: rgba(0,0,0,.32); color: #9d8a6a; }
   .adv-node-main b { display: block; font-size: .84rem; color: #fff0bd; }
   .adv-node-main span { display: block; font-size: .7rem; color: #d8c3a0; margin-top: 2px; }
   .adv-node-state { font-size: .7rem; color: #ffd97a; white-space: nowrap; font-weight: bold; }
@@ -179,6 +183,7 @@
     filter: drop-shadow(0 8px 7px rgba(0,0,0,.45));
   }
   #adv-monster-sprite { filter: drop-shadow(0 4px 4px rgba(0,0,0,.4)); }
+  #adv-monster-sprite svg { width: 170px; height: 118px; }
   .adv-nameplate {
     min-width: 245px; padding: 8px 10px; border-radius: 10px;
     background: rgba(0,0,0,.26); border: 1px solid rgba(255,220,150,.18);
@@ -270,6 +275,7 @@
     #adv-combatants { inset: 74px 12px 14px; grid-template-columns: 1fr 1fr; gap: 6px; }
     #adv-damage-preview { display: none; }
     .adv-sprite-card { width: 132px; height: 94px; }
+    #adv-monster-sprite svg { width: 132px; height: 94px; }
     .adv-nameplate { min-width: 0; width: 100%; padding: 7px 8px; }
     .adv-name-row { font-size: .72rem; gap: 6px; }
     .hpbar-wrap { height: 11px; }
@@ -277,9 +283,9 @@
     body.mode-adventure.adv-view-battle .tile { width: 56px; height: 56px; font-size: 1.42rem; }
     body.mode-adventure.adv-view-battle #controls { gap: 8px; }
     body.mode-adventure.adv-view-battle #submit { flex: 1 1 100%; min-width: 0; padding: 13px 18px; font-size: 1.02rem; }
-    body.mode-adventure.adv-view-battle #clear,
-    body.mode-adventure.adv-view-battle #shuffle,
-    body.mode-adventure.adv-view-battle #mute { flex: 1 1 42%; padding: 9px 8px; font-size: .78rem; }
+  body.mode-adventure.adv-view-battle #clear,
+  body.mode-adventure.adv-view-battle #shuffle,
+  body.mode-adventure.adv-view-battle #mute { flex: 1 1 42%; padding: 9px 8px; font-size: .78rem; }
   }
 
   @media (max-width: 420px) {
@@ -287,6 +293,7 @@
     body.mode-adventure.adv-view-battle #game-panel { padding: 10px; }
     #adv-battle-stage { min-height: 232px; }
     .adv-sprite-card { width: 112px; height: 84px; }
+    #adv-monster-sprite svg { width: 112px; height: 84px; }
     body.mode-adventure.adv-view-battle #board { gap: 6px; padding: 10px; border-radius: 14px; }
     body.mode-adventure.adv-view-battle .tile {
       width: 50px; height: 50px; border-radius: 10px; font-size: 1.26rem;
@@ -717,7 +724,7 @@ function applyModeClass() {
   document.getElementById('modesel-adventure').classList.toggle('active', gameMode === 'adventure');
   document.getElementById('submit').textContent = gameMode === 'adventure' ? 'Attack / 攻擊' : '拼字！';
   document.getElementById('clear').textContent = gameMode === 'adventure' ? '清除選字' : '清除';
-  document.getElementById('shuffle').textContent = gameMode === 'adventure' ? '🧹 清除負面磚' : '洗牌 (-燃燒)';
+  document.getElementById('shuffle').textContent = gameMode === 'adventure' ? '清除負面磚' : '洗牌 (-燃燒)';
 }
 function selectGameMode(mode) {
   if (mode === gameMode) return;
@@ -1589,7 +1596,7 @@ function renderAdvHud() {
   const level = adventureLevelById(adv.levelId);
   if (!level) return;
   document.getElementById('adv-chapter').textContent = '第 ' + (level.chapterIdx + 1) + ' 章：' + level.chapterTitle + '　' + level.mapLabel;
-  document.getElementById('adv-monster-name').textContent = (adv.isBoss ? '👑 ' : '') + adv.monsterName;
+  document.getElementById('adv-monster-name').textContent = (adv.isBoss ? 'Boss ' : '') + adv.monsterName;
   document.getElementById('adv-monster-sprite').innerHTML = monsterSpriteSvg(adv.monsterKind, adv.isBoss);
   document.getElementById('adv-monster-hpbar').style.width = Math.max(0, adv.monsterHp / adv.monsterMaxHp * 100) + '%';
   document.getElementById('adv-monster-hptext').textContent = Math.max(0, adv.monsterHp) + '/' + adv.monsterMaxHp;
@@ -1703,7 +1710,7 @@ function startMonster() {
   adv.monsterName = m.name; adv.monsterKind = m.kind; adv.isBoss = !!m.boss;
   adv.monsterHp = m.hp; adv.monsterMaxHp = m.hp; adv.monsterAtk = m.atk;
   renderAdvHud();
-  bubble(adv.isBoss ? ('⚠️ Boss出現：' + m.name + '！') : ('遭遇 ' + m.name + '！'));
+  bubble(adv.isBoss ? ('Boss 出現：' + m.name + '！') : ('遭遇 ' + m.name + '！'));
 }
 function defeatMonster() {
   const level = adventureLevelById(adv.levelId);
@@ -1752,7 +1759,7 @@ function submitAdventure(w) {
   sfx.ok(w.length); setFace('happy');
   const face = document.getElementById('wormface');
   face.style.transform = 'scale(1.25)'; setTimeout(() => face.style.transform = '', 250);
-  toast('⚔️ -' + dmg, 1000);
+  toast('攻擊 -' + dmg, 1000);
   if (Math.random() < .4) setTimeout(() => bubble(quip(w.length <= 3 ? QUIPS.short : w.length <= 5 ? QUIPS.mid : QUIPS.long)), 700);
 
   const gemTier = w.length >= 8 ? 'diamond' : w.length >= 7 ? 'sapphire' : w.length >= 6 ? 'gold' : w.length >= 5 ? 'green' : null;
@@ -1778,7 +1785,7 @@ function shuffleAdventure() {
     if (grid[c][r].locked || grid[c][r].cursed) { grid[c][r] = newTile(); cleared++; }
   }
   sel = [];
-  toast(cleared ? ('🧹 清除了 ' + cleared + ' 顆負面磚！') : '目前沒有負面磚可清', 1400);
+  toast(cleared ? ('清除了 ' + cleared + ' 顆負面磚！') : '目前沒有負面磚可清', 1400);
   monsterCounter();
   render(); updateCurrent();
   renderAdvHud();
