@@ -55,8 +55,58 @@
   body.mode-adventure.adv-view-map #board,
   body.mode-adventure.adv-view-map #controls { display: none; }
   #adv-map, #adv-battle { width: 100%; }
+  #adv-items-panel, #adv-skills-panel, #adv-mobile-drawers { display: none; }
   body.adv-view-map #adv-battle,
   body.adv-view-battle #adv-map { display: none; }
+  body.mode-adventure #worm-corner { display: none; }
+  body.mode-adventure #stage { width: min(1180px, calc(100vw - 40px)); justify-content: center; }
+  body.mode-adventure.adv-view-battle #game-panel {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 190px minmax(280px, 1fr) 230px;
+    grid-template-rows: auto auto auto;
+    gap: 14px;
+    align-items: stretch;
+  }
+  body.mode-adventure.adv-view-battle #adv-hud { grid-column: 1 / -1; margin-bottom: 0; }
+  body.mode-adventure.adv-view-battle #current { display: none; }
+  body.mode-adventure.adv-view-battle #board {
+    grid-column: 2; grid-row: 2;
+    justify-self: center; align-self: center;
+    gap: 7px; padding: 13px; border-radius: 16px;
+    background: rgba(0,0,0,.34);
+  }
+  body.mode-adventure.adv-view-battle #controls {
+    grid-column: 2; grid-row: 3;
+    justify-content: center; flex-wrap: wrap; margin: 0;
+  }
+  body.mode-adventure.adv-view-battle #submit {
+    min-width: 210px; padding: 13px 28px; font-size: 1.08rem;
+    background: linear-gradient(145deg, #ffd97a, #e8b420);
+  }
+  body.mode-adventure.adv-view-battle #clear,
+  body.mode-adventure.adv-view-battle #shuffle,
+  body.mode-adventure.adv-view-battle #mute {
+    padding: 10px 15px; font-size: .86rem;
+  }
+  body.mode-adventure.adv-view-battle .col { gap: 7px; }
+  body.mode-adventure.adv-view-battle .tile {
+    width: 58px; height: 58px; border-radius: 11px;
+    font-size: 1.55rem;
+  }
+  body.mode-adventure.adv-view-battle .tile.locked::after {
+    content: ""; width: 14px; height: 11px; right: 5px; top: 5px;
+    border: 2px solid #f3e6c4; border-top-width: 6px; border-radius: 2px;
+  }
+  body.mode-adventure.adv-view-battle .tile.cursed::after {
+    content: "C"; top: 3px; right: 5px; font-size: .72rem; color: #fff2c8;
+  }
+  body.mode-adventure.adv-view-battle #adv-items-panel {
+    display: block; grid-column: 1; grid-row: 2 / span 2;
+  }
+  body.mode-adventure.adv-view-battle #adv-skills-panel {
+    display: block; grid-column: 3; grid-row: 2 / span 2;
+  }
   #adv-map { max-width: 440px; }
   #adv-map-head {
     display: flex; justify-content: space-between; align-items: center; gap: 10px;
@@ -89,14 +139,164 @@
   .adv-map-actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 10px; }
   .adv-mini-btn { padding: 6px 10px; font-size: .72rem; border-radius: 999px; }
   #adv-battle-actions { display: flex; justify-content: flex-end; gap: 6px; width: 100%; margin-bottom: 6px; }
-  #adv-chapter { font-size: .78rem; opacity: .8; margin-bottom: 4px; }
-  #adv-monster-sprite { margin-bottom: 4px; filter: drop-shadow(0 4px 4px rgba(0,0,0,.4)); }
+  #adv-battle-stage {
+    position: relative; min-height: 275px; border-radius: 12px;
+    padding: 16px 20px 18px;
+    background:
+      radial-gradient(ellipse 46% 18% at 50% 88%, rgba(26,13,4,.52), transparent 70%),
+      linear-gradient(180deg, rgba(62,38,14,.35), rgba(24,13,4,.28));
+    border: 1px solid rgba(255,219,137,.16); overflow: hidden;
+  }
+  #adv-battle-stage::before {
+    content: ""; position: absolute; left: 8%; right: 8%; bottom: 28px; height: 18px;
+    border-radius: 999px; background: rgba(0,0,0,.2); filter: blur(2px);
+  }
+  #adv-chapter {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: max-content; max-width: 80%; text-align: center;
+    color: #ead0a2; font-weight: 900; font-size: .95rem;
+  }
+  #adv-floating-word {
+    position: absolute; top: 48px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 3; min-height: 46px;
+  }
+  .adv-word-chip {
+    width: 42px; height: 46px; display: grid; place-items: center;
+    border-radius: 9px; color: #6b4a1f; font-weight: 950; font-size: 1.35rem;
+    background: linear-gradient(155deg, #fff8df, #f7e4b1 58%, #dfbd76);
+    box-shadow: 0 4px 0 #c39a55, 0 6px 12px rgba(0,0,0,.38), inset 0 2px 1px rgba(255,255,255,.85);
+  }
+  #adv-combatants {
+    position: absolute; inset: 58px 34px 18px;
+    display: grid; grid-template-columns: 1fr minmax(150px, 220px) 1fr;
+    align-items: end; gap: 18px;
+  }
+  .adv-combatant { display: grid; gap: 9px; align-items: end; }
+  #adv-player-combatant { justify-items: start; }
+  #adv-monster-combatant { justify-items: end; }
+  .adv-sprite-card {
+    width: 180px; height: 128px; display: grid; place-items: end center;
+    filter: drop-shadow(0 8px 7px rgba(0,0,0,.45));
+  }
+  #adv-monster-sprite { filter: drop-shadow(0 4px 4px rgba(0,0,0,.4)); }
+  .adv-nameplate {
+    min-width: 245px; padding: 8px 10px; border-radius: 10px;
+    background: rgba(0,0,0,.26); border: 1px solid rgba(255,220,150,.18);
+  }
+  .adv-name-row {
+    display: flex; justify-content: space-between; gap: 10px;
+    font-weight: 900; font-size: .86rem; margin-bottom: 5px;
+  }
+  #adv-damage-preview {
+    align-self: end; justify-self: center; margin-bottom: 14px;
+    padding: 10px 14px; border-radius: 999px; color: #ffe9b0;
+    background: rgba(0,0,0,.32); border: 1px solid rgba(255,220,150,.22);
+    text-align: center; font-weight: 900;
+  }
+  .adv-side-panel {
+    min-height: 284px; padding: 12px; border-radius: 12px;
+    background: rgba(30,17,6,.32); border: 1px solid rgba(255,220,150,.14);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+  }
+  .adv-panel-title {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    margin-bottom: 10px; color: #ffe0a0; font-size: .88rem; font-weight: 950;
+  }
+  .adv-small-tag {
+    color: #4a2f10; background: #dbc08c; border-radius: 999px;
+    padding: 3px 8px; font-size: .68rem; font-weight: 900;
+  }
+  .adv-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+  .adv-slot {
+    aspect-ratio: 1; border-radius: 9px;
+    background: linear-gradient(160deg, rgba(255,255,255,.05), rgba(0,0,0,.18)), rgba(0,0,0,.24);
+    border: 1px solid rgba(255,220,150,.13);
+  }
+  .adv-empty-items {
+    height: 206px; display: grid; place-items: center;
+    border: 2px dashed rgba(255,223,160,.25); border-radius: 10px;
+    color: #cbb18a; text-align: center; font-weight: 800; line-height: 1.45;
+  }
+  #adv-skills-list { display: grid; gap: 9px; }
+  .adv-skill {
+    display: grid; grid-template-columns: 34px 1fr; gap: 9px; align-items: center;
+    padding: 8px; border-radius: 10px;
+    background: rgba(0,0,0,.24); border: 1px solid rgba(255,220,150,.12);
+  }
+  .adv-skill-icon {
+    width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px;
+    color: #2e1d0a; background: linear-gradient(145deg, #f6d783, #b98a36);
+    font-weight: 950; font-size: .72rem;
+  }
+  .adv-skill b { display: block; color: #fff1c6; font-size: .82rem; margin-bottom: 2px; }
+  .adv-skill span { color: #d0b890; font-size: .72rem; line-height: 1.25; }
+  #adv-mobile-drawers { gap: 8px; }
+  .adv-drawer-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    min-height: 44px; padding: 9px 11px; border-radius: 11px;
+    color: #ffe0a0; background: rgba(30,17,6,.42);
+    border: 1px solid rgba(255,220,150,.16); font-weight: 950;
+  }
+  .adv-drawer-row span { color: #d0b890; font-size: .75rem; font-weight: 800; text-align: right; }
   .adv-row { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 320px; margin-bottom: 4px; font-size: .78rem; }
   .hpbar-wrap { flex: 1; height: 12px; background: rgba(0,0,0,.45); border-radius: 6px; overflow: hidden; border: 1px solid rgba(0,0,0,.5); }
   .hpbar { height: 100%; transition: width .3s ease; }
   .hpbar.monster { background: linear-gradient(90deg, #e2542a, #ff9a52); }
   .hpbar.player { background: linear-gradient(90deg, #5fbf4a, #8fd47a); }
   .hptext { min-width: 52px; text-align: right; opacity: .85; }
+
+  @media (max-width: 700px) {
+    body.mode-adventure #stage { width: min(100vw - 20px, 430px); }
+    body.mode-adventure.adv-view-battle #game-panel {
+      grid-template-columns: 1fr; gap: 10px; padding: 12px;
+    }
+    body.mode-adventure.adv-view-battle #adv-hud,
+    body.mode-adventure.adv-view-battle #board,
+    body.mode-adventure.adv-view-battle #controls,
+    body.mode-adventure.adv-view-battle #adv-mobile-drawers {
+      grid-column: 1; grid-row: auto;
+    }
+    body.mode-adventure.adv-view-battle #adv-items-panel,
+    body.mode-adventure.adv-view-battle #adv-skills-panel {
+      display: none;
+    }
+    body.mode-adventure.adv-view-battle #adv-mobile-drawers {
+      display: grid;
+    }
+    #adv-battle-stage { min-height: 246px; padding: 12px; }
+    #adv-chapter { top: 10px; width: 100%; max-width: 100%; font-size: .86rem; }
+    #adv-floating-word { top: 40px; gap: 5px; }
+    .adv-word-chip { width: 33px; height: 37px; border-radius: 8px; font-size: 1.05rem; }
+    #adv-combatants { inset: 74px 12px 14px; grid-template-columns: 1fr 1fr; gap: 6px; }
+    #adv-damage-preview { display: none; }
+    .adv-sprite-card { width: 132px; height: 94px; }
+    .adv-nameplate { min-width: 0; width: 100%; padding: 7px 8px; }
+    .adv-name-row { font-size: .72rem; gap: 6px; }
+    .hpbar-wrap { height: 11px; }
+    body.mode-adventure.adv-view-battle #board { gap: 7px; padding: 12px; }
+    body.mode-adventure.adv-view-battle .tile { width: 56px; height: 56px; font-size: 1.42rem; }
+    body.mode-adventure.adv-view-battle #controls { gap: 8px; }
+    body.mode-adventure.adv-view-battle #submit { flex: 1 1 100%; min-width: 0; padding: 13px 18px; font-size: 1.02rem; }
+    body.mode-adventure.adv-view-battle #clear,
+    body.mode-adventure.adv-view-battle #shuffle,
+    body.mode-adventure.adv-view-battle #mute { flex: 1 1 42%; padding: 9px 8px; font-size: .78rem; }
+  }
+
+  @media (max-width: 420px) {
+    body.mode-adventure #stage { width: calc(100vw - 12px); }
+    body.mode-adventure.adv-view-battle #game-panel { padding: 10px; }
+    #adv-battle-stage { min-height: 232px; }
+    .adv-sprite-card { width: 112px; height: 84px; }
+    body.mode-adventure.adv-view-battle #board { gap: 6px; padding: 10px; border-radius: 14px; }
+    body.mode-adventure.adv-view-battle .tile {
+      width: 50px; height: 50px; border-radius: 10px; font-size: 1.26rem;
+    }
+    body.mode-adventure.adv-view-battle #clear,
+    body.mode-adventure.adv-view-battle #shuffle,
+    body.mode-adventure.adv-view-battle #mute { font-size: .73rem; }
+    .adv-node-main b { font-size: .78rem; }
+    .adv-node-state { font-size: .66rem; }
+  }
 
   /* ===== 書房舞台（蟲蟲立繪 + 書架框主體，左右並排／手機上下堆疊） ===== */
   #stage { display: flex; align-items: flex-start; gap: 16px; }
@@ -392,17 +592,46 @@
             <button id="adv-back-map" class="secondary adv-mini-btn">冒險地圖</button>
             <button id="adv-battle-reset" class="secondary adv-mini-btn">重新開始遊戲</button>
           </div>
-          <div id="adv-chapter">第 1 章：塵封的書庫</div>
-          <div id="adv-monster-sprite"></div>
-          <div class="adv-row">
-            <span id="adv-monster-name">—</span>
-            <div class="hpbar-wrap"><div id="adv-monster-hpbar" class="hpbar monster"></div></div>
-            <span class="hptext" id="adv-monster-hptext">0/0</span>
-          </div>
-          <div class="adv-row">
-            <span>🐛 你</span>
-            <div class="hpbar-wrap"><div id="adv-player-hpbar" class="hpbar player"></div></div>
-            <span class="hptext" id="adv-player-hptext">100/100</span>
+          <div id="adv-battle-stage">
+            <div id="adv-chapter">第 1 章：塵封的書庫</div>
+            <div id="adv-floating-word" aria-label="目前拼出的字"></div>
+            <div id="adv-combatants">
+              <div id="adv-player-combatant" class="adv-combatant">
+                <div id="adv-player-sprite" class="adv-sprite-card" aria-label="玩家蟲蟲">
+                  <svg width="170" height="118" viewBox="0 0 170 118" role="img" aria-label="自繪綠蟲蟲">
+                    <ellipse cx="82" cy="104" rx="58" ry="8" fill="#000" opacity=".28"/>
+                    <circle cx="45" cy="79" r="22" fill="#74c94e"/>
+                    <circle cx="68" cy="74" r="25" fill="#85d85b"/>
+                    <circle cx="96" cy="66" r="31" fill="#7ed052"/>
+                    <path d="M82 39 C77 18 67 13 58 8" fill="none" stroke="#7ed052" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M110 37 C117 17 129 12 139 8" fill="none" stroke="#7ed052" stroke-width="6" stroke-linecap="round"/>
+                    <circle cx="56" cy="7" r="7" fill="#ffd97a"/>
+                    <circle cx="141" cy="7" r="7" fill="#ffd97a"/>
+                    <circle cx="83" cy="58" r="17" fill="#fff8df"/>
+                    <circle cx="110" cy="57" r="17" fill="#fff8df"/>
+                    <circle cx="83" cy="58" r="10" fill="#365b9a"/>
+                    <circle cx="110" cy="57" r="10" fill="#365b9a"/>
+                    <circle cx="86" cy="54" r="4" fill="#fff"/>
+                    <circle cx="113" cy="53" r="4" fill="#fff"/>
+                    <circle cx="71" cy="77" r="5" fill="#ef9caa" opacity=".72"/>
+                    <circle cx="121" cy="75" r="5" fill="#ef9caa" opacity=".72"/>
+                    <path d="M86 83 Q97 94 110 82" fill="none" stroke="#4a2f10" stroke-width="5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="adv-nameplate">
+                  <div class="adv-name-row"><span>你</span><span id="adv-player-hptext">100/100</span></div>
+                  <div class="hpbar-wrap"><div id="adv-player-hpbar" class="hpbar player"></div></div>
+                </div>
+              </div>
+              <div id="adv-damage-preview">預估傷害 —</div>
+              <div id="adv-monster-combatant" class="adv-combatant">
+                <div class="adv-sprite-card"><div id="adv-monster-sprite"></div></div>
+                <div class="adv-nameplate">
+                  <div class="adv-name-row"><span id="adv-monster-name">—</span><span id="adv-monster-hptext">0/0</span></div>
+                  <div class="hpbar-wrap"><div id="adv-monster-hpbar" class="hpbar monster"></div></div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </div>
@@ -425,6 +654,22 @@
         <button id="mute" class="secondary">🔊</button>
         <button id="mode" class="secondary">🎲 經典</button>
       </div>
+      <aside id="adv-items-panel" class="adv-side-panel" aria-label="道具欄">
+        <div class="adv-panel-title">道具欄 <span class="adv-small-tag">下一期</span></div>
+        <div class="adv-slots" aria-hidden="true">
+          <div class="adv-slot"></div><div class="adv-slot"></div><div class="adv-slot"></div>
+          <div class="adv-slot"></div><div class="adv-slot"></div><div class="adv-slot"></div>
+        </div>
+        <div class="adv-empty-items">即將推出<br>先保留版位，不接功能</div>
+      </aside>
+      <aside id="adv-skills-panel" class="adv-side-panel" aria-label="怪物技能">
+        <div class="adv-panel-title">怪物技能 <span id="adv-skill-monster-tag" class="adv-small-tag">—</span></div>
+        <div id="adv-skills-list"></div>
+      </aside>
+      <section id="adv-mobile-drawers" aria-label="手機版冒險摘要">
+        <div class="adv-drawer-row">道具欄 <span>即將推出，預設收合</span></div>
+        <div class="adv-drawer-row">怪物技能 <span id="adv-skills-summary">—</span></div>
+      </section>
     </div>
   </div>
   <div id="toast"></div>
@@ -470,6 +715,8 @@ function applyModeClass() {
   document.body.classList.toggle('mode-classic', gameMode !== 'adventure');
   document.getElementById('modesel-classic').classList.toggle('active', gameMode === 'classic');
   document.getElementById('modesel-adventure').classList.toggle('active', gameMode === 'adventure');
+  document.getElementById('submit').textContent = gameMode === 'adventure' ? 'Attack / 攻擊' : '拼字！';
+  document.getElementById('clear').textContent = gameMode === 'adventure' ? '清除選字' : '清除';
   document.getElementById('shuffle').textContent = gameMode === 'adventure' ? '🧹 清除負面磚' : '洗牌 (-燃燒)';
 }
 function selectGameMode(mode) {
@@ -859,10 +1106,15 @@ function wordScore(word, tiles) {
 function updateCurrent() {
   const w = currentWord();
   const cur = document.getElementById('current');
-  if (!w) { cur.innerHTML = '&nbsp;'; return; }
+  if (!w) {
+    cur.innerHTML = '&nbsp;';
+    if (gameMode === 'adventure') renderAdvFloatingWord();
+    return;
+  }
   const valid = DICT && DICT.has(w.toLowerCase());
   cur.classList.toggle('invalid', !valid);
   cur.innerHTML = w + (valid ? ' <span class="score-preview">+' + wordScore(w, sel) + '</span>' : '');
+  if (gameMode === 'adventure') renderAdvFloatingWord();
 }
 
 /* ================= 拼字提交 ================= */
@@ -1284,6 +1536,54 @@ function monsterSpriteSvg(kind, isBoss) {
     '<path d="M20 32 L22 36 L24 32 M28 33 L30 38 L32 33 M36 32 L38 36 L40 32" fill="#fff"/>' +
     '</svg>';
 }
+function renderAdvFloatingWord() {
+  const wrap = document.getElementById('adv-floating-word');
+  const preview = document.getElementById('adv-damage-preview');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  const w = currentWord();
+  if (!w) {
+    if (preview) preview.textContent = '預估傷害 —';
+    return;
+  }
+  for (const p of sel) {
+    const chip = document.createElement('span');
+    chip.className = 'adv-word-chip';
+    chip.textContent = grid[p.c][p.r].letter;
+    wrap.appendChild(chip);
+  }
+  if (preview) {
+    const valid = DICT && DICT.has(w.toLowerCase());
+    preview.textContent = valid && adv ? ('預估傷害 ' + battleDamage(w, sel)) : '拼字中';
+  }
+}
+function renderAdvSkills(level) {
+  const list = document.getElementById('adv-skills-list');
+  if (!list) return;
+  list.innerHTML = '';
+  const skills = level.skills && level.skills.length ? level.skills : [
+    { icon: 'L', name: '鎖定磚', desc: '隨機封住 1 格，無法選取。' },
+    { icon: 'C', name: '詛咒磚', desc: '拼入後本次攻擊傷害降低。' },
+    { icon: 'ATK', name: '反擊', desc: '未擊倒時回合結尾扣玩家 HP。' },
+  ];
+  for (const skill of skills) {
+    const item = document.createElement('div');
+    item.className = 'adv-skill';
+    const icon = document.createElement('div');
+    icon.className = 'adv-skill-icon';
+    icon.textContent = skill.icon;
+    const body = document.createElement('div');
+    const name = document.createElement('b');
+    name.textContent = skill.name;
+    const desc = document.createElement('span');
+    desc.textContent = skill.desc;
+    body.append(name, desc);
+    item.append(icon, body);
+    list.appendChild(item);
+  }
+  document.getElementById('adv-skill-monster-tag').textContent = level.name;
+  document.getElementById('adv-skills-summary').textContent = skills.length + ' 個怪物技能，可展開';
+}
 function renderAdvHud() {
   if (!adv) return;
   const level = adventureLevelById(adv.levelId);
@@ -1295,6 +1595,8 @@ function renderAdvHud() {
   document.getElementById('adv-monster-hptext').textContent = Math.max(0, adv.monsterHp) + '/' + adv.monsterMaxHp;
   document.getElementById('adv-player-hpbar').style.width = Math.max(0, adv.playerHp / adv.playerMaxHp * 100) + '%';
   document.getElementById('adv-player-hptext').textContent = Math.max(0, adv.playerHp) + '/' + adv.playerMaxHp;
+  renderAdvFloatingWord();
+  renderAdvSkills(level);
 }
 function setAdventureView(view) {
   document.body.classList.toggle('adv-view-map', view === 'map');
