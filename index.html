@@ -48,9 +48,47 @@
   body.mode-adventure #bonusbar,
   body.mode-adventure #mode { display: none; }
 
-  /* ===== 冒險模式：戰鬥 HUD ===== */
+  /* ===== 冒險模式：地圖 / 戰鬥 HUD ===== */
   #adv-hud { display: none; width: 100%; flex-direction: column; align-items: center; margin-bottom: 10px; }
   body.mode-adventure #adv-hud { display: flex; }
+  body.mode-adventure.adv-view-map #current,
+  body.mode-adventure.adv-view-map #board,
+  body.mode-adventure.adv-view-map #controls { display: none; }
+  #adv-map, #adv-battle { width: 100%; }
+  body.adv-view-map #adv-battle,
+  body.adv-view-battle #adv-map { display: none; }
+  #adv-map { max-width: 440px; }
+  #adv-map-head {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    width: 100%; margin-bottom: 8px;
+  }
+  #adv-map-title { color: #ffd97a; font-size: 1rem; font-weight: bold; }
+  #adv-map-summary { font-size: .78rem; color: #d8c3a0; margin-bottom: 10px; line-height: 1.5; }
+  #adv-map-path { display: grid; gap: 8px; width: 100%; }
+  .adv-map-node {
+    position: relative; display: grid; grid-template-columns: 34px 1fr auto; gap: 8px;
+    align-items: center; width: 100%; padding: 9px 10px; border-radius: 12px;
+    border: 1px solid rgba(255,210,140,.18); text-align: left;
+    background: rgba(0,0,0,.26); color: #fbead2; box-shadow: none;
+  }
+  .adv-map-node:not(:last-child)::after {
+    content: ""; position: absolute; left: 26px; top: calc(100% + 1px);
+    width: 3px; height: 8px; border-radius: 999px; background: rgba(255,210,140,.25);
+  }
+  .adv-map-node.completed { border-color: rgba(143,212,122,.48); background: rgba(75,130,55,.22); }
+  .adv-map-node.available { border-color: rgba(255,217,122,.78); background: rgba(118,78,28,.56); }
+  .adv-map-node.locked { opacity: .48; cursor: default; }
+  .adv-map-node.ongoing { box-shadow: 0 0 0 2px rgba(255,217,122,.28); }
+  .adv-node-badge {
+    width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(0,0,0,.25); color: #ffd97a; font-size: .8rem; font-weight: bold;
+  }
+  .adv-node-main b { display: block; font-size: .84rem; color: #fff0bd; }
+  .adv-node-main span { display: block; font-size: .7rem; color: #d8c3a0; margin-top: 2px; }
+  .adv-node-state { font-size: .7rem; color: #ffd97a; white-space: nowrap; font-weight: bold; }
+  .adv-map-actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 10px; }
+  .adv-mini-btn { padding: 6px 10px; font-size: .72rem; border-radius: 999px; }
+  #adv-battle-actions { display: flex; justify-content: flex-end; gap: 6px; width: 100%; margin-bottom: 6px; }
   #adv-chapter { font-size: .78rem; opacity: .8; margin-bottom: 4px; }
   #adv-monster-sprite { margin-bottom: 4px; filter: drop-shadow(0 4px 4px rgba(0,0,0,.4)); }
   .adv-row { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 320px; margin-bottom: 4px; font-size: .78rem; }
@@ -339,18 +377,34 @@
     </div>
     <div id="game-panel">
       <div id="adv-hud">
-        <div id="adv-chapter">第 1 章：塵封的書庫</div>
-        <div id="adv-monster-sprite"></div>
-        <div class="adv-row">
-          <span id="adv-monster-name">—</span>
-          <div class="hpbar-wrap"><div id="adv-monster-hpbar" class="hpbar monster"></div></div>
-          <span class="hptext" id="adv-monster-hptext">0/0</span>
-        </div>
-        <div class="adv-row">
-          <span>🐛 你</span>
-          <div class="hpbar-wrap"><div id="adv-player-hpbar" class="hpbar player"></div></div>
-          <span class="hptext" id="adv-player-hptext">100/100</span>
-        </div>
+        <section id="adv-map" aria-label="冒險地圖">
+          <div id="adv-map-head">
+            <div>
+              <div id="adv-map-title">冒險地圖</div>
+              <div id="adv-map-summary">選擇已解鎖的關卡開始挑戰。</div>
+            </div>
+            <button id="adv-map-reset" class="secondary adv-mini-btn">重新開始遊戲</button>
+          </div>
+          <div id="adv-map-path"></div>
+        </section>
+        <section id="adv-battle" aria-label="冒險戰鬥">
+          <div id="adv-battle-actions">
+            <button id="adv-back-map" class="secondary adv-mini-btn">冒險地圖</button>
+            <button id="adv-battle-reset" class="secondary adv-mini-btn">重新開始遊戲</button>
+          </div>
+          <div id="adv-chapter">第 1 章：塵封的書庫</div>
+          <div id="adv-monster-sprite"></div>
+          <div class="adv-row">
+            <span id="adv-monster-name">—</span>
+            <div class="hpbar-wrap"><div id="adv-monster-hpbar" class="hpbar monster"></div></div>
+            <span class="hptext" id="adv-monster-hptext">0/0</span>
+          </div>
+          <div class="adv-row">
+            <span>🐛 你</span>
+            <div class="hpbar-wrap"><div id="adv-player-hpbar" class="hpbar player"></div></div>
+            <span class="hptext" id="adv-player-hptext">100/100</span>
+          </div>
+        </section>
       </div>
       <div id="rankbar" style="font-size:.75rem;opacity:.8;margin-bottom:4px;">
         <span id="ranktitle">見習書蟲</span>　<progress id="lvprog" max="100" value="0" style="width:120px;height:8px;"></progress>
@@ -562,6 +616,10 @@ function isValidGrid(g, cols, rows) {
     if (!Array.isArray(col) || col.length !== rows) return false;
     for (const t of col) {
       if (!t || typeof t.letter !== 'string' || !t.letter) return false;
+      if ('burning' in t && typeof t.burning !== 'boolean') return false;
+      if ('locked' in t && typeof t.locked !== 'boolean') return false;
+      if ('cursed' in t && typeof t.cursed !== 'boolean') return false;
+      if ('gem' in t && t.gem !== null && !['green', 'gold', 'sapphire', 'diamond'].includes(t.gem)) return false;
     }
   }
   return true;
@@ -592,42 +650,104 @@ function hiScore() { return +localStorage.getItem(HI_KEY) || 0; }
 const ADV_SAVE_KEY = 'wordworm_save_adventure_v1', ADV_PROGRESS_KEY = 'wordworm_adv_progress';
 function saveAdventure() {
   if (over) { localStorage.removeItem(ADV_SAVE_KEY); return; }
+  if (!adv || !isValidAdvState(adv)) return;
   localStorage.setItem(ADV_SAVE_KEY, JSON.stringify({
     grid: grid.map(col => col.map(t => ({ letter: t.letter, gem: t.gem, locked: !!t.locked, cursed: !!t.cursed }))),
     adv
   }));
 }
-// 數值型別＋章節/怪物索引邊界檢查，防損毀存檔 resume 到不存在的怪物讓 MONSTER_TEMPLATES 存取 undefined
+function adventureLevelById(id) {
+  return ADVENTURE_LEVELS.find(level => level.id === id) || null;
+}
+function adventureLevelByLegacy(chapterIdx, monsterIdx) {
+  return ADVENTURE_LEVELS.find(level => level.chapterIdx === chapterIdx && level.levelIdx === monsterIdx) || null;
+}
+function normaliseAdvState(a) {
+  if (!a || typeof a !== 'object') return null;
+  const level = adventureLevelById(a.levelId) || adventureLevelByLegacy(a.chapterIdx, a.monsterIdx);
+  if (!level) return null;
+  return {
+    ...a,
+    levelId: level.id,
+    levelIdx: level.globalIdx,
+    chapterIdx: level.chapterIdx,
+    monsterIdx: level.levelIdx,
+  };
+}
+// 數值型別＋關卡索引邊界檢查，防損毀存檔 resume 到不存在的關卡讓冒險流程炸掉
 function isValidAdvState(a) {
-  if (!a || typeof a !== 'object') return false;
-  const numFields = ['playerHp', 'playerMaxHp', 'monsterHp', 'monsterMaxHp', 'monsterAtk', 'chapterIdx', 'monsterIdx', 'totalKills'];
-  for (const f of numFields) if (!Number.isFinite(a[f])) return false;
-  if (a.chapterIdx < 0 || a.chapterIdx >= MONSTER_TEMPLATES.length) return false;
-  if (a.monsterIdx < 0 || a.monsterIdx >= MONSTER_TEMPLATES[a.chapterIdx].length) return false;
-  if (a.playerHp < 0 || a.playerHp > a.playerMaxHp) return false;
-  if (a.monsterHp < 0 || a.monsterHp > a.monsterMaxHp) return false;
+  const state = normaliseAdvState(a);
+  if (!state) return false;
+  const numFields = ['playerHp', 'playerMaxHp', 'monsterHp', 'monsterMaxHp', 'monsterAtk', 'chapterIdx', 'monsterIdx', 'levelIdx', 'totalKills'];
+  for (const f of numFields) if (!Number.isFinite(state[f])) return false;
+  if (state.chapterIdx < 0 || state.monsterIdx < 0 || state.levelIdx < 0) return false;
+  if (state.playerMaxHp <= 0 || state.monsterMaxHp <= 0 || state.monsterAtk < 0) return false;
+  if (state.playerHp < 0 || state.playerHp > state.playerMaxHp) return false;
+  if (state.monsterHp < 0 || state.monsterHp > state.monsterMaxHp) return false;
   return true;
 }
 function loadAdventure() {
   try {
     const s = JSON.parse(localStorage.getItem(ADV_SAVE_KEY));
-    if (!s || !isValidGrid(s.grid, COLS, ROWS) || !isValidAdvState(s.adv)) return false;
+    const nextAdv = normaliseAdvState(s && s.adv);
+    if (!s || !isValidGrid(s.grid, COLS, ROWS) || !isValidAdvState(nextAdv)) return false;
     grid = s.grid.map(col => col.map(t => ({ ...t, fresh: false })));
-    adv = s.adv;
+    adv = nextAdv;
     return true;
   } catch { return false; }
 }
 // 最佳進度（最深章節＋累計擊敗數），跟經典模式的 hiScore 概念平行但獨立
-function advBestProgress() {
-  try { return JSON.parse(localStorage.getItem(ADV_PROGRESS_KEY)) || { chapter: 1, kills: 0 }; }
-  catch { return { chapter: 1, kills: 0 }; }
+function defaultAdvProgress() {
+  return withAdvProgressDerived({ version: 2, completedLevelIds: [] });
 }
-function updateAdvBestProgress() {
-  const best = advBestProgress();
-  const chapter = adv.chapterIdx + 1;
-  if (chapter > best.chapter || (chapter === best.chapter && adv.totalKills > best.kills)) {
-    localStorage.setItem(ADV_PROGRESS_KEY, JSON.stringify({ chapter, kills: adv.totalKills }));
+function withAdvProgressDerived(progress) {
+  const seen = new Set();
+  const completedLevelIds = (Array.isArray(progress.completedLevelIds) ? progress.completedLevelIds : [])
+    .filter(id => adventureLevelById(id) && !seen.has(id) && seen.add(id))
+    .sort((a, b) => adventureLevelById(a).globalIdx - adventureLevelById(b).globalIdx);
+  const completed = new Set(completedLevelIds);
+  let unlockedIdx = 0;
+  while (unlockedIdx < ADVENTURE_LEVELS.length - 1 && completed.has(ADVENTURE_LEVELS[unlockedIdx].id)) unlockedIdx++;
+  const unlocked = ADVENTURE_LEVELS[unlockedIdx];
+  return {
+    version: 2,
+    completedLevelIds,
+    unlockedLevelId: unlocked.id,
+    chapter: unlocked.chapterIdx + 1,
+    kills: completedLevelIds.length,
+  };
+}
+function normaliseAdvProgress(raw) {
+  if (!raw || typeof raw !== 'object') return defaultAdvProgress();
+  if (raw.version === 2) return withAdvProgressDerived(raw);
+  const legacyKills = Number.isFinite(raw.kills) ? Math.max(0, Math.floor(raw.kills)) : 0;
+  return withAdvProgressDerived({
+    version: 2,
+    completedLevelIds: ADVENTURE_LEVELS.slice(0, Math.min(legacyKills, ADVENTURE_LEVELS.length)).map(level => level.id),
+  });
+}
+function advBestProgress() {
+  try { return normaliseAdvProgress(JSON.parse(localStorage.getItem(ADV_PROGRESS_KEY))); }
+  catch { return defaultAdvProgress(); }
+}
+function saveAdvProgress(progress) {
+  const next = withAdvProgressDerived(progress);
+  localStorage.setItem(ADV_PROGRESS_KEY, JSON.stringify(next));
+  return next;
+}
+function updateAdvBestProgress(levelId) {
+  const progress = advBestProgress();
+  if (levelId && adventureLevelById(levelId) && !progress.completedLevelIds.includes(levelId)) {
+    progress.completedLevelIds.push(levelId);
   }
+  return saveAdvProgress(progress);
+}
+function adventureUnlockedIndex(progress = advBestProgress()) {
+  return adventureLevelById(progress.unlockedLevelId).globalIdx;
+}
+function isAdventureLevelUnlocked(levelId, progress = advBestProgress()) {
+  const level = adventureLevelById(levelId);
+  return !!level && level.globalIdx <= adventureUnlockedIndex(progress);
 }
 
 /* ================= 初始化 ================= */
@@ -752,6 +872,14 @@ document.getElementById('shuffle').onclick = () => { if (gameMode === 'adventure
 document.getElementById('restart').onclick = init;
 document.getElementById('modesel-classic').onclick = () => selectGameMode('classic');
 document.getElementById('modesel-adventure').onclick = () => selectGameMode('adventure');
+document.getElementById('adv-map-path').onclick = e => {
+  const node = e.target.closest('.adv-map-node');
+  if (!node || node.disabled) return;
+  startAdventureLevel(node.dataset.levelId);
+};
+document.getElementById('adv-map-reset').onclick = restartAdventureGame;
+document.getElementById('adv-battle-reset').onclick = restartAdventureGame;
+document.getElementById('adv-back-map').onclick = showAdventureMap;
 
 /* ================= 蟲蟲台詞 ================= */
 const QUIPS = {
@@ -984,14 +1112,104 @@ function checkOver() {
 /* ================= 冒險模式：戰鬥資料 ================= */
 // 傷害分級精神參考自 Boggle 式戰鬥拼字遊戲的通用設計（稀有字母＝雙面刃：磚不好湊但打起來痛），
 // 數值全部用專案既有的 LETTER_SCORE／LETTER_POOL 重新映射，非抄襲任何特定作品的表格。
-const CHAPTER_TITLES = ['塵封的書庫'];
-const MONSTER_TEMPLATES = [
-  [ // 第 1 章：塵封的書庫
-    { name: '紙頁鼠', hp: 40, atk: 4, kind: 'critter' },
-    { name: '墨漬怪', hp: 55, atk: 5, kind: 'blob' },
-    { name: '蛀書蟲王', hp: 90, atk: 7, kind: 'book', boss: true },
-  ],
+const ADVENTURE_CHAPTERS = [
+  {
+    id: 'dusty-library',
+    title: '塵封的書庫',
+    levels: [
+      {
+        id: 'paper-mouse',
+        name: '紙頁鼠',
+        hp: 40,
+        atk: 4,
+        kind: 'critter',
+        skills: [
+          { icon: 'L', name: '鎖定磚', desc: '隨機封住 1 格，無法選取。' },
+          { icon: 'ATK', name: '反擊', desc: '未擊倒時回合結尾扣玩家 HP。' },
+        ],
+      },
+      {
+        id: 'ink-blob',
+        name: '墨漬怪',
+        hp: 55,
+        atk: 5,
+        kind: 'blob',
+        skills: [
+          { icon: 'C', name: '詛咒磚', desc: '拼入後本次攻擊傷害降低。' },
+          { icon: 'ATK', name: '反擊', desc: '未擊倒時回合結尾扣玩家 HP。' },
+        ],
+      },
+      {
+        id: 'bookworm-king',
+        name: '蛀書蟲王',
+        hp: 90,
+        atk: 7,
+        kind: 'book',
+        boss: true,
+        skills: [
+          { icon: 'L', name: '鎖定磚', desc: '封住棋盤空間，逼你繞路拼字。' },
+          { icon: 'C', name: '詛咒磚', desc: '拼入後傷害降低，建議先清除。' },
+          { icon: 'ATK', name: '重擊', desc: 'Boss 反擊較痛，血量要顧。' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'ink-gallery',
+    title: '墨痕迴廊',
+    levels: [
+      {
+        id: 'dust-scribe',
+        name: '灰塵抄寫員',
+        hp: 70,
+        atk: 6,
+        kind: 'critter',
+        skills: [
+          { icon: 'L', name: '鎖定磚', desc: '隨機封住 1 格，無法選取。' },
+          { icon: 'C', name: '詛咒磚', desc: '拼入後本次攻擊傷害降低。' },
+        ],
+      },
+      {
+        id: 'violet-ink',
+        name: '紫墨術士',
+        hp: 85,
+        atk: 7,
+        kind: 'blob',
+        skills: [
+          { icon: 'C', name: '詛咒磚', desc: '讓高分字也有折損，討厭得很合理。' },
+          { icon: 'ATK', name: '反擊', desc: '未擊倒時回合結尾扣玩家 HP。' },
+        ],
+      },
+      {
+        id: 'archive-book',
+        name: '索引巨冊',
+        hp: 120,
+        atk: 9,
+        kind: 'book',
+        boss: true,
+        skills: [
+          { icon: 'L', name: '鎖定磚', desc: '封住棋盤空間，降低可選字母。' },
+          { icon: 'C', name: '詛咒磚', desc: '拼入後傷害降低，建議先清除。' },
+          { icon: 'ATK', name: '重擊', desc: 'Boss 反擊較痛，別硬扛太久。' },
+        ],
+      },
+    ],
+  },
 ];
+let advLevelCounter = 0;
+const ADVENTURE_LEVELS = ADVENTURE_CHAPTERS.flatMap((chapter, chapterIdx) =>
+  chapter.levels.map((level, levelIdx) => ({
+    ...level,
+    chapterId: chapter.id,
+    chapterTitle: chapter.title,
+    chapterIdx,
+    levelIdx,
+    globalIdx: advLevelCounter++,
+    mapLabel: (chapterIdx + 1) + '-' + (levelIdx + 1),
+  }))
+);
+const CHAPTER_TITLES = ADVENTURE_CHAPTERS.map(chapter => chapter.title);
+const MONSTER_TEMPLATES = ADVENTURE_CHAPTERS.map(chapter => chapter.levels);
 let adv = null; // { chapterIdx, monsterIdx, playerHp, playerMaxHp, monsterHp, monsterMaxHp, monsterAtk, monsterName, monsterKind, isBoss }
 
 function battleDamage(word, tiles) {
@@ -1067,7 +1285,10 @@ function monsterSpriteSvg(kind, isBoss) {
     '</svg>';
 }
 function renderAdvHud() {
-  document.getElementById('adv-chapter').textContent = '第 ' + (adv.chapterIdx + 1) + ' 章：' + CHAPTER_TITLES[adv.chapterIdx];
+  if (!adv) return;
+  const level = adventureLevelById(adv.levelId);
+  if (!level) return;
+  document.getElementById('adv-chapter').textContent = '第 ' + (level.chapterIdx + 1) + ' 章：' + level.chapterTitle + '　' + level.mapLabel;
   document.getElementById('adv-monster-name').textContent = (adv.isBoss ? '👑 ' : '') + adv.monsterName;
   document.getElementById('adv-monster-sprite').innerHTML = monsterSpriteSvg(adv.monsterKind, adv.isBoss);
   document.getElementById('adv-monster-hpbar').style.width = Math.max(0, adv.monsterHp / adv.monsterMaxHp * 100) + '%';
@@ -1075,32 +1296,128 @@ function renderAdvHud() {
   document.getElementById('adv-player-hpbar').style.width = Math.max(0, adv.playerHp / adv.playerMaxHp * 100) + '%';
   document.getElementById('adv-player-hptext').textContent = Math.max(0, adv.playerHp) + '/' + adv.playerMaxHp;
 }
+function setAdventureView(view) {
+  document.body.classList.toggle('adv-view-map', view === 'map');
+  document.body.classList.toggle('adv-view-battle', view === 'battle');
+}
+function renderAdvMap() {
+  const progress = advBestProgress();
+  const completed = new Set(progress.completedLevelIds);
+  const activeLevelId = adv && adv.levelId && adv.monsterHp > 0 && !over ? adv.levelId : '';
+  const path = document.getElementById('adv-map-path');
+  path.innerHTML = '';
+
+  const nextLevel = ADVENTURE_LEVELS.find(level => !completed.has(level.id));
+  document.getElementById('adv-map-summary').textContent = nextLevel
+    ? '已通關 ' + completed.size + ' / ' + ADVENTURE_LEVELS.length + ' 關。下一個目標：' + nextLevel.mapLabel + ' ' + nextLevel.name + '。'
+    : '全部 ' + ADVENTURE_LEVELS.length + ' 關都已通關，可以回頭重打已解鎖關卡。';
+
+  for (const level of ADVENTURE_LEVELS) {
+    const unlocked = isAdventureLevelUnlocked(level.id, progress);
+    const isCompleted = completed.has(level.id);
+    const isActive = activeLevelId === level.id;
+    const node = document.createElement('button');
+    node.type = 'button';
+    node.className = 'adv-map-node ' + (isCompleted ? 'completed ' : '') + (unlocked ? 'available ' : 'locked ') + (isActive ? 'ongoing' : '');
+    node.disabled = !unlocked;
+    node.dataset.levelId = level.id;
+
+    const badge = document.createElement('span');
+    badge.className = 'adv-node-badge';
+    badge.textContent = isCompleted ? '✓' : unlocked ? level.mapLabel : '•';
+
+    const main = document.createElement('span');
+    main.className = 'adv-node-main';
+    const title = document.createElement('b');
+    title.textContent = level.mapLabel + ' ' + level.name;
+    const meta = document.createElement('span');
+    meta.textContent = '第 ' + (level.chapterIdx + 1) + ' 章：' + level.chapterTitle + '　HP ' + level.hp + ' / ATK ' + level.atk;
+    main.append(title, meta);
+
+    const state = document.createElement('span');
+    state.className = 'adv-node-state';
+    state.textContent = isActive ? '戰鬥中' : isCompleted ? '已通關' : unlocked ? '可挑戰' : '未解鎖';
+
+    node.append(badge, main, state);
+    path.appendChild(node);
+  }
+}
+function showAdventureMap() {
+  if (adv && adv.monsterHp > 0 && !over && isValidGrid(grid, COLS, ROWS)) saveAdventure();
+  sel = [];
+  setAdventureView('map');
+  if (grid.length === COLS) { render(); updateCurrent(); }
+  renderAdvMap();
+}
+function makeAdventureState(level) {
+  return {
+    levelId: level.id,
+    levelIdx: level.globalIdx,
+    chapterIdx: level.chapterIdx,
+    monsterIdx: level.levelIdx,
+    playerHp: 100,
+    playerMaxHp: 100,
+    monsterHp: 0,
+    monsterMaxHp: 0,
+    monsterAtk: 0,
+    monsterName: '',
+    monsterKind: level.kind,
+    isBoss: !!level.boss,
+    totalKills: advBestProgress().completedLevelIds.length,
+  };
+}
+function startAdventureLevel(levelId) {
+  const level = adventureLevelById(levelId);
+  if (!level || !isAdventureLevelUnlocked(levelId)) {
+    toast('這關還沒解鎖，先把前面的書庫清乾淨。', 1600);
+    return;
+  }
+  document.getElementById('adv-gameover').classList.remove('show');
+  over = false; sel = []; setFace('normal');
+  const canResume = adv && adv.levelId === levelId && adv.monsterHp > 0 && isValidGrid(grid, COLS, ROWS);
+  if (!canResume) {
+    localStorage.removeItem(ADV_SAVE_KEY);
+    adv = makeAdventureState(level);
+    freshBoard();
+    startMonster();
+  }
+  setAdventureView('battle');
+  render(); updateCurrent(); renderAdvHud();
+  saveAdventure();
+}
+function restartAdventureGame() {
+  if (!confirm('重新開始會清除冒險模式進度與目前戰鬥；經典模式存檔不會受影響。確定要重來嗎？')) return;
+  localStorage.removeItem(ADV_SAVE_KEY);
+  localStorage.removeItem(ADV_PROGRESS_KEY);
+  adv = null; sel = []; over = false;
+  document.getElementById('adv-gameover').classList.remove('show');
+  freshBoard(); render(); updateCurrent(); setFace('normal');
+  showAdventureMap();
+  toast('冒險模式已重新開始。', 1600);
+}
 function startMonster() {
-  const chapter = MONSTER_TEMPLATES[adv.chapterIdx];
-  const m = chapter[adv.monsterIdx];
+  const m = adventureLevelById(adv.levelId);
+  adv.chapterIdx = m.chapterIdx; adv.monsterIdx = m.levelIdx; adv.levelIdx = m.globalIdx;
   adv.monsterName = m.name; adv.monsterKind = m.kind; adv.isBoss = !!m.boss;
   adv.monsterHp = m.hp; adv.monsterMaxHp = m.hp; adv.monsterAtk = m.atk;
   renderAdvHud();
   bubble(adv.isBoss ? ('⚠️ Boss出現：' + m.name + '！') : ('遭遇 ' + m.name + '！'));
 }
 function defeatMonster() {
+  const level = adventureLevelById(adv.levelId);
   bubble('打倒了 ' + adv.monsterName + '！');
   sfx.levelup();
-  adv.monsterIdx++;
-  const chapter = MONSTER_TEMPLATES[adv.chapterIdx];
-  if (adv.monsterIdx >= chapter.length) {
-    adv.chapterIdx++;
-    adv.monsterIdx = 0;
-    if (adv.chapterIdx >= MONSTER_TEMPLATES.length) {
-      toast('🎉 目前所有章節都通關了！更多冒險敬請期待', 2600);
-      adv.chapterIdx = MONSTER_TEMPLATES.length - 1;
-      adv.monsterIdx = 0;
-    }
-  }
-  startMonster();
+  adv.totalKills++;
+  const progress = updateAdvBestProgress(level.id);
+  localStorage.removeItem(ADV_SAVE_KEY);
+  sel = [];
+  render(); updateCurrent();
+  showAdventureMap();
+  const nextLevel = ADVENTURE_LEVELS.find(item => !progress.completedLevelIds.includes(item.id));
+  toast(nextLevel ? ('關卡通過！下一關已解鎖：' + nextLevel.name) : '🎉 所有關卡都通關了！可以回地圖重打。', 2600);
 }
 function checkAdvOver() {
-  if (adv.playerHp <= 0 && !over) {
+  if (adv && adv.playerHp <= 0 && !over) {
     over = true;
     sfx.over(); setFace('sad');
     updateAdvBestProgress();
@@ -1114,23 +1431,19 @@ function initAdventure(fromSave = false) {
   sel = []; over = false;
   document.getElementById('adv-gameover').classList.remove('show');
   setFace('normal');
-  if (fromSave && loadAdventure()) {
-    renderAdvHud();
-  } else {
+  const hasBattleSave = fromSave && loadAdventure();
+  if (!hasBattleSave) {
     localStorage.removeItem(ADV_SAVE_KEY);
-    adv = {
-      chapterIdx: 0, monsterIdx: 0,
-      playerHp: 100, playerMaxHp: 100,
-      monsterHp: 0, monsterMaxHp: 0, monsterAtk: 0,
-      monsterName: '', monsterKind: 'critter', isBoss: false,
-      totalKills: 0,
-    };
+    adv = null;
     freshBoard();
-    startMonster();
   }
+  if (grid.length !== COLS) freshBoard();
   render(); updateCurrent();
+  showAdventureMap();
+  if (hasBattleSave) toast('讀取冒險戰鬥，可從地圖繼續。', 1600);
 }
 function submitAdventure(w) {
+  if (!adv) return;
   const dmg = battleDamage(w, sel);
   adv.monsterHp = Math.max(0, adv.monsterHp - dmg);
 
@@ -1146,8 +1459,8 @@ function submitAdventure(w) {
 
   if (adv.monsterHp <= 0) {
     // 刻意設計：斬殺當回合不觸發反擊（怪物已死不能還手），非漏掉的分支
-    adv.totalKills++;
     defeatMonster();
+    return;
   } else {
     monsterCounter();
   }
@@ -1157,7 +1470,7 @@ function submitAdventure(w) {
   if (!over) saveAdventure();
 }
 function shuffleAdventure() {
-  if (over) return;
+  if (over || !adv) return;
   let cleared = 0;
   for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) {
     if (grid[c][r].locked || grid[c][r].cursed) { grid[c][r] = newTile(); cleared++; }
