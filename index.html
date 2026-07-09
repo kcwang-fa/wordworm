@@ -452,21 +452,46 @@
     padding: 3px 8px; font-size: .68rem; font-weight: 900;
     box-shadow: inset 0 0 0 1px rgba(255,217,132,.24);
   }
-  .adv-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
-  .adv-slot {
-    aspect-ratio: 1; border-radius: 9px;
+  .adv-items-list { display: grid; gap: 9px; }
+  .adv-item-btn {
+    width: 100%; min-height: 70px;
+    display: grid; grid-template-columns: 38px 1fr auto; gap: 9px; align-items: center;
+    padding: 8px; border-radius: 10px; text-align: left;
+    color: #ffefbd;
     background:
-      radial-gradient(circle at 50% 44%, rgba(255,219,129,.1), transparent 54%),
-      linear-gradient(160deg, rgba(255,255,255,.05), rgba(0,0,0,.18)),
+      radial-gradient(circle at 85% 20%, rgba(126,255,232,.24), transparent 28%),
+      linear-gradient(90deg, rgba(255,211,112,.12), transparent 48%),
       rgba(0,0,0,.28);
-    border: 1px solid rgba(245,199,105,.38);
-    box-shadow: inset 0 0 10px rgba(0,0,0,.42);
+    border: 1px solid rgba(245,199,105,.3);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 2px 0 rgba(0,0,0,.22);
   }
-  .adv-empty-items {
-    height: 206px; display: grid; place-items: center;
-    border: 2px dashed rgba(255,223,160,.3); border-radius: 10px;
-    color: #e8c88b; text-align: center; font-weight: 800; line-height: 1.45;
-    background: rgba(0,0,0,.18);
+  .adv-item-btn:active { transform: translateY(1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.05); }
+  .adv-item-btn:disabled {
+    opacity: .46; cursor: default; transform: none;
+    filter: grayscale(.35);
+  }
+  .adv-item-icon {
+    width: 38px; height: 38px; display: grid; place-items: center; border-radius: 10px;
+    color: #2f1d0a; font-size: .78rem; font-weight: 950;
+    background:
+      radial-gradient(circle at 72% 76%, rgba(127,255,236,.22), transparent 30%),
+      radial-gradient(circle at 35% 20%, rgba(255,255,255,.7), transparent 30%),
+      linear-gradient(145deg, #f8e28e, #b87a25);
+    box-shadow: 0 0 12px rgba(255,208,96,.36), 0 0 16px rgba(130,255,232,.2), 0 2px 0 #6d3f13;
+  }
+  .adv-item-name { display: block; margin-bottom: 2px; color: #ffefbd; font-size: .82rem; font-weight: 950; }
+  .adv-item-desc { display: block; color: #dfc492; font-size: .72rem; line-height: 1.25; }
+  .adv-item-count {
+    min-width: 34px; padding: 4px 7px; border-radius: 999px;
+    color: #38210b; background: linear-gradient(180deg, #fff2bd, #d49c40);
+    border: 1px solid #7b4814; text-align: center; font-size: .75rem; font-weight: 950;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.45);
+  }
+  .adv-items-help {
+    margin-top: 10px; padding: 8px 9px; border-radius: 10px;
+    color: #e8c88b; background: rgba(0,0,0,.2);
+    border: 1px dashed rgba(255,223,160,.28);
+    font-size: .7rem; font-weight: 800; line-height: 1.35;
   }
   #adv-skills-list { display: grid; gap: 9px; }
   .adv-skill {
@@ -492,6 +517,11 @@
   .adv-skill b { display: block; color: #ffefbd; font-size: .82rem; margin-bottom: 2px; }
   .adv-skill span { color: #dfc492; font-size: .72rem; line-height: 1.25; }
   #adv-mobile-drawers { gap: 8px; }
+  .adv-mobile-panel {
+    display: grid; gap: 8px; padding: 8px; border-radius: 12px;
+    background: rgba(30,17,6,.34);
+    border: 1px solid rgba(255,220,150,.14);
+  }
   .adv-drawer-row {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
     min-height: 44px; padding: 9px 11px; border-radius: 11px;
@@ -581,6 +611,12 @@
     .adv-drawer-row span {
       min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
+    .adv-mobile-items-list .adv-item-btn {
+      min-height: 62px; grid-template-columns: 34px 1fr auto; padding: 7px;
+    }
+    .adv-mobile-items-list .adv-item-icon { width: 34px; height: 34px; font-size: .68rem; }
+    .adv-mobile-items-list .adv-item-name { font-size: .78rem; }
+    .adv-mobile-items-list .adv-item-desc { font-size: .68rem; }
   }
 
   @media (max-width: 420px) {
@@ -960,19 +996,19 @@
         <button id="mode" class="secondary">🎲 經典</button>
       </div>
       <aside id="adv-items-panel" class="adv-side-panel" aria-label="道具欄">
-        <div class="adv-panel-title">道具欄 <span class="adv-small-tag">下一期</span></div>
-        <div class="adv-slots" aria-hidden="true">
-          <div class="adv-slot"></div><div class="adv-slot"></div><div class="adv-slot"></div>
-          <div class="adv-slot"></div><div class="adv-slot"></div><div class="adv-slot"></div>
-        </div>
-        <div class="adv-empty-items">即將推出<br>先保留版位，不接功能</div>
+        <div class="adv-panel-title">道具欄 <span id="adv-item-total-tag" class="adv-small-tag">0 個</span></div>
+        <div id="adv-items-list" class="adv-items-list"></div>
+        <div class="adv-items-help">道具不觸發怪物反擊；通關後會補給。</div>
       </aside>
       <aside id="adv-skills-panel" class="adv-side-panel" aria-label="怪物技能">
         <div class="adv-panel-title">怪物技能 <span id="adv-skill-monster-tag" class="adv-small-tag">—</span></div>
         <div id="adv-skills-list"></div>
       </aside>
       <section id="adv-mobile-drawers" aria-label="手機版冒險摘要">
-        <div class="adv-drawer-row">道具欄 <span>即將推出，預設收合</span></div>
+        <div class="adv-mobile-panel">
+          <div class="adv-drawer-row">道具欄 <span id="adv-items-summary">—</span></div>
+          <div id="adv-mobile-items-list" class="adv-items-list adv-mobile-items-list"></div>
+        </div>
         <div class="adv-drawer-row">怪物技能 <span id="adv-skills-summary">—</span></div>
       </section>
     </div>
@@ -1202,10 +1238,12 @@ function hiScore() { return +localStorage.getItem(HI_KEY) || 0; }
 const ADV_SAVE_KEY = 'wordworm_save_adventure_v1', ADV_PROGRESS_KEY = 'wordworm_adv_progress';
 function saveAdventure() {
   if (over) { localStorage.removeItem(ADV_SAVE_KEY); return; }
-  if (!adv || !isValidAdvState(adv)) return;
+  const nextAdv = normaliseAdvState(adv);
+  if (!nextAdv || !isValidAdvState(nextAdv)) return;
+  adv = nextAdv;
   localStorage.setItem(ADV_SAVE_KEY, JSON.stringify({
     grid: grid.map(col => col.map(t => ({ letter: t.letter, gem: t.gem, locked: !!t.locked, cursed: !!t.cursed }))),
-    adv
+    adv: nextAdv
   }));
 }
 function adventureLevelById(id) {
@@ -1218,12 +1256,14 @@ function normaliseAdvState(a) {
   if (!a || typeof a !== 'object') return null;
   const level = adventureLevelById(a.levelId) || adventureLevelByLegacy(a.chapterIdx, a.monsterIdx);
   if (!level) return null;
+  const hasItemShape = a.items && typeof a.items === 'object';
   return {
     ...a,
     levelId: level.id,
     levelIdx: level.globalIdx,
     chapterIdx: level.chapterIdx,
     monsterIdx: level.levelIdx,
+    items: normaliseAdvItems(a.items, hasItemShape ? emptyAdvItems() : defaultAdvItems()),
   };
 }
 // 數值型別＋關卡索引邊界檢查，防損毀存檔 resume 到不存在的關卡讓冒險流程炸掉
@@ -1250,7 +1290,7 @@ function loadAdventure() {
 }
 // 最佳進度（最深章節＋累計擊敗數），跟經典模式的 hiScore 概念平行但獨立
 function defaultAdvProgress() {
-  return withAdvProgressDerived({ version: 2, completedLevelIds: [] });
+  return withAdvProgressDerived({ version: 3, completedLevelIds: [], items: defaultAdvItems() });
 }
 function withAdvProgressDerived(progress) {
   const seen = new Set();
@@ -1261,21 +1301,24 @@ function withAdvProgressDerived(progress) {
   let unlockedIdx = 0;
   while (unlockedIdx < ADVENTURE_LEVELS.length - 1 && completed.has(ADVENTURE_LEVELS[unlockedIdx].id)) unlockedIdx++;
   const unlocked = ADVENTURE_LEVELS[unlockedIdx];
+  const hasItemShape = progress.items && typeof progress.items === 'object';
   return {
-    version: 2,
+    version: 3,
     completedLevelIds,
     unlockedLevelId: unlocked.id,
     chapter: unlocked.chapterIdx + 1,
     kills: completedLevelIds.length,
+    items: normaliseAdvItems(progress.items, hasItemShape ? emptyAdvItems() : defaultAdvItems()),
   };
 }
 function normaliseAdvProgress(raw) {
   if (!raw || typeof raw !== 'object') return defaultAdvProgress();
-  if (raw.version === 2) return withAdvProgressDerived(raw);
+  if (raw.version === 2 || raw.version === 3) return withAdvProgressDerived(raw);
   const legacyKills = Number.isFinite(raw.kills) ? Math.max(0, Math.floor(raw.kills)) : 0;
   return withAdvProgressDerived({
-    version: 2,
+    version: 3,
     completedLevelIds: ADVENTURE_LEVELS.slice(0, Math.min(legacyKills, ADVENTURE_LEVELS.length)).map(level => level.id),
+    items: defaultAdvItems(),
   });
 }
 function advBestProgress() {
@@ -1287,8 +1330,9 @@ function saveAdvProgress(progress) {
   localStorage.setItem(ADV_PROGRESS_KEY, JSON.stringify(next));
   return next;
 }
-function updateAdvBestProgress(levelId) {
+function updateAdvBestProgress(levelId, items) {
   const progress = advBestProgress();
+  if (items) progress.items = normaliseAdvItems(items, emptyAdvItems());
   if (levelId && adventureLevelById(levelId) && !progress.completedLevelIds.includes(levelId)) {
     progress.completedLevelIds.push(levelId);
   }
@@ -1437,6 +1481,14 @@ document.getElementById('adv-map-path').onclick = e => {
 document.getElementById('adv-map-reset').onclick = restartAdventureGame;
 document.getElementById('adv-battle-reset').onclick = restartAdventureGame;
 document.getElementById('adv-back-map').onclick = showAdventureMap;
+document.getElementById('adv-items-panel').onclick = e => {
+  const btn = e.target.closest('[data-adv-item]');
+  if (btn) useAdventureItem(btn.dataset.advItem);
+};
+document.getElementById('adv-mobile-drawers').onclick = e => {
+  const btn = e.target.closest('[data-adv-item]');
+  if (btn) useAdventureItem(btn.dataset.advItem);
+};
 
 /* ================= 蟲蟲台詞 ================= */
 const QUIPS = {
@@ -2026,6 +2078,186 @@ const CHAPTER_TITLES = ADVENTURE_CHAPTERS.map(chapter => chapter.title);
 const MONSTER_TEMPLATES = ADVENTURE_CHAPTERS.map(chapter => chapter.levels);
 let adv = null; // { chapterIdx, monsterIdx, playerHp, playerMaxHp, monsterHp, monsterMaxHp, monsterAtk, monsterName, monsterKind, isBoss }
 
+const ADV_ITEM_DEFS = {
+  heal: {
+    icon: 'HP',
+    name: '蜂蜜茶',
+    short: '回復 25 HP',
+    desc: '回復 25 HP，最多到上限。',
+    max: 9,
+  },
+  cleanse: {
+    icon: 'CLR',
+    name: '橡皮擦',
+    short: '清除負面磚',
+    desc: '清除全盤鎖定與詛咒狀態。',
+    max: 9,
+  },
+  strike: {
+    icon: 'DMG',
+    name: '墨水彈',
+    short: '造成 22 傷害',
+    desc: '對目前怪物造成 22 點傷害。',
+    damage: 22,
+    max: 9,
+  },
+};
+const ADV_ITEM_ORDER = ['heal', 'cleanse', 'strike'];
+
+function emptyAdvItems() {
+  const items = {};
+  for (const id of ADV_ITEM_ORDER) items[id] = 0;
+  return items;
+}
+function defaultAdvItems() {
+  return { heal: 2, cleanse: 1, strike: 1 };
+}
+function normaliseAdvItems(items, fallback = emptyAdvItems()) {
+  const next = {};
+  for (const id of ADV_ITEM_ORDER) {
+    const def = ADV_ITEM_DEFS[id];
+    const value = Number(items && items[id]);
+    const raw = Number.isFinite(value) ? value : fallback[id];
+    next[id] = Math.max(0, Math.min(def.max, Math.floor(Number(raw) || 0)));
+  }
+  return next;
+}
+function advItemTotal(items) {
+  return ADV_ITEM_ORDER.reduce((sum, id) => sum + (items[id] || 0), 0);
+}
+function syncAdvItemsToProgress() {
+  if (!adv) return advBestProgress();
+  adv.items = normaliseAdvItems(adv.items, emptyAdvItems());
+  return updateAdvBestProgress(null, adv.items);
+}
+function addAdvItem(items, id, amount = 1) {
+  const def = ADV_ITEM_DEFS[id];
+  if (!def) return 0;
+  const before = items[id] || 0;
+  items[id] = Math.max(0, Math.min(def.max, before + amount));
+  return items[id] - before;
+}
+function grantAdventureReward(level) {
+  if (!adv) return [];
+  adv.items = normaliseAdvItems(adv.items, emptyAdvItems());
+  const rewards = level.isBoss || level.boss
+    ? [['heal', 1], ['cleanse', 1], ['strike', 1]]
+    : [[ADV_ITEM_ORDER[level.globalIdx % ADV_ITEM_ORDER.length], 1]];
+  const gained = [];
+  for (const [id, amount] of rewards) {
+    const qty = addAdvItem(adv.items, id, amount);
+    if (qty > 0) gained.push(ADV_ITEM_DEFS[id].name + ' ×' + qty);
+  }
+  return gained;
+}
+function currentAdvItemsForDisplay() {
+  if (adv && adv.items) return normaliseAdvItems(adv.items, emptyAdvItems());
+  return normaliseAdvItems(advBestProgress().items, defaultAdvItems());
+}
+function renderAdvItems() {
+  const items = currentAdvItemsForDisplay();
+  if (adv) adv.items = items;
+  const total = advItemTotal(items);
+  const tag = document.getElementById('adv-item-total-tag');
+  if (tag) tag.textContent = total + ' 個';
+  const summary = document.getElementById('adv-items-summary');
+  if (summary) {
+    summary.textContent = total
+      ? ADV_ITEM_ORDER.map(id => ADV_ITEM_DEFS[id].name + '×' + items[id]).join(' / ')
+      : '沒有道具';
+  }
+
+  for (const listId of ['adv-items-list', 'adv-mobile-items-list']) {
+    const list = document.getElementById(listId);
+    if (!list) continue;
+    list.innerHTML = '';
+    for (const id of ADV_ITEM_ORDER) {
+      const def = ADV_ITEM_DEFS[id];
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'adv-item-btn';
+      btn.dataset.advItem = id;
+      btn.disabled = !adv || over || (items[id] || 0) <= 0;
+      btn.setAttribute('aria-label', def.name + '，剩餘 ' + (items[id] || 0) + ' 個，' + def.desc);
+
+      const icon = document.createElement('span');
+      icon.className = 'adv-item-icon';
+      icon.textContent = def.icon;
+      const body = document.createElement('span');
+      const name = document.createElement('span');
+      name.className = 'adv-item-name';
+      name.textContent = def.name;
+      const desc = document.createElement('span');
+      desc.className = 'adv-item-desc';
+      desc.textContent = def.short;
+      body.append(name, desc);
+      const count = document.createElement('span');
+      count.className = 'adv-item-count';
+      count.textContent = '×' + (items[id] || 0);
+      btn.append(icon, body, count);
+      list.appendChild(btn);
+    }
+  }
+}
+function clearNegativeTiles() {
+  let cleared = 0;
+  for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) {
+    if (grid[c][r].locked || grid[c][r].cursed) {
+      grid[c][r].locked = false;
+      grid[c][r].cursed = false;
+      cleared++;
+    }
+  }
+  return cleared;
+}
+function useAdventureItem(id) {
+  if (over || !adv || adv.monsterHp <= 0) return;
+  const def = ADV_ITEM_DEFS[id];
+  if (!def) return;
+  adv.items = normaliseAdvItems(adv.items, emptyAdvItems());
+  if ((adv.items[id] || 0) <= 0) {
+    toast(def.name + ' 已經用完了。', 1200);
+    renderAdvItems();
+    return;
+  }
+
+  let used = false;
+  if (id === 'heal') {
+    if (adv.playerHp >= adv.playerMaxHp) {
+      toast('HP 已經滿了，先別浪費蜂蜜茶。', 1400);
+      return;
+    }
+    const before = adv.playerHp;
+    adv.playerHp = Math.min(adv.playerMaxHp, adv.playerHp + 25);
+    toast('蜂蜜茶回復 +' + (adv.playerHp - before) + ' HP', 1300);
+    used = true;
+  } else if (id === 'cleanse') {
+    const cleared = clearNegativeTiles();
+    if (!cleared) {
+      toast('場上沒有負面磚，橡皮擦先省著。', 1400);
+      return;
+    }
+    toast('橡皮擦清掉 ' + cleared + ' 顆負面磚', 1300);
+    used = true;
+  } else if (id === 'strike') {
+    const before = adv.monsterHp;
+    adv.monsterHp = Math.max(0, adv.monsterHp - def.damage);
+    toast('墨水彈造成 -' + (before - adv.monsterHp) + ' 傷害', 1300);
+    used = true;
+  }
+
+  if (!used) return;
+  adv.items[id]--;
+  sel = [];
+  syncAdvItemsToProgress();
+  render(); updateCurrent(); renderAdvHud();
+  if (adv.monsterHp <= 0) {
+    defeatMonster();
+    return;
+  }
+  saveAdventure();
+}
+
 function battleDamage(word, tiles) {
   let dmg = word.length * 3;
   for (const ch of word.toUpperCase()) dmg += (LETTER_SCORE[ch] || 0);
@@ -2159,6 +2391,7 @@ function renderAdvHud() {
   document.getElementById('adv-player-hptext').textContent = Math.max(0, adv.playerHp) + '/' + adv.playerMaxHp;
   renderAdvFloatingWord();
   renderAdvSkills(level);
+  renderAdvItems();
 }
 function setAdventureView(view) {
   document.body.classList.toggle('adv-view-map', view === 'map');
@@ -2214,6 +2447,7 @@ function showAdventureMap() {
   renderAdvMap();
 }
 function makeAdventureState(level) {
+  const progress = advBestProgress();
   return {
     levelId: level.id,
     levelIdx: level.globalIdx,
@@ -2227,7 +2461,8 @@ function makeAdventureState(level) {
     monsterName: '',
     monsterKind: level.kind,
     isBoss: !!level.boss,
-    totalKills: advBestProgress().completedLevelIds.length,
+    totalKills: progress.completedLevelIds.length,
+    items: normaliseAdvItems(progress.items, defaultAdvItems()),
   };
 }
 function startAdventureLevel(levelId) {
@@ -2272,19 +2507,21 @@ function defeatMonster() {
   bubble('打倒了 ' + adv.monsterName + '！');
   sfx.levelup();
   adv.totalKills++;
-  const progress = updateAdvBestProgress(level.id);
+  const rewards = grantAdventureReward(level);
+  const progress = updateAdvBestProgress(level.id, adv.items);
   localStorage.removeItem(ADV_SAVE_KEY);
   sel = [];
   render(); updateCurrent();
   showAdventureMap();
   const nextLevel = ADVENTURE_LEVELS.find(item => !progress.completedLevelIds.includes(item.id));
-  toast(nextLevel ? ('關卡通過！下一關已解鎖：' + nextLevel.name) : '🎉 所有關卡都通關了！可以回地圖重打。', 2600);
+  const rewardText = rewards.length ? (' 獲得：' + rewards.join('、') + '。') : '';
+  toast(nextLevel ? ('關卡通過！' + rewardText + '下一關已解鎖：' + nextLevel.name) : ('🎉 所有關卡都通關了！' + rewardText + '可以回地圖重打。'), 2800);
 }
 function checkAdvOver() {
   if (adv && adv.playerHp <= 0 && !over) {
     over = true;
     sfx.over(); setFace('sad');
-    updateAdvBestProgress();
+    updateAdvBestProgress(null, adv.items);
     saveAdventure();  // over=true 時會自動清掉舊存檔
     document.getElementById('adv-fchapter').textContent = adv.chapterIdx + 1;
     document.getElementById('adv-fkills').textContent = adv.totalKills;
