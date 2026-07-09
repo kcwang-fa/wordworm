@@ -25,6 +25,35 @@
       radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,200,110,.3), transparent 70%),
       linear-gradient(160deg, #2c1d0d 0%, #47311a 60%, #2c1d0d 100%);
   }
+  body.mode-adventure {
+    background:
+      radial-gradient(ellipse 42% 24% at 22% 8%, rgba(85,220,255,.18), transparent 66%),
+      radial-gradient(ellipse 48% 28% at 78% 12%, rgba(194,80,255,.17), transparent 68%),
+      radial-gradient(ellipse 64% 30% at 50% 104%, rgba(129,255,95,.1), transparent 70%),
+      linear-gradient(160deg, #29150b 0%, #422013 46%, #1b0b13 100%);
+  }
+  body.mode-adventure #library-bg {
+    opacity: .78;
+    background:
+      radial-gradient(circle at 16% 18%, rgba(104,245,255,.18) 0 1px, transparent 2px),
+      radial-gradient(circle at 74% 12%, rgba(255,222,132,.2) 0 1px, transparent 2px),
+      radial-gradient(circle at 42% 28%, rgba(201,98,255,.16) 0 1px, transparent 2px),
+      radial-gradient(ellipse 62% 34% at 50% 0%, rgba(255,194,95,.28), transparent 72%),
+      radial-gradient(ellipse 56% 46% at 78% 32%, rgba(139,60,255,.16), transparent 70%),
+      linear-gradient(160deg, #17080f 0%, #302012 54%, #120812 100%);
+    background-size: auto, auto, auto, auto, auto, auto;
+  }
+  body.mode-adventure #library-bg::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(circle at 18% 34%, rgba(118,247,255,.28) 0 1px, transparent 2px),
+      radial-gradient(circle at 64% 22%, rgba(255,232,143,.26) 0 1px, transparent 2px),
+      radial-gradient(circle at 78% 58%, rgba(200,93,255,.22) 0 1px, transparent 2px),
+      radial-gradient(circle at 35% 72%, rgba(119,255,122,.18) 0 1px, transparent 2px);
+    background-size: 210px 190px, 260px 220px, 190px 240px, 240px 210px;
+    opacity: .82;
+    animation: magicStars 8s ease-in-out infinite alternate;
+  }
   #library-bg svg { width: 100%; height: 100%; }
   h1 { font-size: 1.3rem; margin: 10px 0 2px; letter-spacing: 1px; color: #ffd97a; }
   #subtitle { font-size: .72rem; opacity: .65; margin-bottom: 6px; }
@@ -67,33 +96,127 @@
     grid-template-rows: auto auto auto;
     gap: 14px;
     align-items: stretch;
+    padding: 16px 18px 20px;
+    border: 7px solid #241208;
+    border-radius: 18px;
+    background:
+      radial-gradient(ellipse 35% 24% at 50% 5%, rgba(117,245,255,.2), transparent 72%),
+      radial-gradient(ellipse 24% 32% at 90% 46%, rgba(196,78,255,.22), transparent 74%),
+      radial-gradient(ellipse 22% 32% at 8% 50%, rgba(119,255,128,.16), transparent 70%),
+      radial-gradient(circle 6px at 18px 18px, #ffe6a3 0 34%, #9c6a2c 36% 62%, transparent 64%),
+      radial-gradient(circle 6px at calc(100% - 18px) 18px, #ffe6a3 0 34%, #9c6a2c 36% 62%, transparent 64%),
+      radial-gradient(circle 6px at 18px calc(100% - 18px), #ffe6a3 0 34%, #9c6a2c 36% 62%, transparent 64%),
+      radial-gradient(circle 6px at calc(100% - 18px) calc(100% - 18px), #ffe6a3 0 34%, #9c6a2c 36% 62%, transparent 64%),
+      linear-gradient(180deg, rgba(255,222,138,.14), transparent 30%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 2px, transparent 2px 34px),
+      linear-gradient(145deg, #7d4c20 0%, #4a2510 54%, #2c1408 100%);
+    box-shadow:
+      0 0 28px rgba(118,235,255,.12),
+      0 0 44px rgba(167,71,255,.14),
+      0 18px 36px rgba(0,0,0,.58),
+      inset 0 0 0 2px rgba(255,221,144,.18),
+      inset 0 0 30px rgba(0,0,0,.42);
   }
   body.mode-adventure.adv-view-battle #adv-hud { grid-column: 1 / -1; margin-bottom: 0; }
   body.mode-adventure.adv-view-battle #current { display: none; }
   body.mode-adventure.adv-view-battle #board {
     grid-column: 2; grid-row: 2;
     justify-self: center; align-self: center;
-    gap: 7px; padding: 13px; border-radius: 16px;
-    background: rgba(0,0,0,.34);
+    gap: 8px; padding: 15px; border-radius: 15px;
+    position: relative;
+    border: 4px solid #241208;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(130,255,232,.12), transparent 40%),
+      conic-gradient(from 45deg at 50% 50%, rgba(121,255,220,.12), transparent 10%, rgba(197,96,255,.12) 22%, transparent 34%, rgba(255,225,112,.1) 46%, transparent 62%, rgba(116,255,122,.11) 76%, transparent 100%),
+      linear-gradient(180deg, rgba(255,220,143,.12), transparent 34%),
+      radial-gradient(ellipse 80% 58% at 50% 42%, rgba(255,236,166,.1), transparent 68%),
+      linear-gradient(145deg, #3a190b, #1d0c05);
+    box-shadow:
+      0 10px 20px rgba(0,0,0,.44),
+      0 0 26px rgba(160,79,255,.18),
+      inset 0 0 0 2px rgba(228,178,89,.2),
+      inset 0 0 18px rgba(0,0,0,.58);
   }
   body.mode-adventure.adv-view-battle #controls {
     grid-column: 2; grid-row: 3;
     justify-content: center; flex-wrap: wrap; margin: 0;
+    padding: 10px 12px;
+    border: 3px solid #2a1408;
+    border-radius: 14px;
+    background:
+      radial-gradient(ellipse 70% 70% at 50% 0%, rgba(138,245,255,.14), transparent 46%),
+      linear-gradient(180deg, rgba(255,226,152,.18), rgba(0,0,0,.08)),
+      linear-gradient(145deg, #6a3718, #351607);
+    box-shadow: 0 0 22px rgba(126,255,184,.12), inset 0 0 0 1px rgba(255,226,152,.18), 0 8px 18px rgba(0,0,0,.35);
   }
   body.mode-adventure.adv-view-battle #submit {
-    min-width: 210px; padding: 13px 28px; font-size: 1.08rem;
-    background: linear-gradient(145deg, #ffd97a, #e8b420);
+    min-width: 230px; padding: 14px 30px; font-size: 1.12rem;
+    color: #26380d;
+    border-color: #fff0ae;
+    background:
+      radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,255,255,.75), transparent 48%),
+      linear-gradient(180deg, #fbffd1, #b8ee67 48%, #5bad24);
+    box-shadow:
+      0 0 18px rgba(133,255,83,.48),
+      0 0 28px rgba(120,255,210,.28),
+      0 5px 0 #3c7219,
+      inset 0 0 0 2px rgba(255,255,255,.5);
+    text-shadow: 0 1px 0 rgba(255,255,255,.65);
   }
   body.mode-adventure.adv-view-battle #clear,
   body.mode-adventure.adv-view-battle #shuffle,
   body.mode-adventure.adv-view-battle #mute {
     padding: 10px 15px; font-size: .86rem;
+    color: #3f260d;
+    border-color: #f0ce7f;
+    background: linear-gradient(180deg, #ffe9a6, #c8872e);
+    box-shadow: 0 3px 0 #744115, inset 0 1px 0 rgba(255,255,255,.5);
   }
   body.mode-adventure.adv-view-battle #mute { display: none; }
   body.mode-adventure.adv-view-battle .col { gap: 7px; }
   body.mode-adventure.adv-view-battle .tile {
-    width: 58px; height: 58px; border-radius: 11px;
+    width: 58px; height: 58px; border-radius: 9px;
     font-size: 1.55rem;
+    color: #2a1706;
+    border: 2px solid #6d4519;
+    background:
+      radial-gradient(circle at 34% 22%, rgba(255,255,255,.82), transparent 28%),
+      radial-gradient(circle at 78% 80%, rgba(154,82,255,.18), transparent 36%),
+      linear-gradient(145deg, #fff8d7 0%, #f1d99d 54%, #b77b31 100%);
+    box-shadow:
+      0 5px 0 #765017,
+      0 0 10px rgba(255,225,128,.24),
+      0 8px 12px rgba(0,0,0,.38),
+      inset 0 0 0 2px rgba(255,255,255,.42);
+    text-shadow: 0 1px 0 rgba(255,255,255,.65);
+  }
+  body.mode-adventure.adv-view-battle .tile.sel {
+    transform: translateY(-3px);
+    border-color: #d7f58a;
+    box-shadow:
+      0 0 18px rgba(150,255,104,.76),
+      0 0 28px rgba(123,244,255,.48),
+      0 6px 0 #4c821d,
+      0 10px 14px rgba(0,0,0,.42),
+      inset 0 0 0 2px rgba(255,255,255,.55);
+  }
+  body.mode-adventure.adv-view-battle .tile.gem-green {
+    background: linear-gradient(145deg, #e9ffd8, #94ef69 48%, #39a83d);
+    box-shadow: 0 0 16px rgba(111,255,100,.62), 0 5px 0 #316a2d, 0 8px 12px rgba(0,0,0,.38);
+  }
+  body.mode-adventure.adv-view-battle .tile.gem-gold {
+    background: linear-gradient(145deg, #fffbd2, #ffe066 48%, #cc8b19);
+    box-shadow: 0 0 16px rgba(255,224,90,.68), 0 5px 0 #8d5a10, 0 8px 12px rgba(0,0,0,.38);
+  }
+  body.mode-adventure.adv-view-battle .tile.gem-sapphire {
+    background: linear-gradient(145deg, #e4f7ff, #74c7ff 44%, #315cc2);
+    color: #fff;
+    text-shadow: 0 1px 0 #14326f;
+    box-shadow: 0 0 16px rgba(90,195,255,.7), 0 5px 0 #203d86, 0 8px 12px rgba(0,0,0,.38);
+  }
+  body.mode-adventure.adv-view-battle .tile.gem-diamond {
+    background: linear-gradient(145deg, #ffffff, #d9fbff 45%, #83d7e8);
+    box-shadow: 0 0 18px rgba(190,249,255,.76), 0 5px 0 #488999, 0 8px 12px rgba(0,0,0,.38);
   }
   body.mode-adventure.adv-view-battle .tile.locked::after {
     content: ""; width: 14px; height: 11px; right: 5px; top: 5px;
@@ -108,14 +231,17 @@
   body.mode-adventure.adv-view-battle #adv-skills-panel {
     display: block; grid-column: 3; grid-row: 2 / span 2;
   }
-  #adv-map { max-width: 440px; }
+  #adv-map { max-width: 520px; }
   #adv-map-head {
     display: flex; justify-content: space-between; align-items: center; gap: 10px;
     width: 100%; margin-bottom: 8px;
   }
   #adv-map-title { color: #ffd97a; font-size: 1rem; font-weight: bold; }
   #adv-map-summary { font-size: .78rem; color: #d8c3a0; margin-bottom: 10px; line-height: 1.5; }
-  #adv-map-path { display: grid; gap: 8px; width: 100%; }
+  #adv-map-path {
+    display: grid; gap: 8px; width: 100%;
+    max-height: min(64vh, 620px); overflow-y: auto; padding-right: 4px;
+  }
   .adv-map-node {
     position: relative; display: grid; grid-template-columns: 34px 1fr auto; gap: 8px;
     align-items: center; width: 100%; padding: 9px 10px; border-radius: 12px;
@@ -144,49 +270,137 @@
   .adv-mini-btn { padding: 6px 10px; font-size: .72rem; border-radius: 999px; }
   #adv-battle-actions { display: flex; justify-content: flex-end; gap: 6px; width: 100%; margin-bottom: 6px; }
   #adv-battle-stage {
-    position: relative; min-height: 275px; border-radius: 12px;
-    padding: 16px 20px 18px;
+    position: relative; min-height: 315px; border-radius: 16px;
+    padding: 18px 22px 20px;
     background:
-      radial-gradient(ellipse 46% 18% at 50% 88%, rgba(26,13,4,.52), transparent 70%),
-      linear-gradient(180deg, rgba(62,38,14,.35), rgba(24,13,4,.28));
-    border: 1px solid rgba(255,219,137,.16); overflow: hidden;
+      radial-gradient(circle at 50% 42%, rgba(128,255,238,.16) 0 2px, transparent 3px),
+      radial-gradient(circle at 38% 35%, rgba(255,231,145,.14) 0 1px, transparent 2px),
+      radial-gradient(circle at 68% 38%, rgba(213,105,255,.18) 0 1px, transparent 2px),
+      radial-gradient(ellipse 34% 18% at 72% 27%, rgba(171,69,255,.28), transparent 66%),
+      radial-gradient(ellipse 30% 18% at 31% 28%, rgba(100,255,86,.18), transparent 70%),
+      radial-gradient(ellipse 46% 18% at 50% 88%, rgba(14,6,2,.72), transparent 70%),
+      linear-gradient(180deg, rgba(93,23,35,.65) 0 18%, transparent 18%),
+      linear-gradient(180deg, #32120d 0%, #5a2417 36%, #1a0b06 100%);
+    border: 4px ridge #d4a34f; overflow: hidden;
+    box-shadow:
+      0 0 30px rgba(114,244,255,.15),
+      0 0 46px rgba(184,76,255,.18),
+      0 12px 24px rgba(0,0,0,.45),
+      inset 0 0 0 2px rgba(255,239,162,.18),
+      inset 0 0 42px rgba(0,0,0,.55);
   }
   #adv-battle-stage::before {
-    content: ""; position: absolute; left: 8%; right: 8%; bottom: 28px; height: 18px;
-    border-radius: 999px; background: rgba(0,0,0,.2); filter: blur(2px);
+    content: ""; position: absolute; inset: 22px 24px 66px;
+    z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 28% 26% at 28% 58%, rgba(90,255,121,.22), transparent 68%),
+      radial-gradient(ellipse 30% 26% at 72% 58%, rgba(201,81,255,.26), transparent 70%),
+      radial-gradient(ellipse 40% 50% at 50% 42%, rgba(255,177,104,.3), transparent 64%),
+      linear-gradient(90deg,
+        transparent 0 8%,
+        rgba(71,42,24,.94) 8% 11%,
+        rgba(207,164,86,.72) 11% 11.7%,
+        transparent 11.7% 31%,
+        rgba(71,42,24,.84) 31% 34%,
+        rgba(207,164,86,.66) 34% 34.7%,
+        transparent 34.7% 65%,
+        rgba(71,42,24,.84) 65% 68%,
+        rgba(207,164,86,.66) 68% 68.7%,
+        transparent 68.7% 88%,
+        rgba(71,42,24,.94) 88% 91%,
+        rgba(207,164,86,.72) 91% 91.7%,
+        transparent 91.7% 100%),
+      linear-gradient(180deg, rgba(255,159,108,.3), rgba(48,17,14,.1) 55%, rgba(0,0,0,.36));
+    border-radius: 14px;
+    opacity: .96;
+    box-shadow: inset 0 0 34px rgba(111,243,255,.08);
+  }
+  #adv-battle-stage::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 82px;
+    z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(circle at 30% 28%, rgba(116,255,213,.25), transparent 28%),
+      radial-gradient(circle at 70% 24%, rgba(199,92,255,.24), transparent 30%),
+      radial-gradient(ellipse 55% 20% at 50% 38%, rgba(0,0,0,.42), transparent 76%),
+      repeating-linear-gradient(90deg, rgba(255,220,130,.12) 0 2px, transparent 2px 58px),
+      linear-gradient(180deg, #9a5b22 0%, #6b3514 46%, #2f1408 100%);
+    border-top: 4px solid rgba(230,174,82,.55);
   }
   #adv-chapter {
     position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
     width: max-content; max-width: 80%; text-align: center;
-    color: #ead0a2; font-weight: 900; font-size: .95rem;
+    z-index: 5;
+    padding: 6px 18px 7px;
+    color: #39200b; font-weight: 950; font-size: .95rem;
+    background:
+      linear-gradient(90deg, transparent 0 4%, rgba(85,42,13,.35) 4% 5%, transparent 5% 95%, rgba(85,42,13,.35) 95% 96%, transparent 96%),
+      linear-gradient(180deg, #fff5c5, #dcae55);
+    border: 2px solid #6d3d12;
+    border-radius: 999px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.42);
   }
+  #adv-chapter::before,
+  #adv-chapter::after {
+    content: "✦"; color: #7eefe8; margin: 0 8px 0 0;
+    text-shadow: 0 0 8px rgba(90,255,235,.8);
+  }
+  #adv-chapter::after { margin: 0 0 0 8px; }
   #adv-floating-word {
     position: absolute; top: 48px; left: 50%; transform: translateX(-50%);
-    display: flex; gap: 8px; z-index: 3; min-height: 46px;
+    display: flex; gap: 8px; z-index: 6; min-height: 46px;
   }
   .adv-word-chip {
     width: 42px; height: 46px; display: grid; place-items: center;
-    border-radius: 9px; color: #6b4a1f; font-weight: 950; font-size: 1.35rem;
-    background: linear-gradient(155deg, #fff8df, #f7e4b1 58%, #dfbd76);
-    box-shadow: 0 4px 0 #c39a55, 0 6px 12px rgba(0,0,0,.38), inset 0 2px 1px rgba(255,255,255,.85);
+    border-radius: 8px; color: #2b1807; font-weight: 950; font-size: 1.35rem;
+    border: 2px solid #6f4619;
+    background:
+      radial-gradient(circle at 72% 76%, rgba(126,255,232,.22), transparent 34%),
+      radial-gradient(circle at 32% 22%, rgba(255,255,255,.85), transparent 28%),
+      linear-gradient(155deg, #fff9d8, #f0d38f 58%, #b9782d);
+    box-shadow: 0 0 16px rgba(205,90,255,.48), 0 0 24px rgba(103,241,255,.3), 0 4px 0 #734a18, 0 8px 12px rgba(0,0,0,.45), inset 0 1px 1px rgba(255,255,255,.85);
   }
   #adv-combatants {
     position: absolute; inset: 58px 34px 18px;
     display: grid; grid-template-columns: 1fr minmax(150px, 220px) 1fr;
     align-items: end; gap: 18px;
+    z-index: 3;
   }
   .adv-combatant { display: grid; gap: 9px; align-items: end; }
   #adv-player-combatant { justify-items: start; }
   #adv-monster-combatant { justify-items: end; }
   .adv-sprite-card {
-    width: 180px; height: 128px; display: grid; place-items: end center;
-    filter: drop-shadow(0 8px 7px rgba(0,0,0,.45));
+    width: 190px; height: 136px; display: grid; place-items: end center;
+    position: relative;
+    filter: drop-shadow(0 9px 8px rgba(0,0,0,.5));
   }
+  .adv-sprite-card::before {
+    content: ""; position: absolute; left: 8%; right: 8%; bottom: 12px; height: 82px;
+    z-index: 0; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(120,255,206,.28), rgba(120,255,206,.12) 38%, transparent 70%);
+    filter: blur(8px);
+    animation: magicAura 3.6s ease-in-out infinite;
+  }
+  #adv-player-combatant .adv-sprite-card::before {
+    background: radial-gradient(ellipse at center, rgba(126,255,96,.34), rgba(82,228,255,.14) 42%, transparent 72%);
+  }
+  #adv-monster-combatant .adv-sprite-card::before {
+    background: radial-gradient(ellipse at center, rgba(211,72,255,.34), rgba(255,95,122,.12) 44%, transparent 74%);
+  }
+  .adv-sprite-card::after {
+    content: ""; position: absolute; left: 13%; right: 13%; bottom: 2px; height: 15px;
+    z-index: 0; border-radius: 50%; background: rgba(0,0,0,.32); filter: blur(2px);
+  }
+  .adv-sprite-card > * { position: relative; z-index: 1; }
   #adv-monster-sprite { filter: drop-shadow(0 4px 4px rgba(0,0,0,.4)); }
-  #adv-monster-sprite svg { width: 170px; height: 118px; }
+  #adv-monster-sprite svg { width: 178px; height: 124px; }
   .adv-nameplate {
     min-width: 245px; padding: 8px 10px; border-radius: 10px;
-    background: rgba(0,0,0,.26); border: 1px solid rgba(255,220,150,.18);
+    color: #ffeabb;
+    background:
+      linear-gradient(180deg, rgba(255,230,162,.12), rgba(0,0,0,.18)),
+      rgba(42,15,8,.72);
+    border: 2px solid rgba(214,164,83,.55);
+    box-shadow: inset 0 0 0 1px rgba(255,244,184,.14), 0 5px 12px rgba(0,0,0,.28);
   }
   .adv-name-row {
     display: flex; justify-content: space-between; gap: 10px;
@@ -194,47 +408,89 @@
   }
   #adv-damage-preview {
     align-self: end; justify-self: center; margin-bottom: 14px;
-    padding: 10px 14px; border-radius: 999px; color: #ffe9b0;
-    background: rgba(0,0,0,.32); border: 1px solid rgba(255,220,150,.22);
+    padding: 10px 16px; border-radius: 999px; color: #40240b;
+    position: relative;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,.7), transparent 42%),
+      linear-gradient(180deg, #fff2bd, #d49c40);
+    border: 2px solid #6d3d12;
     text-align: center; font-weight: 900;
+    box-shadow: 0 0 18px rgba(255,205,90,.32), 0 0 22px rgba(128,255,233,.2), 0 5px 10px rgba(0,0,0,.34);
+  }
+  #adv-damage-preview::before {
+    content: ""; position: absolute; inset: -7px -12px; z-index: -1; border-radius: 999px;
+    background: conic-gradient(from 20deg, rgba(129,255,232,.55), transparent 18%, rgba(203,87,255,.45) 34%, transparent 52%, rgba(255,223,122,.52) 70%, transparent 100%);
+    filter: blur(8px); opacity: .62;
   }
   .adv-side-panel {
-    min-height: 284px; padding: 12px; border-radius: 12px;
-    background: rgba(30,17,6,.32); border: 1px solid rgba(255,220,150,.14);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+    min-height: 284px; padding: 12px; border-radius: 14px;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(111,245,255,.14) 0 1px, transparent 2px),
+      radial-gradient(circle at 78% 36%, rgba(204,88,255,.14) 0 1px, transparent 2px),
+      radial-gradient(ellipse 90% 48% at 50% 0%, rgba(255,201,118,.14), transparent 72%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 2px, transparent 2px 18px),
+      linear-gradient(180deg, #4a0713, #21050b 62%, #130205);
+    background-size: 120px 110px, 160px 150px, auto, auto, auto;
+    border: 4px solid #231006;
+    box-shadow:
+      inset 0 0 0 2px rgba(214,164,83,.36),
+      0 0 20px rgba(184,76,255,.14),
+      inset 0 0 22px rgba(0,0,0,.48),
+      0 9px 18px rgba(0,0,0,.42);
   }
   .adv-panel-title {
     display: flex; align-items: center; justify-content: space-between; gap: 8px;
-    margin-bottom: 10px; color: #ffe0a0; font-size: .88rem; font-weight: 950;
+    margin-bottom: 10px; padding: 7px 9px;
+    color: #43260b; font-size: .88rem; font-weight: 950;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #fff3bf, #d5a34d);
+    border: 1px solid #7b4814;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
   }
   .adv-small-tag {
-    color: #4a2f10; background: #dbc08c; border-radius: 999px;
+    color: #f8eabf; background: #54220d; border-radius: 999px;
     padding: 3px 8px; font-size: .68rem; font-weight: 900;
+    box-shadow: inset 0 0 0 1px rgba(255,217,132,.24);
   }
   .adv-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
   .adv-slot {
     aspect-ratio: 1; border-radius: 9px;
-    background: linear-gradient(160deg, rgba(255,255,255,.05), rgba(0,0,0,.18)), rgba(0,0,0,.24);
-    border: 1px solid rgba(255,220,150,.13);
+    background:
+      radial-gradient(circle at 50% 44%, rgba(255,219,129,.1), transparent 54%),
+      linear-gradient(160deg, rgba(255,255,255,.05), rgba(0,0,0,.18)),
+      rgba(0,0,0,.28);
+    border: 1px solid rgba(245,199,105,.38);
+    box-shadow: inset 0 0 10px rgba(0,0,0,.42);
   }
   .adv-empty-items {
     height: 206px; display: grid; place-items: center;
-    border: 2px dashed rgba(255,223,160,.25); border-radius: 10px;
-    color: #cbb18a; text-align: center; font-weight: 800; line-height: 1.45;
+    border: 2px dashed rgba(255,223,160,.3); border-radius: 10px;
+    color: #e8c88b; text-align: center; font-weight: 800; line-height: 1.45;
+    background: rgba(0,0,0,.18);
   }
   #adv-skills-list { display: grid; gap: 9px; }
   .adv-skill {
     display: grid; grid-template-columns: 34px 1fr; gap: 9px; align-items: center;
     padding: 8px; border-radius: 10px;
-    background: rgba(0,0,0,.24); border: 1px solid rgba(255,220,150,.12);
+    background:
+      radial-gradient(circle at 85% 20%, rgba(127,255,237,.3), transparent 28%),
+      linear-gradient(90deg, rgba(255,211,112,.08), transparent 44%),
+      rgba(0,0,0,.26);
+    border: 1px solid rgba(245,199,105,.28);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
   }
   .adv-skill-icon {
     width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px;
-    color: #2e1d0a; background: linear-gradient(145deg, #f6d783, #b98a36);
+    color: #2e1d0a;
+    background:
+      radial-gradient(circle at 74% 76%, rgba(127,255,236,.24), transparent 30%),
+      radial-gradient(circle at 35% 20%, rgba(255,255,255,.72), transparent 30%),
+      linear-gradient(145deg, #f8e28e, #b87a25);
     font-weight: 950; font-size: .72rem;
+    box-shadow: 0 0 12px rgba(255,208,96,.38), 0 0 16px rgba(130,255,232,.22), 0 2px 0 #6d3f13;
   }
-  .adv-skill b { display: block; color: #fff1c6; font-size: .82rem; margin-bottom: 2px; }
-  .adv-skill span { color: #d0b890; font-size: .72rem; line-height: 1.25; }
+  .adv-skill b { display: block; color: #ffefbd; font-size: .82rem; margin-bottom: 2px; }
+  .adv-skill span { color: #dfc492; font-size: .72rem; line-height: 1.25; }
   #adv-mobile-drawers { gap: 8px; }
   .adv-drawer-row {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -246,15 +502,40 @@
   .adv-row { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 320px; margin-bottom: 4px; font-size: .78rem; }
   .hpbar-wrap { flex: 1; height: 12px; background: rgba(0,0,0,.45); border-radius: 6px; overflow: hidden; border: 1px solid rgba(0,0,0,.5); }
   .hpbar { height: 100%; transition: width .3s ease; }
-  .hpbar.monster { background: linear-gradient(90deg, #e2542a, #ff9a52); }
-  .hpbar.player { background: linear-gradient(90deg, #5fbf4a, #8fd47a); }
+  .hpbar.monster {
+    background: linear-gradient(90deg, #e2542a, #ff68c8 58%, #ffbe52);
+    box-shadow: 0 0 10px rgba(255,88,190,.45);
+  }
+  .hpbar.player {
+    background: linear-gradient(90deg, #5fbf4a, #76ffd8 58%, #8fd47a);
+    box-shadow: 0 0 10px rgba(111,255,218,.45);
+  }
   .hptext { min-width: 52px; text-align: right; opacity: .85; }
+
+  @keyframes magicAura {
+    0%, 100% { opacity: .64; transform: scale(.96); }
+    50% { opacity: .95; transform: scale(1.06); }
+  }
+
+  @keyframes magicStars {
+    from { opacity: .52; transform: translateY(0); }
+    to { opacity: .86; transform: translateY(-6px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body.mode-adventure #library-bg::after,
+    .adv-sprite-card::before { animation: none; }
+  }
 
   @media (max-width: 700px) {
     body.mode-adventure #stage { width: min(100vw - 20px, 430px); }
     body.mode-adventure.adv-view-battle #game-panel {
-      grid-template-columns: 1fr; gap: 10px; padding: 12px;
+      width: 100%; min-width: 0;
+      grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 12px;
     }
+    body.mode-adventure #adv-hud,
+    body.mode-adventure #adv-battle,
+    body.mode-adventure #adv-map { min-width: 0; }
     body.mode-adventure.adv-view-battle #adv-hud,
     body.mode-adventure.adv-view-battle #board,
     body.mode-adventure.adv-view-battle #controls,
@@ -268,8 +549,18 @@
     body.mode-adventure.adv-view-battle #adv-mobile-drawers {
       display: grid;
     }
+    #adv-battle-actions { justify-content: center; flex-wrap: wrap; }
+    #adv-battle-actions .adv-mini-btn {
+      flex: 1 1 calc(50% - 4px); min-width: 0;
+      padding: 6px 8px; font-size: .68rem;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
     #adv-battle-stage { min-height: 246px; padding: 12px; }
-    #adv-chapter { top: 10px; width: 100%; max-width: 100%; font-size: .86rem; }
+    #adv-chapter {
+      top: 10px; left: 10px; right: 10px; transform: none;
+      width: auto; max-width: none; padding: 6px 10px;
+      font-size: .82rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
     #adv-floating-word { top: 40px; gap: 5px; }
     .adv-word-chip { width: 33px; height: 37px; border-radius: 8px; font-size: 1.05rem; }
     #adv-combatants { inset: 74px 12px 14px; grid-template-columns: 1fr 1fr; gap: 6px; }
@@ -283,15 +574,22 @@
     body.mode-adventure.adv-view-battle .tile { width: 56px; height: 56px; font-size: 1.42rem; }
     body.mode-adventure.adv-view-battle #controls { gap: 8px; }
     body.mode-adventure.adv-view-battle #submit { flex: 1 1 100%; min-width: 0; padding: 13px 18px; font-size: 1.02rem; }
-  body.mode-adventure.adv-view-battle #clear,
-  body.mode-adventure.adv-view-battle #shuffle,
-  body.mode-adventure.adv-view-battle #mute { flex: 1 1 42%; padding: 9px 8px; font-size: .78rem; }
+    body.mode-adventure.adv-view-battle #clear,
+    body.mode-adventure.adv-view-battle #shuffle,
+    body.mode-adventure.adv-view-battle #mute { flex: 1 1 42%; padding: 9px 8px; font-size: .78rem; }
+    .adv-drawer-row { overflow: hidden; }
+    .adv-drawer-row span {
+      min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
   }
 
   @media (max-width: 420px) {
-    body.mode-adventure #stage { width: calc(100vw - 12px); }
-    body.mode-adventure.adv-view-battle #game-panel { padding: 10px; }
+    body.mode-adventure #stage { width: calc(100vw - 28px); }
+    body.mode-adventure.adv-view-battle #game-panel {
+      padding: 8px; border-width: 5px;
+    }
     #adv-battle-stage { min-height: 232px; }
+    #adv-chapter { font-size: .76rem; }
     .adv-sprite-card { width: 112px; height: 84px; }
     #adv-monster-sprite svg { width: 112px; height: 84px; }
     body.mode-adventure.adv-view-battle #board { gap: 6px; padding: 10px; border-radius: 14px; }
@@ -1371,6 +1669,16 @@ function checkOver() {
 /* ================= 冒險模式：戰鬥資料 ================= */
 // 傷害分級精神參考自 Boggle 式戰鬥拼字遊戲的通用設計（稀有字母＝雙面刃：磚不好湊但打起來痛），
 // 數值全部用專案既有的 LETTER_SCORE／LETTER_POOL 重新映射，非抄襲任何特定作品的表格。
+const ADV_SKILLS = {
+  lock: { icon: 'L', name: '鎖定磚', desc: '隨機封住 1 格，無法選取。' },
+  curse: { icon: 'C', name: '詛咒磚', desc: '拼入後本次攻擊傷害降低。' },
+  counter: { icon: 'ATK', name: '反擊', desc: '未擊倒時回合結尾扣玩家 HP。' },
+  pressure: { icon: '2x', name: '雙重干擾', desc: '有機會一次製造 2 顆負面磚。' },
+  boss: { icon: 'BOSS', name: '重擊', desc: 'Boss 反擊較痛，血量要顧。' },
+};
+function advSkills(...ids) {
+  return ids.map(id => ADV_SKILLS[id]);
+}
 const ADVENTURE_CHAPTERS = [
   {
     id: 'dusty-library',
@@ -1382,34 +1690,40 @@ const ADVENTURE_CHAPTERS = [
         hp: 40,
         atk: 4,
         kind: 'critter',
-        skills: [
-          { icon: 'L', name: '鎖定磚', desc: '隨機封住 1 格，無法選取。' },
-          { icon: 'ATK', name: '反擊', desc: '未擊倒時回合結尾扣玩家 HP。' },
-        ],
+        skills: advSkills('lock', 'counter'),
+      },
+      {
+        id: 'bookmark-thief',
+        name: '書籤小賊',
+        hp: 48,
+        atk: 4,
+        kind: 'critter',
+        skills: advSkills('lock', 'counter'),
       },
       {
         id: 'ink-blob',
         name: '墨漬怪',
-        hp: 55,
+        hp: 58,
         atk: 5,
         kind: 'blob',
-        skills: [
-          { icon: 'C', name: '詛咒磚', desc: '拼入後本次攻擊傷害降低。' },
-          { icon: 'ATK', name: '反擊', desc: '未擊倒時回合結尾扣玩家 HP。' },
-        ],
+        skills: advSkills('curse', 'counter'),
+      },
+      {
+        id: 'spine-guard',
+        name: '書脊守衛',
+        hp: 72,
+        atk: 5,
+        kind: 'book',
+        skills: advSkills('lock', 'curse'),
       },
       {
         id: 'bookworm-king',
         name: '蛀書蟲王',
-        hp: 90,
+        hp: 95,
         atk: 7,
         kind: 'book',
         boss: true,
-        skills: [
-          { icon: 'L', name: '鎖定磚', desc: '封住棋盤空間，逼你繞路拼字。' },
-          { icon: 'C', name: '詛咒磚', desc: '拼入後傷害降低，建議先清除。' },
-          { icon: 'ATK', name: '重擊', desc: 'Boss 反擊較痛，血量要顧。' },
-        ],
+        skills: advSkills('lock', 'curse', 'boss'),
       },
     ],
   },
@@ -1423,10 +1737,7 @@ const ADVENTURE_CHAPTERS = [
         hp: 70,
         atk: 6,
         kind: 'critter',
-        skills: [
-          { icon: 'L', name: '鎖定磚', desc: '隨機封住 1 格，無法選取。' },
-          { icon: 'C', name: '詛咒磚', desc: '拼入後本次攻擊傷害降低。' },
-        ],
+        skills: advSkills('lock', 'curse'),
       },
       {
         id: 'violet-ink',
@@ -1434,10 +1745,23 @@ const ADVENTURE_CHAPTERS = [
         hp: 85,
         atk: 7,
         kind: 'blob',
-        skills: [
-          { icon: 'C', name: '詛咒磚', desc: '讓高分字也有折損，討厭得很合理。' },
-          { icon: 'ATK', name: '反擊', desc: '未擊倒時回合結尾扣玩家 HP。' },
-        ],
+        skills: advSkills('curse', 'counter'),
+      },
+      {
+        id: 'echo-proofreader',
+        name: '迴聲校對者',
+        hp: 92,
+        atk: 7,
+        kind: 'critter',
+        skills: advSkills('lock', 'counter'),
+      },
+      {
+        id: 'missing-word-ghost',
+        name: '漏字幽靈',
+        hp: 104,
+        atk: 8,
+        kind: 'blob',
+        skills: advSkills('curse', 'pressure'),
       },
       {
         id: 'archive-book',
@@ -1446,11 +1770,242 @@ const ADVENTURE_CHAPTERS = [
         atk: 9,
         kind: 'book',
         boss: true,
-        skills: [
-          { icon: 'L', name: '鎖定磚', desc: '封住棋盤空間，降低可選字母。' },
-          { icon: 'C', name: '詛咒磚', desc: '拼入後傷害降低，建議先清除。' },
-          { icon: 'ATK', name: '重擊', desc: 'Boss 反擊較痛，別硬扛太久。' },
-        ],
+        skills: advSkills('lock', 'curse', 'boss'),
+      },
+    ],
+  },
+  {
+    id: 'crooked-fairytale',
+    title: '失序童話架',
+    levels: [
+      {
+        id: 'cookie-soldier',
+        name: '餅乾士兵',
+        hp: 88,
+        atk: 7,
+        kind: 'critter',
+        skills: advSkills('lock', 'counter'),
+      },
+      {
+        id: 'nightcap-cat',
+        name: '睡帽貓',
+        hp: 96,
+        atk: 8,
+        kind: 'critter',
+        skills: advSkills('curse', 'counter'),
+      },
+      {
+        id: 'glass-slipper-shadow',
+        name: '玻璃鞋影子',
+        hp: 108,
+        atk: 8,
+        kind: 'blob',
+        skills: advSkills('curse', 'pressure'),
+      },
+      {
+        id: 'paper-crown-queen',
+        name: '紙皇冠女王',
+        hp: 118,
+        atk: 9,
+        kind: 'book',
+        skills: advSkills('lock', 'curse'),
+      },
+      {
+        id: 'comma-giant',
+        name: '逗號巨人',
+        hp: 136,
+        atk: 10,
+        kind: 'book',
+        boss: true,
+        skills: advSkills('lock', 'pressure', 'boss'),
+      },
+    ],
+  },
+  {
+    id: 'star-chart-room',
+    title: '星圖閱覽室',
+    levels: [
+      {
+        id: 'stardust-moth',
+        name: '星塵蛾',
+        hp: 102,
+        atk: 8,
+        kind: 'critter',
+        skills: advSkills('curse', 'counter'),
+      },
+      {
+        id: 'moonphase-clerk',
+        name: '月相書吏',
+        hp: 112,
+        atk: 9,
+        kind: 'book',
+        skills: advSkills('lock', 'counter'),
+      },
+      {
+        id: 'lost-comet',
+        name: '迷路彗星',
+        hp: 124,
+        atk: 9,
+        kind: 'blob',
+        skills: advSkills('curse', 'pressure'),
+      },
+      {
+        id: 'observatory-golem',
+        name: '觀測塔魔像',
+        hp: 138,
+        atk: 10,
+        kind: 'book',
+        skills: advSkills('lock', 'pressure'),
+      },
+      {
+        id: 'atlas-curator',
+        name: '星圖館長',
+        hp: 154,
+        atk: 11,
+        kind: 'book',
+        boss: true,
+        skills: advSkills('lock', 'curse', 'boss'),
+      },
+    ],
+  },
+  {
+    id: 'forbidden-greenhouse',
+    title: '禁書溫室',
+    levels: [
+      {
+        id: 'root-vine',
+        name: '書根藤',
+        hp: 118,
+        atk: 9,
+        kind: 'critter',
+        skills: advSkills('lock', 'counter'),
+      },
+      {
+        id: 'pollen-note',
+        name: '花粉筆記',
+        hp: 128,
+        atk: 10,
+        kind: 'blob',
+        skills: advSkills('curse', 'counter'),
+      },
+      {
+        id: 'dew-slime',
+        name: '露水黏怪',
+        hp: 140,
+        atk: 10,
+        kind: 'blob',
+        skills: advSkills('curse', 'pressure'),
+      },
+      {
+        id: 'greenhouse-warden',
+        name: '溫室守衛',
+        hp: 152,
+        atk: 11,
+        kind: 'book',
+        skills: advSkills('lock', 'pressure'),
+      },
+      {
+        id: 'thousand-page-mandrake',
+        name: '千頁曼陀羅',
+        hp: 170,
+        atk: 12,
+        kind: 'book',
+        boss: true,
+        skills: advSkills('curse', 'pressure', 'boss'),
+      },
+    ],
+  },
+  {
+    id: 'storm-index-harbor',
+    title: '暴風索引港',
+    levels: [
+      {
+        id: 'salt-bookmark',
+        name: '海鹽書籤',
+        hp: 132,
+        atk: 10,
+        kind: 'critter',
+        skills: advSkills('lock', 'counter'),
+      },
+      {
+        id: 'ragged-sail-letterer',
+        name: '破帆字母匠',
+        hp: 144,
+        atk: 11,
+        kind: 'book',
+        skills: advSkills('curse', 'counter'),
+      },
+      {
+        id: 'lighthouse-copyeditor',
+        name: '燈塔校稿員',
+        hp: 158,
+        atk: 11,
+        kind: 'critter',
+        skills: advSkills('lock', 'pressure'),
+      },
+      {
+        id: 'chapter-kraken',
+        name: '章節海怪',
+        hp: 172,
+        atk: 12,
+        kind: 'blob',
+        skills: advSkills('curse', 'pressure'),
+      },
+      {
+        id: 'storm-binder',
+        name: '暴風裝訂師',
+        hp: 190,
+        atk: 13,
+        kind: 'book',
+        boss: true,
+        skills: advSkills('lock', 'pressure', 'boss'),
+      },
+    ],
+  },
+  {
+    id: 'living-type-core',
+    title: '活字核心',
+    levels: [
+      {
+        id: 'lead-type-ant',
+        name: '鉛字工蟻',
+        hp: 148,
+        atk: 11,
+        kind: 'critter',
+        skills: advSkills('lock', 'counter'),
+      },
+      {
+        id: 'reverse-print-shade',
+        name: '反白幽影',
+        hp: 162,
+        atk: 12,
+        kind: 'blob',
+        skills: advSkills('curse', 'pressure'),
+      },
+      {
+        id: 'proof-press-mechanic',
+        name: '校樣機械師',
+        hp: 176,
+        atk: 12,
+        kind: 'book',
+        skills: advSkills('lock', 'pressure'),
+      },
+      {
+        id: 'mojibake-oracle',
+        name: '亂碼先知',
+        hp: 192,
+        atk: 13,
+        kind: 'blob',
+        skills: advSkills('curse', 'pressure'),
+      },
+      {
+        id: 'final-type-golem',
+        name: '終章活字巨像',
+        hp: 215,
+        atk: 15,
+        kind: 'book',
+        boss: true,
+        skills: advSkills('lock', 'curse', 'boss'),
       },
     ],
   },
