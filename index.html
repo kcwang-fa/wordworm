@@ -9,8 +9,10 @@
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body {
     font-family: "Segoe UI", "Noto Sans TC", sans-serif;
-    background: linear-gradient(160deg, #2c1e0f 0%, #4a3319 60%, #2c1e0f 100%);
-    color: #f5e9d0;
+    background:
+      radial-gradient(ellipse 85% 45% at 50% -8%, rgba(255,205,130,.22), transparent 62%),
+      linear-gradient(160deg, #3c2a13 0%, #5c3f20 55%, #3c2a13 100%);
+    color: #fbead2;
     min-height: 100vh;
     display: flex; flex-direction: column; align-items: center;
     user-select: none; -webkit-user-select: none;
@@ -20,12 +22,99 @@
   #library-bg {
     position: fixed; inset: 0; z-index: -1; opacity: .55;
     background:
-      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,190,90,.25), transparent 70%),
-      linear-gradient(160deg, #241708 0%, #3d2a12 60%, #241708 100%);
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,200,110,.3), transparent 70%),
+      linear-gradient(160deg, #2c1d0d 0%, #47311a 60%, #2c1d0d 100%);
   }
   #library-bg svg { width: 100%; height: 100%; }
   h1 { font-size: 1.3rem; margin: 10px 0 2px; letter-spacing: 1px; color: #ffd97a; }
   #subtitle { font-size: .72rem; opacity: .65; margin-bottom: 6px; }
+
+  /* ===== 遊戲模式選單（經典／冒險） ===== */
+  #mode-select { display: flex; gap: 8px; margin-bottom: 10px; }
+  .mode-btn {
+    font-family: inherit; font-size: .8rem; font-weight: bold;
+    padding: 6px 16px; border: 2px solid rgba(255,210,140,.25); border-radius: 999px;
+    cursor: pointer; background: rgba(0,0,0,.3); color: #d8c3a0;
+    transition: background .15s, border-color .15s, color .15s, transform .1s;
+  }
+  .mode-btn:active { transform: translateY(1px); }
+  .mode-btn.active {
+    background: linear-gradient(145deg, #ffd97a, #e8b420);
+    color: #4a2f10; border-color: #fff2c8;
+  }
+  /* 冒險模式下隱藏經典專屬 HUD（Task 70 會補上 #adv-hud 取代） */
+  body.mode-adventure #rankbar,
+  body.mode-adventure #hud,
+  body.mode-adventure #bonusbar,
+  body.mode-adventure #mode { display: none; }
+
+  /* ===== 冒險模式：戰鬥 HUD ===== */
+  #adv-hud { display: none; width: 100%; flex-direction: column; align-items: center; margin-bottom: 10px; }
+  body.mode-adventure #adv-hud { display: flex; }
+  #adv-chapter { font-size: .78rem; opacity: .8; margin-bottom: 4px; }
+  #adv-monster-sprite { margin-bottom: 4px; filter: drop-shadow(0 4px 4px rgba(0,0,0,.4)); }
+  .adv-row { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 320px; margin-bottom: 4px; font-size: .78rem; }
+  .hpbar-wrap { flex: 1; height: 12px; background: rgba(0,0,0,.45); border-radius: 6px; overflow: hidden; border: 1px solid rgba(0,0,0,.5); }
+  .hpbar { height: 100%; transition: width .3s ease; }
+  .hpbar.monster { background: linear-gradient(90deg, #e2542a, #ff9a52); }
+  .hpbar.player { background: linear-gradient(90deg, #5fbf4a, #8fd47a); }
+  .hptext { min-width: 52px; text-align: right; opacity: .85; }
+
+  /* ===== 書房舞台（蟲蟲立繪 + 書架框主體，左右並排／手機上下堆疊） ===== */
+  #stage { display: flex; align-items: flex-start; gap: 16px; }
+  #worm-corner {
+    display: flex; flex-direction: column; align-items: center;
+    min-width: 108px; padding-top: 6px;
+  }
+  #worm-stage { display: flex; flex-direction: column; align-items: center; }
+  #worm-stage svg#wormsvg { width: 132px; height: auto; display: block;
+    filter: drop-shadow(0 6px 5px rgba(0,0,0,.4)); }
+  #wormface { display: block; transition: transform .3s; }
+  #worm-shelf { width: 118px; margin-top: -8px; }
+  #speech-bubble {
+    position: relative; margin-top: 10px;
+    background: #fffaf0; color: #4a2f10;
+    border-radius: 14px; padding: 8px 12px;
+    font-size: .78rem; font-weight: bold; text-align: center;
+    max-width: 160px; box-shadow: 0 4px 10px rgba(0,0,0,.35);
+    opacity: 0; transform: scale(.85); transition: opacity .22s, transform .22s;
+  }
+  #speech-bubble.show { opacity: 1; transform: scale(1); }
+  #speech-bubble::before {
+    content: ""; position: absolute; top: -7px; left: 50%; margin-left: -7px;
+    border: 7px solid transparent; border-bottom-color: #fffaf0;
+  }
+  @media (max-width: 700px) {
+    #stage { flex-direction: column; align-items: center; }
+    #worm-corner { flex-direction: row; min-width: 0; padding-top: 0; gap: 6px; }
+    #worm-stage svg#wormsvg { width: 76px; }
+    #worm-shelf { display: none; }
+    #speech-bubble { margin-top: 0; }
+    #speech-bubble::before {
+      top: 50%; left: -7px; margin-left: 0; margin-top: -7px;
+      border-bottom-color: transparent; border-right-color: #fffaf0;
+    }
+  }
+
+  /* ===== 木質書架框（遊戲主體外框） ===== */
+  #game-panel {
+    background:
+      radial-gradient(circle 4px at 15px 15px, #e8c98a 40%, #8a6230 72%, transparent 74%),
+      radial-gradient(circle 4px at calc(100% - 15px) 15px, #e8c98a 40%, #8a6230 72%, transparent 74%),
+      radial-gradient(circle 4px at 15px calc(100% - 15px), #e8c98a 40%, #8a6230 72%, transparent 74%),
+      radial-gradient(circle 4px at calc(100% - 15px) calc(100% - 15px), #e8c98a 40%, #8a6230 72%, transparent 74%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.07) 0 2px, transparent 2px 42px),
+      linear-gradient(155deg, #6b4726 0%, #543a1e 52%, #452f18 100%);
+    border: 5px solid #2f2010; border-radius: 16px;
+    padding: 14px 16px 18px; position: relative;
+    box-shadow: 0 10px 24px rgba(0,0,0,.45), inset 0 0 0 2px rgba(255,210,140,.1);
+    display: flex; flex-direction: column; align-items: center;
+  }
+  #game-panel::before {
+    content: ""; position: absolute; top: -5px; left: -5px; right: -5px; height: 11px;
+    background: linear-gradient(180deg, #86603a, #3a2711);
+    border-radius: 11px 11px 0 0;
+  }
 
   /* ===== 資訊列 ===== */
   #hud {
@@ -34,7 +123,6 @@
     padding: 6px 14px; margin-bottom: 8px; font-size: .85rem;
   }
   #hud b { color: #ffd97a; font-size: 1.05rem; }
-  #wormface { font-size: 1.5rem; transition: transform .3s; }
 
   /* ===== 當前拼字 ===== */
   #current {
@@ -53,18 +141,23 @@
   }
   .col { display: flex; flex-direction: column; gap: 4px; }
   .tile {
-    width: 48px; height: 48px; border-radius: 9px;
+    width: 48px; height: 48px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.25rem; font-weight: bold; color: #4a2f10;
-    background: linear-gradient(145deg, #f7e6bf, #e0c186);
-    box-shadow: 0 3px 0 #a8834e, inset 0 1px 0 rgba(255,255,255,.6);
+    font-size: 1.25rem; font-weight: bold; color: #6b4a1f;
+    background: linear-gradient(155deg, #fffaf0 0%, #f5e3b3 55%, #e9cd8c 100%);
+    box-shadow:
+      0 4px 0 #c9a05c, 0 7px 9px rgba(50,30,5,.4),
+      inset 0 2px 1px rgba(255,255,255,.9), inset 0 -3px 5px rgba(170,120,50,.28);
+    text-shadow: 0 1px 0 rgba(255,255,255,.7);
     cursor: pointer; position: relative;
-    transition: transform .08s, background .15s;
+    transition: transform .08s, background .15s, box-shadow .1s;
   }
   .tile.sel {
-    background: linear-gradient(145deg, #ffe98a, #ffc93c);
-    transform: scale(1.08);
-    box-shadow: 0 0 10px #ffd97a, 0 3px 0 #a8834e;
+    background: linear-gradient(155deg, #fff3c4, #ffcf4d);
+    transform: translateY(-2px) scale(1.07);
+    box-shadow:
+      0 2px 0 #c9a05c, 0 0 12px rgba(255,201,60,.75),
+      inset 0 2px 1px rgba(255,255,255,.9);
     z-index: 2;
   }
   .tile.burning {
@@ -83,6 +176,21 @@
     content: "◆"; position: absolute; top: 1px; left: 4px; font-size: .55rem; opacity: .8;
   }
   @keyframes flicker { from { filter: brightness(1); } to { filter: brightness(1.25); } }
+  /* ===== 冒險模式：鎖定／詛咒磚（負面磚） ===== */
+  .tile.locked {
+    background: linear-gradient(155deg, #9a9a9a, #5f5f5f); color: #ddd;
+    cursor: default; box-shadow: 0 4px 0 #3f3f3f, inset 0 2px 1px rgba(255,255,255,.25);
+  }
+  .tile.locked::after {
+    content: "🔒"; position: absolute; top: -10px; right: -4px; font-size: .8rem;
+  }
+  .tile.cursed {
+    background: linear-gradient(155deg, #c79bf0, #7a4ac2); color: #fff;
+    box-shadow: 0 4px 0 #4e2d82, inset 0 2px 1px rgba(255,255,255,.3);
+  }
+  .tile.cursed::after {
+    content: "💀"; position: absolute; top: -10px; right: -4px; font-size: .8rem;
+  }
   .tile.falling { animation: drop .25s ease-in; }
   @keyframes drop { from { transform: translateY(-56px); opacity: .3; } to { transform: none; opacity: 1; } }
 
@@ -119,9 +227,21 @@
   #gameover .stats { font-size: 1rem; line-height: 1.9; }
   #gameover .stats b { color: #ffd97a; }
 
+  #adv-gameover {
+    position: fixed; inset: 0; background: rgba(20,10,0,.88);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; z-index: 20; text-align: center; padding: 20px;
+  }
+  #adv-gameover.show { display: flex; }
+  #adv-gameover h2 { color: #ff9a52; font-size: 1.6rem; }
+  #adv-gameover .stats { font-size: 1rem; line-height: 1.9; color: #fbead2; }
+  #adv-gameover .stats b { color: #ffd97a; }
+
   @media (max-width: 420px) {
     .tile { width: 42px; height: 42px; font-size: 1.1rem; }
     .col.offset { margin-top: 23px; }
+    #controls { gap: 6px; }
+    button { padding: 8px 10px; font-size: .8rem; white-space: nowrap; }
   }
 </style>
 </head>
@@ -171,53 +291,87 @@
   </svg></div>
   <h1>🐛 Word Worm 單字蟲蟲</h1>
   <div id="subtitle">串起相鄰字母拼英文單字（3 字母起）．小心燃燒磚！</div>
-  <div id="rankbar" style="font-size:.75rem;opacity:.8;margin-bottom:4px;">
-    <span id="ranktitle">見習書蟲</span>　<progress id="lvprog" max="100" value="0" style="width:120px;height:8px;"></progress>
+  <div id="mode-select">
+    <button id="modesel-classic" class="mode-btn">📖 經典模式</button>
+    <button id="modesel-adventure" class="mode-btn">⚔️ 冒險模式</button>
   </div>
-  <div id="hud">
-    <span id="wormface"><svg id="wormsvg" width="52" height="40" viewBox="0 0 52 40">
-      <!-- 尾節 -->
-      <circle cx="10" cy="30" r="8" fill="#7ec850"/>
-      <circle cx="20" cy="28" r="9" fill="#8fd45f"/>
-      <!-- 頭 -->
-      <circle cx="34" cy="22" r="13" fill="#9ee06e"/>
-      <!-- 觸角 -->
-      <path d="M28 11 Q26 4 22 3" stroke="#5da13a" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M38 10 Q40 3 44 2" stroke="#5da13a" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <circle cx="22" cy="3" r="2.2" fill="#ffd97a"/>
-      <circle cx="44" cy="2" r="2.2" fill="#ffd97a"/>
-      <!-- 眼鏡 -->
-      <circle cx="29" cy="20" r="5.5" fill="#fff" stroke="#3a6fd8" stroke-width="1.8"/>
-      <circle cx="41" cy="20" r="5.5" fill="#fff" stroke="#3a6fd8" stroke-width="1.8"/>
-      <line x1="34.5" y1="20" x2="35.5" y2="20" stroke="#3a6fd8" stroke-width="1.8"/>
-      <!-- 眼睛（可換表情） -->
-      <g id="worm-eyes-normal">
-        <circle cx="29.5" cy="20.5" r="2.4" fill="#333"/><circle cx="41.5" cy="20.5" r="2.4" fill="#333"/>
-        <circle cx="30.3" cy="19.7" r=".8" fill="#fff"/><circle cx="42.3" cy="19.7" r=".8" fill="#fff"/>
-      </g>
-      <g id="worm-eyes-happy" style="display:none">
-        <path d="M27 21 Q29.5 18 32 21" stroke="#333" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M39 21 Q41.5 18 44 21" stroke="#333" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      </g>
-      <!-- 腮紅 + 嘴 -->
-      <circle cx="26" cy="26" r="2" fill="#ffb0a0" opacity=".7"/>
-      <circle cx="44" cy="26" r="2" fill="#ffb0a0" opacity=".7"/>
-      <path id="worm-mouth" d="M32 28 Q35 31 38 28" stroke="#5a3a1a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-    </svg></span>
-    <span>等級 <b id="level">1</b></span>
-    <span>分數 <b id="score">0</b></span>
-    <span>單字 <b id="wordcount">0</b></span>
-    <span>最佳 <b id="bestword">—</b></span>
-  </div>
-  <div id="bonusbar" style="font-size:.8rem;margin-bottom:2px;">🎯 獎勵單字：<b id="bonusword" style="color:#8fd47a;letter-spacing:2px;">—</b> <span style="opacity:.6;">(×3 分)</span></div>
-  <div id="current">&nbsp;</div>
-  <div id="board"></div>
-  <div id="controls">
-    <button id="submit">拼字！</button>
-    <button id="clear" class="secondary">清除</button>
-    <button id="shuffle" class="secondary">洗牌 (-燃燒)</button>
-    <button id="mute" class="secondary">🔊</button>
-    <button id="mode" class="secondary">🎲 經典</button>
+  <div id="stage">
+    <div id="worm-corner">
+      <div id="worm-stage">
+        <span id="wormface"><svg id="wormsvg" width="52" height="40" viewBox="0 0 52 40">
+          <!-- 尾節 -->
+          <circle cx="10" cy="30" r="8" fill="#7ec850"/>
+          <circle cx="20" cy="28" r="9" fill="#8fd45f"/>
+          <!-- 頭 -->
+          <circle cx="34" cy="22" r="13" fill="#9ee06e"/>
+          <!-- 觸角 -->
+          <path d="M28 11 Q26 4 22 3" stroke="#5da13a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M38 10 Q40 3 44 2" stroke="#5da13a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="22" cy="3" r="2.2" fill="#ffd97a"/>
+          <circle cx="44" cy="2" r="2.2" fill="#ffd97a"/>
+          <!-- 眼鏡 -->
+          <circle cx="29" cy="20" r="5.5" fill="#fff" stroke="#3a6fd8" stroke-width="1.8"/>
+          <circle cx="41" cy="20" r="5.5" fill="#fff" stroke="#3a6fd8" stroke-width="1.8"/>
+          <line x1="34.5" y1="20" x2="35.5" y2="20" stroke="#3a6fd8" stroke-width="1.8"/>
+          <!-- 眼睛（可換表情） -->
+          <g id="worm-eyes-normal">
+            <circle cx="29.5" cy="20.5" r="2.4" fill="#333"/><circle cx="41.5" cy="20.5" r="2.4" fill="#333"/>
+            <circle cx="30.3" cy="19.7" r=".8" fill="#fff"/><circle cx="42.3" cy="19.7" r=".8" fill="#fff"/>
+          </g>
+          <g id="worm-eyes-happy" style="display:none">
+            <path d="M27 21 Q29.5 18 32 21" stroke="#333" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            <path d="M39 21 Q41.5 18 44 21" stroke="#333" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- 腮紅 + 嘴 -->
+          <circle cx="26" cy="26" r="2" fill="#ffb0a0" opacity=".7"/>
+          <circle cx="44" cy="26" r="2" fill="#ffb0a0" opacity=".7"/>
+          <path id="worm-mouth" d="M32 28 Q35 31 38 28" stroke="#5a3a1a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        </svg></span>
+        <svg id="worm-shelf" viewBox="0 0 118 26" preserveAspectRatio="xMidYMax meet">
+          <ellipse cx="59" cy="23" rx="52" ry="3" fill="#000" opacity=".25"/>
+          <rect x="10" y="10" width="98" height="9" rx="2" fill="#8a5a2a"/>
+          <rect x="10" y="10" width="98" height="3" rx="1.5" fill="#a8723a"/>
+          <rect x="14" y="2" width="90" height="9" rx="2" fill="#6a7a3a"/>
+          <rect x="14" y="2" width="90" height="3" rx="1.5" fill="#8a9a5a"/>
+        </svg>
+      </div>
+      <div id="speech-bubble"></div>
+    </div>
+    <div id="game-panel">
+      <div id="adv-hud">
+        <div id="adv-chapter">第 1 章：塵封的書庫</div>
+        <div id="adv-monster-sprite"></div>
+        <div class="adv-row">
+          <span id="adv-monster-name">—</span>
+          <div class="hpbar-wrap"><div id="adv-monster-hpbar" class="hpbar monster"></div></div>
+          <span class="hptext" id="adv-monster-hptext">0/0</span>
+        </div>
+        <div class="adv-row">
+          <span>🐛 你</span>
+          <div class="hpbar-wrap"><div id="adv-player-hpbar" class="hpbar player"></div></div>
+          <span class="hptext" id="adv-player-hptext">100/100</span>
+        </div>
+      </div>
+      <div id="rankbar" style="font-size:.75rem;opacity:.8;margin-bottom:4px;">
+        <span id="ranktitle">見習書蟲</span>　<progress id="lvprog" max="100" value="0" style="width:120px;height:8px;"></progress>
+      </div>
+      <div id="hud">
+        <span>等級 <b id="level">1</b></span>
+        <span>分數 <b id="score">0</b></span>
+        <span>單字 <b id="wordcount">0</b></span>
+        <span>最佳 <b id="bestword">—</b></span>
+      </div>
+      <div id="bonusbar" style="font-size:.8rem;margin-bottom:2px;">🎯 獎勵單字：<b id="bonusword" style="color:#8fd47a;letter-spacing:2px;">—</b> <span style="opacity:.6;">(×3 分)</span></div>
+      <div id="current">&nbsp;</div>
+      <div id="board"></div>
+      <div id="controls">
+        <button id="submit">拼字！</button>
+        <button id="clear" class="secondary">清除</button>
+        <button id="shuffle" class="secondary">洗牌 (-燃燒)</button>
+        <button id="mute" class="secondary">🔊</button>
+        <button id="mode" class="secondary">🎲 經典</button>
+      </div>
+    </div>
   </div>
   <div id="toast"></div>
   <div id="gameover">
@@ -231,6 +385,14 @@
     </div>
     <button id="restart">再玩一次</button>
   </div>
+  <div id="adv-gameover">
+    <h2>💥 被打敗了！</h2>
+    <div class="stats">
+      打到第 <b id="adv-fchapter">1</b> 章<br>
+      擊敗怪物：<b id="adv-fkills">0</b> 隻
+    </div>
+    <button id="adv-restart">重新挑戰</button>
+  </div>
 
 <script>
 /* ================= 字典載入 ================= */
@@ -242,7 +404,30 @@ fetch('enable1.txt').then(r => r.text()).then(t => {
 }).catch(() => toast('字典載入失敗，請重新整理', 4000));
 
 /* ================= 常數 ================= */
-const COLS = 7, ROWS = 7;
+let COLS = 7, ROWS = 7;
+/* ================= 遊戲模式（經典／冒險） ================= */
+let gameMode = localStorage.getItem('wordworm_gamemode') || 'classic';
+function setBoardSize() {
+  if (gameMode === 'adventure') { COLS = 4; ROWS = 4; }
+  else { COLS = 7; ROWS = 7; }
+}
+function applyModeClass() {
+  document.body.classList.toggle('mode-adventure', gameMode === 'adventure');
+  document.body.classList.toggle('mode-classic', gameMode !== 'adventure');
+  document.getElementById('modesel-classic').classList.toggle('active', gameMode === 'classic');
+  document.getElementById('modesel-adventure').classList.toggle('active', gameMode === 'adventure');
+  document.getElementById('shuffle').textContent = gameMode === 'adventure' ? '🧹 清除負面磚' : '洗牌 (-燃燒)';
+}
+function selectGameMode(mode) {
+  if (mode === gameMode) return;
+  gameMode = mode;
+  localStorage.setItem('wordworm_gamemode', mode);
+  applyModeClass();
+  setBoardSize();
+  sel = [];
+  if (mode === 'adventure') initAdventure(true);
+  else init(true);
+}
 // 字母出現權重（近似英文頻率，Qu 合併為一磚）
 const LETTER_POOL = (
   'EEEEEEEEEEEE' + 'AAAAAAAAA' + 'IIIIIIIII' + 'OOOOOOOO' + 'NNNNNN' +
@@ -356,9 +541,9 @@ document.getElementById('mute').onclick = e => {
   e.target.textContent = muted ? '🔇' : '🔊';
 };
 
-/* ================= 模式切換（經典＝相鄰連線 / 輕鬆＝全盤任選） ================= */
+/* ================= 拼字規則切換（相鄰連線 / 全盤任選，經典模式限定） ================= */
 function renderModeBtn() {
-  document.getElementById('mode').textContent = easyMode ? '😌 輕鬆' : '🎲 經典';
+  document.getElementById('mode').textContent = easyMode ? '😌 任選拼字' : '🔗 相鄰拼字';
 }
 document.getElementById('mode').onclick = () => {
   easyMode = !easyMode;
@@ -366,10 +551,22 @@ document.getElementById('mode').onclick = () => {
   renderModeBtn();
   sel = []; render(); updateCurrent();
   pickBonusWord();
-  toast(easyMode ? '😌 輕鬆模式：整個棋盤的字母都能任意選！' : '🎲 經典模式：只能連相鄰的字母', 2200);
+  toast(easyMode ? '😌 任選拼字：整個棋盤的字母都能任意選！' : '🔗 相鄰拼字：只能連相鄰的字母', 2200);
 };
 
 /* ================= 存檔（localStorage 自動存） ================= */
+// 存檔完整性檢查共用：grid 形狀／每格 letter 合法，防損毀存檔讓 render 之後 crash
+function isValidGrid(g, cols, rows) {
+  if (!Array.isArray(g) || g.length !== cols) return false;
+  for (const col of g) {
+    if (!Array.isArray(col) || col.length !== rows) return false;
+    for (const t of col) {
+      if (!t || typeof t.letter !== 'string' || !t.letter) return false;
+    }
+  }
+  return true;
+}
+
 const SAVE_KEY = 'wordworm_save_v1', HI_KEY = 'wordworm_hiscore';
 function saveGame() {
   if (over) { localStorage.removeItem(SAVE_KEY); return; }
@@ -381,7 +578,8 @@ function saveGame() {
 function loadGame() {
   try {
     const s = JSON.parse(localStorage.getItem(SAVE_KEY));
-    if (!s || !s.grid) return false;
+    if (!s || !isValidGrid(s.grid, COLS, ROWS)) return false;
+    if (typeof s.score !== 'number' || typeof s.wordCount !== 'number' || typeof s.level !== 'number') return false;
     grid = s.grid.map(col => col.map(t => ({ ...t, fresh: false })));
     score = s.score; wordCount = s.wordCount; bestWord = s.bestWord;
     bestWordScore = s.bestWordScore; weakStreak = s.weakStreak; level = s.level;
@@ -389,6 +587,48 @@ function loadGame() {
   } catch { return false; }
 }
 function hiScore() { return +localStorage.getItem(HI_KEY) || 0; }
+
+/* ================= 冒險模式存檔（獨立於經典模式，互不干擾） ================= */
+const ADV_SAVE_KEY = 'wordworm_save_adventure_v1', ADV_PROGRESS_KEY = 'wordworm_adv_progress';
+function saveAdventure() {
+  if (over) { localStorage.removeItem(ADV_SAVE_KEY); return; }
+  localStorage.setItem(ADV_SAVE_KEY, JSON.stringify({
+    grid: grid.map(col => col.map(t => ({ letter: t.letter, gem: t.gem, locked: !!t.locked, cursed: !!t.cursed }))),
+    adv
+  }));
+}
+// 數值型別＋章節/怪物索引邊界檢查，防損毀存檔 resume 到不存在的怪物讓 MONSTER_TEMPLATES 存取 undefined
+function isValidAdvState(a) {
+  if (!a || typeof a !== 'object') return false;
+  const numFields = ['playerHp', 'playerMaxHp', 'monsterHp', 'monsterMaxHp', 'monsterAtk', 'chapterIdx', 'monsterIdx', 'totalKills'];
+  for (const f of numFields) if (!Number.isFinite(a[f])) return false;
+  if (a.chapterIdx < 0 || a.chapterIdx >= MONSTER_TEMPLATES.length) return false;
+  if (a.monsterIdx < 0 || a.monsterIdx >= MONSTER_TEMPLATES[a.chapterIdx].length) return false;
+  if (a.playerHp < 0 || a.playerHp > a.playerMaxHp) return false;
+  if (a.monsterHp < 0 || a.monsterHp > a.monsterMaxHp) return false;
+  return true;
+}
+function loadAdventure() {
+  try {
+    const s = JSON.parse(localStorage.getItem(ADV_SAVE_KEY));
+    if (!s || !isValidGrid(s.grid, COLS, ROWS) || !isValidAdvState(s.adv)) return false;
+    grid = s.grid.map(col => col.map(t => ({ ...t, fresh: false })));
+    adv = s.adv;
+    return true;
+  } catch { return false; }
+}
+// 最佳進度（最深章節＋累計擊敗數），跟經典模式的 hiScore 概念平行但獨立
+function advBestProgress() {
+  try { return JSON.parse(localStorage.getItem(ADV_PROGRESS_KEY)) || { chapter: 1, kills: 0 }; }
+  catch { return { chapter: 1, kills: 0 }; }
+}
+function updateAdvBestProgress() {
+  const best = advBestProgress();
+  const chapter = adv.chapterIdx + 1;
+  if (chapter > best.chapter || (chapter === best.chapter && adv.totalKills > best.kills)) {
+    localStorage.setItem(ADV_PROGRESS_KEY, JSON.stringify({ chapter, kills: adv.totalKills }));
+  }
+}
 
 /* ================= 初始化 ================= */
 // 死局檢測：抽查 A1 常見字，可拼數太少代表爛盤
@@ -423,7 +663,7 @@ function init(fromSave = false) {
 /* ================= 相鄰判定（整齊方格、含斜角 8 方向） ================= */
 let easyMode = localStorage.getItem('wordworm_easymode') === '1';
 function adjacent(a, b) {
-  if (easyMode) return !(a.c === b.c && a.r === b.r);  // 輕鬆模式：全盤任選
+  if (gameMode === 'adventure' || easyMode) return !(a.c === b.c && a.r === b.r);  // 冒險模式／輕鬆模式：全盤任選
   const dc = Math.abs(b.c - a.c), dr = Math.abs(b.r - a.r);
   return dc <= 1 && dr <= 1 && (dc + dr > 0);
 }
@@ -440,6 +680,8 @@ function render() {
       el.className = 'tile';
       if (t.burning) el.classList.add('burning');
       if (t.gem) el.classList.add('gem-' + t.gem);
+      if (t.locked) el.classList.add('locked');
+      if (t.cursed) el.classList.add('cursed');
       if (t.fresh) { el.classList.add('falling'); t.fresh = false; }
       if (sel.some(s => s.c === c && s.r === r)) el.classList.add('sel');
       el.textContent = t.letter;
@@ -458,6 +700,7 @@ function tileAt(x, y) {
 }
 function pick(p) {
   if (over || !p) return;
+  if (grid[p.c][p.r].locked) return;  // 鎖定磚不可選取（冒險模式怪物技能）
   const i = sel.findIndex(s => s.c === p.c && s.r === p.r);
   if (i !== -1) {
     if (i === sel.length - 2 && dragging) sel.pop();      // 拖回上一格 = 反悔
@@ -505,8 +748,10 @@ function updateCurrent() {
 /* ================= 拼字提交 ================= */
 document.getElementById('submit').onclick = submit;
 document.getElementById('clear').onclick = () => { sel = []; render(); updateCurrent(); };
-document.getElementById('shuffle').onclick = shuffle;
+document.getElementById('shuffle').onclick = () => { if (gameMode === 'adventure') shuffleAdventure(); else shuffle(); };
 document.getElementById('restart').onclick = init;
+document.getElementById('modesel-classic').onclick = () => selectGameMode('classic');
+document.getElementById('modesel-adventure').onclick = () => selectGameMode('adventure');
 
 /* ================= 蟲蟲台詞 ================= */
 const QUIPS = {
@@ -517,7 +762,12 @@ const QUIPS = {
   bonus: ['🎊 Bonus Word！！你抓到了！', '獎勵單字達成！今天的你發光了✨']
 };
 const quip = arr => arr[Math.floor(Math.random() * arr.length)];
-const bubble = msg => toast('🐛「' + msg + '」', 1800);
+function speechBubble(msg, ms = 2000) {
+  const b = document.getElementById('speech-bubble');
+  b.textContent = msg; b.classList.add('show');
+  clearTimeout(b._h); b._h = setTimeout(() => b.classList.remove('show'), ms);
+}
+const bubble = msg => speechBubble(msg);
 
 /* ================= Bonus Word（CEFR 分級 + 棋盤可拼保底） ================= */
 // 依等級出題：Lv1-2 A1、Lv3-4 A2、Lv5-6 B1、Lv7-8 B2、Lv9+ 完整字典
@@ -539,7 +789,7 @@ function cefrPool() {
 function canSpell(word) {
   const W = word.toUpperCase().replace(/QU/g, 'Q');  // Qu 磚以 Q 代表
   const letterAt = (c, r) => grid[c][r].letter === 'Qu' ? 'Q' : grid[c][r].letter;
-  if (easyMode) {
+  if (gameMode === 'adventure' || easyMode) {
     const stock = {};
     for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++)
       stock[letterAt(c, r)] = (stock[letterAt(c, r)] || 0) + 1;
@@ -592,7 +842,11 @@ function submit() {
   if (!DICT) { toast('字典還在載入…'); return; }
   if (!DICT.has(w.toLowerCase())) { sfx.bad(); setFace('sad'); bubble(quip(QUIPS.bad)); shake();
     setTimeout(() => setFace('normal'), 1200); return; }
+  if (gameMode === 'adventure') { submitAdventure(w); return; }
+  submitClassic(w);
+}
 
+function submitClassic(w) {
   let s = wordScore(w, sel);
   const isBonus = w.toUpperCase() === bonusWord;
   if (isBonus) s *= 3;
@@ -657,6 +911,15 @@ function removeTiles(tiles, gemTier) {
     grid[c] = [...fresh, ...kept];
   }
 }
+// 冒險模式：拼掉的磚原地生成新磚（不做欄位掉落壓縮，棋盤形狀固定 4×4）
+function removeTilesAdventure(tiles, gemTier) {
+  let gemPlaced = !gemTier;
+  for (const p of tiles) {
+    const t = newTile();
+    if (!gemPlaced) { t.gem = gemTier; gemPlaced = true; }
+    grid[p.c][p.r] = t;
+  }
+}
 
 /* ================= 燃燒磚 ================= */
 function spawnBurning() {
@@ -718,7 +981,201 @@ function checkOver() {
   document.getElementById('gameover').classList.add('show');
 }
 
-init(true);
+/* ================= 冒險模式：戰鬥資料 ================= */
+// 傷害分級精神參考自 Boggle 式戰鬥拼字遊戲的通用設計（稀有字母＝雙面刃：磚不好湊但打起來痛），
+// 數值全部用專案既有的 LETTER_SCORE／LETTER_POOL 重新映射，非抄襲任何特定作品的表格。
+const CHAPTER_TITLES = ['塵封的書庫'];
+const MONSTER_TEMPLATES = [
+  [ // 第 1 章：塵封的書庫
+    { name: '紙頁鼠', hp: 40, atk: 4, kind: 'critter' },
+    { name: '墨漬怪', hp: 55, atk: 5, kind: 'blob' },
+    { name: '蛀書蟲王', hp: 90, atk: 7, kind: 'book', boss: true },
+  ],
+];
+let adv = null; // { chapterIdx, monsterIdx, playerHp, playerMaxHp, monsterHp, monsterMaxHp, monsterAtk, monsterName, monsterKind, isBoss }
+
+function battleDamage(word, tiles) {
+  let dmg = word.length * 3;
+  for (const ch of word.toUpperCase()) dmg += (LETTER_SCORE[ch] || 0);
+  let cursed = false;
+  for (const p of tiles) {
+    const t = grid[p.c][p.r];
+    if (t.gem) dmg += t.gem === 'diamond' ? 20 : t.gem === 'sapphire' ? 12 : t.gem === 'gold' ? 8 : 4;
+    if (t.cursed) cursed = true;
+  }
+  if (cursed) dmg = Math.round(dmg * .5);  // 詛咒磚：本次攻擊減傷
+  return Math.max(1, Math.round(dmg));
+}
+// 怪物技能：把場上 1-2 顆磚變成鎖定磚／詛咒磚（策略點：花回合清爛磚 vs 硬拼繞開）
+function monsterSkillAlter() {
+  const candidates = [];
+  for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++)
+    if (!grid[c][r].locked && !grid[c][r].cursed) candidates.push({ c, r });
+  const n = Math.min(candidates.length, Math.random() < .5 ? 1 : 2);
+  for (let i = 0; i < n; i++) {
+    const idx = Math.floor(Math.random() * candidates.length);
+    const p = candidates.splice(idx, 1)[0];
+    if (Math.random() < .5) grid[p.c][p.r].locked = true;
+    else grid[p.c][p.r].cursed = true;
+  }
+}
+function monsterCounter() {
+  if (!adv || adv.monsterHp <= 0) return;
+  adv.playerHp = Math.max(0, adv.playerHp - adv.monsterAtk);
+  sfx.burn();
+  if (Math.random() < (adv.isBoss ? .5 : .3)) monsterSkillAlter();
+}
+function monsterSpriteSvg(kind, isBoss) {
+  const shadow = '<ellipse cx="30" cy="46" rx="22" ry="5" fill="#000" opacity=".28"/>';
+  const crown = isBoss ? '<path d="M16 4 L21 13 L30 2 L39 13 L44 4 L41 17 L19 17 Z" fill="#ffd97a" stroke="#c9a05c" stroke-width="1.2" stroke-linejoin="round"/>' : '';
+  if (kind === 'critter') {
+    // 紙頁鼠：摺紙質感的小老鼠（耳朵/尾巴像紙摺出來的）
+    return '<svg viewBox="0 0 60 52" width="84" height="72">' + shadow + crown +
+      '<path d="M14 26 Q10 14 20 10 L18 20 Z" fill="#c9a874" stroke="#8a6a3a" stroke-width="1.5" stroke-linejoin="round"/>' +
+      '<path d="M46 26 Q50 14 40 10 L42 20 Z" fill="#c9a874" stroke="#8a6a3a" stroke-width="1.5" stroke-linejoin="round"/>' +
+      '<ellipse cx="30" cy="30" rx="17" ry="15" fill="#e8d3a0" stroke="#8a6a3a" stroke-width="1.5"/>' +
+      '<path d="M18 40 Q30 46 42 40 L40 44 Q30 48 20 44 Z" fill="#d9bd85" opacity=".7"/>' +
+      '<circle cx="24" cy="27" r="3.2" fill="#3a2a12"/><circle cx="36" cy="27" r="3.2" fill="#3a2a12"/>' +
+      '<circle cx="25" cy="26" r=".9" fill="#fff"/><circle cx="37" cy="26" r=".9" fill="#fff"/>' +
+      '<ellipse cx="30" cy="33" rx="2.4" ry="1.8" fill="#c96a5a"/>' +
+      '<path d="M10 32 L20 30 M10 36 L20 33 M50 32 L40 30 M50 36 L40 33" stroke="#8a6a3a" stroke-width="1" stroke-linecap="round"/>' +
+      '</svg>';
+  }
+  if (kind === 'blob') {
+    // 墨漬怪：不規則墨水暈染形狀＋滴珠
+    return '<svg viewBox="0 0 60 52" width="84" height="72">' + shadow + crown +
+      '<path d="M30 8 C42 8 48 18 46 28 C50 32 48 42 40 42 C38 46 26 47 22 42 C12 42 10 32 16 26 C12 18 20 8 30 8 Z" fill="#7a4ac2" stroke="#4e2d82" stroke-width="1.5" stroke-linejoin="round"/>' +
+      '<circle cx="14" cy="44" r="3" fill="#7a4ac2" stroke="#4e2d82" stroke-width="1.2"/>' +
+      '<circle cx="47" cy="40" r="2.2" fill="#7a4ac2" stroke="#4e2d82" stroke-width="1.2"/>' +
+      '<ellipse cx="23" cy="24" rx="5" ry="6" fill="#fff"/><ellipse cx="37" cy="24" rx="5" ry="6" fill="#fff"/>' +
+      '<circle cx="24" cy="26" r="2.6" fill="#222"/><circle cx="38" cy="26" r="2.6" fill="#222"/>' +
+      '<path d="M22 34 Q30 30 38 34" stroke="#2a1a4a" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '</svg>';
+  }
+  // book：蛀書蟲王，張開嘴的書本造型（Boss）
+  return '<svg viewBox="0 0 60 52" width="84" height="72">' + shadow + crown +
+    '<path d="M30 12 L8 18 L8 40 L28 35 Z" fill="#8a3a2a" stroke="#5a2015" stroke-width="1.5" stroke-linejoin="round"/>' +
+    '<path d="M30 12 L52 18 L52 40 L32 35 Z" fill="#a8482e" stroke="#5a2015" stroke-width="1.5" stroke-linejoin="round"/>' +
+    '<path d="M12 21 L26 18 M12 26 L26 23 M12 31 L26 28" stroke="#d9a878" stroke-width="1" opacity=".7"/>' +
+    '<path d="M48 21 L34 18 M48 26 L34 23 M48 31 L34 28" stroke="#e8a878" stroke-width="1" opacity=".7"/>' +
+    '<path d="M30 12 L30 35" stroke="#3a1510" stroke-width="2"/>' +
+    '<circle cx="20" cy="23" r="3" fill="#fff"/><circle cx="40" cy="23" r="3" fill="#fff"/>' +
+    '<circle cx="20.5" cy="23.5" r="1.6" fill="#222"/><circle cx="40.5" cy="23.5" r="1.6" fill="#222"/>' +
+    '<path d="M16 32 Q30 44 44 32 L40 30 Q30 38 20 30 Z" fill="#3a1510"/>' +
+    '<path d="M20 32 L22 36 L24 32 M28 33 L30 38 L32 33 M36 32 L38 36 L40 32" fill="#fff"/>' +
+    '</svg>';
+}
+function renderAdvHud() {
+  document.getElementById('adv-chapter').textContent = '第 ' + (adv.chapterIdx + 1) + ' 章：' + CHAPTER_TITLES[adv.chapterIdx];
+  document.getElementById('adv-monster-name').textContent = (adv.isBoss ? '👑 ' : '') + adv.monsterName;
+  document.getElementById('adv-monster-sprite').innerHTML = monsterSpriteSvg(adv.monsterKind, adv.isBoss);
+  document.getElementById('adv-monster-hpbar').style.width = Math.max(0, adv.monsterHp / adv.monsterMaxHp * 100) + '%';
+  document.getElementById('adv-monster-hptext').textContent = Math.max(0, adv.monsterHp) + '/' + adv.monsterMaxHp;
+  document.getElementById('adv-player-hpbar').style.width = Math.max(0, adv.playerHp / adv.playerMaxHp * 100) + '%';
+  document.getElementById('adv-player-hptext').textContent = Math.max(0, adv.playerHp) + '/' + adv.playerMaxHp;
+}
+function startMonster() {
+  const chapter = MONSTER_TEMPLATES[adv.chapterIdx];
+  const m = chapter[adv.monsterIdx];
+  adv.monsterName = m.name; adv.monsterKind = m.kind; adv.isBoss = !!m.boss;
+  adv.monsterHp = m.hp; adv.monsterMaxHp = m.hp; adv.monsterAtk = m.atk;
+  renderAdvHud();
+  bubble(adv.isBoss ? ('⚠️ Boss出現：' + m.name + '！') : ('遭遇 ' + m.name + '！'));
+}
+function defeatMonster() {
+  bubble('打倒了 ' + adv.monsterName + '！');
+  sfx.levelup();
+  adv.monsterIdx++;
+  const chapter = MONSTER_TEMPLATES[adv.chapterIdx];
+  if (adv.monsterIdx >= chapter.length) {
+    adv.chapterIdx++;
+    adv.monsterIdx = 0;
+    if (adv.chapterIdx >= MONSTER_TEMPLATES.length) {
+      toast('🎉 目前所有章節都通關了！更多冒險敬請期待', 2600);
+      adv.chapterIdx = MONSTER_TEMPLATES.length - 1;
+      adv.monsterIdx = 0;
+    }
+  }
+  startMonster();
+}
+function checkAdvOver() {
+  if (adv.playerHp <= 0 && !over) {
+    over = true;
+    sfx.over(); setFace('sad');
+    updateAdvBestProgress();
+    saveAdventure();  // over=true 時會自動清掉舊存檔
+    document.getElementById('adv-fchapter').textContent = adv.chapterIdx + 1;
+    document.getElementById('adv-fkills').textContent = adv.totalKills;
+    document.getElementById('adv-gameover').classList.add('show');
+  }
+}
+function initAdventure(fromSave = false) {
+  sel = []; over = false;
+  document.getElementById('adv-gameover').classList.remove('show');
+  setFace('normal');
+  if (fromSave && loadAdventure()) {
+    renderAdvHud();
+  } else {
+    localStorage.removeItem(ADV_SAVE_KEY);
+    adv = {
+      chapterIdx: 0, monsterIdx: 0,
+      playerHp: 100, playerMaxHp: 100,
+      monsterHp: 0, monsterMaxHp: 0, monsterAtk: 0,
+      monsterName: '', monsterKind: 'critter', isBoss: false,
+      totalKills: 0,
+    };
+    freshBoard();
+    startMonster();
+  }
+  render(); updateCurrent();
+}
+function submitAdventure(w) {
+  const dmg = battleDamage(w, sel);
+  adv.monsterHp = Math.max(0, adv.monsterHp - dmg);
+
+  sfx.ok(w.length); setFace('happy');
+  const face = document.getElementById('wormface');
+  face.style.transform = 'scale(1.25)'; setTimeout(() => face.style.transform = '', 250);
+  toast('⚔️ -' + dmg, 1000);
+  if (Math.random() < .4) setTimeout(() => bubble(quip(w.length <= 3 ? QUIPS.short : w.length <= 5 ? QUIPS.mid : QUIPS.long)), 700);
+
+  const gemTier = w.length >= 8 ? 'diamond' : w.length >= 7 ? 'sapphire' : w.length >= 6 ? 'gold' : w.length >= 5 ? 'green' : null;
+  removeTilesAdventure(sel, gemTier);
+  sel = [];
+
+  if (adv.monsterHp <= 0) {
+    // 刻意設計：斬殺當回合不觸發反擊（怪物已死不能還手），非漏掉的分支
+    adv.totalKills++;
+    defeatMonster();
+  } else {
+    monsterCounter();
+  }
+  render(); updateCurrent();
+  renderAdvHud();
+  checkAdvOver();
+  if (!over) saveAdventure();
+}
+function shuffleAdventure() {
+  if (over) return;
+  let cleared = 0;
+  for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) {
+    if (grid[c][r].locked || grid[c][r].cursed) { grid[c][r] = newTile(); cleared++; }
+  }
+  sel = [];
+  toast(cleared ? ('🧹 清除了 ' + cleared + ' 顆負面磚！') : '目前沒有負面磚可清', 1400);
+  monsterCounter();
+  render(); updateCurrent();
+  renderAdvHud();
+  checkAdvOver();
+  if (!over) saveAdventure();
+}
+document.getElementById('adv-restart').onclick = () => initAdventure();
+
+/* ================= 程式進入點 ================= */
+setBoardSize();
+applyModeClass();
+if (gameMode === 'adventure') initAdventure(true);
+else init(true);
 </script>
 </body>
 </html>
