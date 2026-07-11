@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>終章活字巨像預覽</title>
+  <style>
+    html,
+    body,
+    iframe {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      border: 0;
+      background: #0e0a07;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="game" src="/index.html" title="Word Worm"></iframe>
+  <script>
+    const finalBossId = 'final-type-golem';
+    const iframe = document.getElementById('game');
+
+    localStorage.setItem('wordworm_gamemode', 'adventure');
+    localStorage.removeItem('wordworm_save_adventure_v1');
+
+    iframe.addEventListener('load', () => {
+      const game = iframe.contentWindow;
+      const completedLevelIds = [
+        'paper-mouse',
+        'bookmark-thief',
+        'ink-blob',
+        'spine-guard',
+        'bookworm-king',
+        'dust-scribe',
+        'violet-ink',
+        'echo-proofreader',
+        'missing-word-ghost',
+        'archive-book',
+        'cookie-soldier',
+        'nightcap-cat',
+        'glass-slipper-shadow',
+        'paper-crown-queen',
+        'comma-giant',
+        'stardust-moth',
+        'moonphase-clerk',
+        'lost-comet',
+        'observatory-golem',
+        'atlas-curator',
+        'root-vine',
+        'pollen-note',
+        'dew-slime',
+        'greenhouse-warden',
+        'thousand-page-mandrake',
+        'salt-bookmark',
+        'ragged-sail-letterer',
+        'lighthouse-copyeditor',
+        'chapter-kraken',
+        'storm-binder',
+        'lead-type-ant',
+        'reverse-print-shade',
+        'proof-press-mechanic',
+        'mojibake-oracle'
+      ];
+
+      localStorage.setItem('wordworm_adv_progress', JSON.stringify({
+        version: 4,
+        completedLevelIds,
+        heroLevel: 8,
+        heroExp: 0,
+        items: { heal: 3, purify: 2, strike: 2 }
+      }));
+
+      game.selectGameMode('adventure');
+      setTimeout(() => game.startAdventureLevel(finalBossId), 450);
+    }, { once: true });
+  </script>
+</body>
+</html>

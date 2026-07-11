@@ -7,51 +7,8 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="home-screen">
-  <div id="library-bg"><svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMax slice">
-    <defs>
-      <g id="bookrow">
-        <rect x="0" y="0" width="14" height="58" rx="2" fill="#8a4d2a"/>
-        <rect x="16" y="6" width="12" height="52" rx="2" fill="#5a7a4a"/>
-        <rect x="30" y="2" width="15" height="56" rx="2" fill="#a8632f"/>
-        <rect x="47" y="8" width="11" height="50" rx="2" fill="#4a5a8a"/>
-        <rect x="60" y="0" width="13" height="58" rx="2" fill="#96543a"/>
-        <rect x="75" y="5" width="14" height="53" rx="2" fill="#7a6a3a"/>
-        <rect x="91" y="1" width="12" height="57" rx="2" fill="#6a4a7a"/>
-        <rect x="105" y="7" width="15" height="51" rx="2" fill="#8a5a2a"/>
-        <rect x="122" y="3" width="12" height="55" rx="2" fill="#4a7a6a"/>
-        <rect x="136" y="0" width="14" height="58" rx="2" fill="#9a4a3a"/>
-      </g>
-      <g id="shelfunit">
-        <rect x="-10" y="-12" width="320" height="292" fill="#2e1c0a"/>
-        <rect x="0" y="0" width="300" height="8" fill="#54371a"/>
-        <use href="#bookrow" x="10" y="12"/><use href="#bookrow" x="160" y="12"/>
-        <rect x="0" y="90" width="300" height="8" fill="#54371a"/>
-        <use href="#bookrow" x="10" y="102"/><use href="#bookrow" x="160" y="102"/>
-        <rect x="0" y="180" width="300" height="8" fill="#54371a"/>
-        <use href="#bookrow" x="10" y="192"/><use href="#bookrow" x="160" y="192"/>
-        <rect x="0" y="270" width="300" height="10" fill="#54371a"/>
-      </g>
-    </defs>
-    <use href="#shelfunit" x="20" y="480" opacity=".8"/>
-    <use href="#shelfunit" x="440" y="500" opacity=".6"/>
-    <use href="#shelfunit" x="870" y="480" opacity=".8"/>
-    <!-- 吊燈 -->
-    <line x1="600" y1="0" x2="600" y2="90" stroke="#3a2a12" stroke-width="4"/>
-    <circle cx="600" cy="110" r="26" fill="#ffdf9a" opacity=".9"/>
-    <circle cx="600" cy="110" r="44" fill="#ffca5a" opacity=".22"/>
-    <!-- 疊書 -->
-    <g transform="translate(120,740)">
-      <rect x="0" y="0" width="90" height="16" rx="3" fill="#7a4a2a"/>
-      <rect x="8" y="-16" width="76" height="16" rx="3" fill="#4a6a8a"/>
-      <rect x="4" y="-32" width="82" height="16" rx="3" fill="#6a7a3a"/>
-    </g>
-    <g transform="translate(990,744)">
-      <rect x="0" y="0" width="84" height="15" rx="3" fill="#5a7a5a"/>
-      <rect x="6" y="-15" width="72" height="15" rx="3" fill="#8a5a3a"/>
-    </g>
-  </svg></div>
-  <h1>🐛 Word Worm 單字蟲蟲</h1>
-  <div id="subtitle">串起相鄰字母拼英文單字（3 字母起）．小心燃燒磚！</div>
+  <div id="library-bg" aria-hidden="true"></div>
+  <h1>Word Worm 單字蟲蟲</h1>
   <div id="mode-select">
     <button id="modesel-classic" class="mode-btn">📖 一般模式</button>
     <button id="modesel-adventure" class="mode-btn">⚔️ 冒險模式</button>
@@ -178,11 +135,10 @@
       <div id="bonusbar" style="font-size:.8rem;margin-bottom:2px;">🎯 獎勵單字：<b id="bonusword" style="color:#8fd47a;letter-spacing:2px;">—</b> <span style="opacity:.6;">(×3 分)</span></div>
       <div id="gem-guide" aria-label="寶石磚獎勵說明">
         <span class="gem-guide-title">◆ 寶石磚</span>
-        <span><span class="gem-swatch gem-green"></span>5字 +100分 / +4傷</span>
-        <span><span class="gem-swatch gem-gold"></span>6字 +250分 / +8傷</span>
-        <span><span class="gem-swatch gem-sapphire"></span>7字 +500分 / +12傷</span>
-        <span><span class="gem-swatch gem-diamond"></span>8字+ +1000分 / +20傷</span>
-        <span class="gem-guide-note">拼入寶石磚時生效</span>
+        <span><span class="gem-swatch gem-green"></span>綠磚：攻擊 +4</span>
+        <span><span class="gem-swatch gem-gold"></span>黃磚：攻擊 +8</span>
+        <span><span class="gem-swatch gem-sapphire"></span>藍磚：攻擊 +12</span>
+        <span><span class="gem-swatch gem-diamond"></span>鑽石磚：攻擊 +20</span>
       </div>
       <div id="current">&nbsp;</div>
       <div id="board"></div>

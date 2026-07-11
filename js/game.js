@@ -1,8 +1,25 @@
 /* ================= 字典載入 ================= */
 let DICT = null;
-fetch('enable1.txt').then(r => r.text()).then(t => {
-  DICT = new Set(t.split(/\r?\n/).filter(w => w.length >= 3));
-  toast('字典就緒，開拼！(' + DICT.size.toLocaleString() + ' 字)');
+function dictionaryWordsFromText(text) {
+  return text
+    .split(/\r?\n/)
+    .map(line => line.trim().toLowerCase())
+    .filter(w => w.length >= 3 && !w.startsWith('#') && /^[a-z]+$/.test(w));
+}
+Promise.all([
+  fetch('enable1.txt').then(r => r.text()),
+  fetch('modern-words.txt').then(r => r.ok ? r.text() : '').catch(() => ''),
+  fetch('extra-words.txt').then(r => r.ok ? r.text() : '').catch(() => ''),
+]).then(([coreText, modernText, extraText]) => {
+  const coreWords = dictionaryWordsFromText(coreText);
+  const coreSet = new Set(coreWords);
+  const modernWords = dictionaryWordsFromText(modernText);
+  const extraWords = dictionaryWordsFromText(extraText);
+  const supplementalWords = [...modernWords, ...extraWords];
+  const supplementalSet = new Set(supplementalWords);
+  const extraAdded = [...supplementalSet].filter(w => !coreSet.has(w)).length;
+  DICT = new Set([...coreWords, ...supplementalWords]);
+  toast('字典就緒，開拼！(' + DICT.size.toLocaleString() + ' 字，補充 ' + extraAdded.toLocaleString() + ' 字)');
   if (!bonusWord) pickBonusWord();
 }).catch(() => toast('字典載入失敗，請重新整理', 4000));
 
@@ -409,6 +426,10 @@ function grantAdvHeroExp(progress, expAmount) {
 function advHeroSummary(progress) {
   return 'Lex Lv.' + progress.heroLevel + '　HP ' + progress.heroMaxHp + '　傷害 +' + progress.heroAttackBonus;
 }
+function clampedAdventureHp(hp, maxHp) {
+  const nextHp = Number(hp);
+  return Math.max(1, Math.min(maxHp, Math.floor(Number.isFinite(nextHp) ? nextHp : maxHp)));
+}
 function isNegativeTile(tile) {
   return !!(tile && (tile.locked || tile.cursed));
 }
@@ -724,7 +745,23 @@ document.getElementById('modesel-classic').onclick = () => selectGameMode('class
 document.getElementById('modesel-adventure').onclick = () => selectGameMode('adventure');
 document.getElementById('adv-story-open').onclick = () => openAdventureStoryFromMap();
 document.getElementById('adv-map-path').onclick = e => {
-  const node = e.target.closest('.adv-map-node');
+  let node = e.target.closest('.adv-map-node');
+  if (!node) {
+    const candidates = [...document.querySelectorAll('.adv-map-node:not(:disabled)')];
+    let nearest = null;
+    let nearestDistance = Infinity;
+    for (const candidate of candidates) {
+      const rect = candidate.getBoundingClientRect();
+      const dx = e.clientX - (rect.left + rect.width / 2);
+      const dy = e.clientY - (rect.top + rect.height / 2);
+      const distance = Math.hypot(dx, dy);
+      if (distance < nearestDistance) {
+        nearest = candidate;
+        nearestDistance = distance;
+      }
+    }
+    node = nearestDistance <= 72 ? nearest : null;
+  }
   if (!node || node.disabled) return;
   startAdventureLevel(node.dataset.levelId);
 };
@@ -733,7 +770,8 @@ document.getElementById('adv-battle-reset').onclick = restartAdventureGame;
 document.getElementById('adv-back-map').onclick = showAdventureMap;
 document.getElementById('adv-story-close').onclick = closeStoryModal;
 document.getElementById('adv-story-modal').onclick = e => {
-  if (e.currentTarget.classList.contains('has-comic') || e.target.id === 'adv-story-modal') closeStoryModal();
+  const clickAnywhereToClose = e.currentTarget.classList.contains('has-comic') && !e.currentTarget.classList.contains('show-paragraphs');
+  if (clickAnywhereToClose || e.target.id === 'adv-story-modal') closeStoryModal();
 };
 document.getElementById('adv-items-panel').onclick = e => {
   const btn = e.target.closest('[data-adv-item]');
@@ -1369,8 +1407,10 @@ function openStoryModal(title, paragraphs, comic = null, options = {}) {
   advStoryAfterClose = typeof options.onClose === 'function' ? options.onClose : null;
   const hasFullComic = !!(comic && comic.fullImage);
   const hasComic = !!(comic && (comic.fullImage || (comic.panels && comic.panels.length)));
+  const showParagraphs = !hasComic || !!options.showParagraphsWithComic;
   modal.classList.toggle('has-comic', hasComic);
   modal.classList.toggle('has-full-comic', hasFullComic);
+  modal.classList.toggle('show-paragraphs', hasComic && !!options.showParagraphsWithComic);
   titleEl.textContent = title;
   body.innerHTML = '';
   if (hasComic) {
@@ -1391,7 +1431,7 @@ function openStoryModal(title, paragraphs, comic = null, options = {}) {
     }
     if (!hasFullComic) for (const panel of comic.panels) {
       const item = document.createElement('figure');
-      item.className = 'adv-comic-panel ' + (panel.size === 'wide' ? 'wide' : 'half');
+      item.className = 'adv-comic-panel ' + (panel.size === 'wide' ? 'wide' : 'half') + (panel.className ? ' ' + panel.className : '');
       if (panel.image) {
         const img = document.createElement('img');
         img.src = panel.image;
@@ -1417,7 +1457,7 @@ function openStoryModal(title, paragraphs, comic = null, options = {}) {
     }
     body.appendChild(page);
   }
-  if (!hasComic) for (const text of paragraphs) {
+  if (showParagraphs) for (const text of paragraphs) {
     const p = document.createElement('p');
     p.textContent = text;
     body.appendChild(p);
@@ -1432,12 +1472,13 @@ function closeStoryModal() {
   modal.classList.remove('show');
   modal.classList.remove('has-comic');
   modal.classList.remove('has-full-comic');
+  modal.classList.remove('show-paragraphs');
   if (wasOpen && afterClose) afterClose();
 }
 function openAdventureStoryFromMap() {
   const progress = advBestProgress();
   if (progress.completedLevelIds.length >= ADVENTURE_LEVELS.length) {
-    openStoryModal(ADVENTURE_STORY.endingTitle, ADVENTURE_STORY.ending, ADVENTURE_COMICS.ending);
+    openAdventureEnding();
     return;
   }
   const level = storyChapterForProgress(progress);
@@ -1449,14 +1490,25 @@ function openAdventureStoryFromMap() {
     '目標：' + chapterStory.goal
   ], comic);
 }
-function openAdventureClearComic(level, onClose) {
+function openAdventureLevelComic(level, onClose) {
   const chapterStory = ADVENTURE_STORY.chapters[level.chapterId];
   const comic = ADVENTURE_COMICS.chapters[level.chapterId];
-  openStoryModal('第 ' + (level.chapterIdx + 1) + ' 章：' + level.chapterTitle, [
+  openStoryModal(level.mapLabel + ' ' + level.name + '｜第 ' + (level.chapterIdx + 1) + ' 章：' + level.chapterTitle, [
     chapterStory.quote,
     chapterStory.logline,
     '目標：' + chapterStory.goal
   ], comic, { onClose });
+}
+function openAdventureFinalBossIntro(onClose) {
+  openStoryModal('終章活字巨像', [
+    '錯誤無法被完全修正。刪除文字，即可刪除錯誤。'
+  ], ADVENTURE_COMICS.finalBossIntro, { onClose });
+}
+function openAdventureEnding(onClose) {
+  openStoryModal(ADVENTURE_STORY.endingTitle, ADVENTURE_STORY.ending, ADVENTURE_COMICS.ending, {
+    onClose,
+    showParagraphsWithComic: true,
+  });
 }
 function showAdventureIntroForNewGame() {
   localStorage.setItem(STORY_INTRO_SEEN_KEY, '1');
@@ -1468,10 +1520,23 @@ function setAdventureView(view) {
   document.body.classList.toggle('adv-view-map', view === 'map');
   document.body.classList.toggle('adv-view-battle', view === 'battle');
 }
+const ADV_MAP_CHAPTER_POSITIONS = [
+  [7, 43],
+  [22, 38],
+  [37, 34],
+  [52, 35],
+  [65, 41],
+  [79, 39],
+  [91, 42],
+];
+function advMapPositionForChapter(chapterIdx) {
+  return ADV_MAP_CHAPTER_POSITIONS[chapterIdx] || [50, 50];
+}
 function renderAdvMap() {
   const progress = advBestProgress();
   const completed = new Set(progress.completedLevelIds);
   const activeLevelId = adv && adv.levelId && adv.monsterHp > 0 && !over ? adv.levelId : '';
+  const activeLevel = activeLevelId ? adventureLevelById(activeLevelId) : null;
   const path = document.getElementById('adv-map-path');
   path.innerHTML = '';
   renderAdvStoryCard(progress);
@@ -1482,31 +1547,44 @@ function renderAdvMap() {
     ? '已通關 ' + completed.size + ' / ' + ADVENTURE_LEVELS.length + ' 關。' + advHeroSummary(progress) + '。下一個目標：' + nextLevel.mapLabel + ' ' + nextLevel.name + '。'
     : '全部 ' + ADVENTURE_LEVELS.length + ' 關都已通關。' + advHeroSummary(progress) + '。可以回頭重打已解鎖關卡。';
 
-  for (const level of ADVENTURE_LEVELS) {
-    const unlocked = isAdventureLevelUnlocked(level.id, progress);
-    const isCompleted = completed.has(level.id);
-    const isActive = activeLevelId === level.id;
+  for (const chapter of ADVENTURE_CHAPTERS) {
+    const chapterLevels = ADVENTURE_LEVELS.filter(level => level.chapterId === chapter.id);
+    const entryLevel = chapterLevels[0];
+    if (!entryLevel) continue;
+    const unlocked = isAdventureLevelUnlocked(entryLevel.id, progress);
+    const isCompleted = chapterLevels.every(level => completed.has(level.id));
+    const isActive = activeLevel && activeLevel.chapterId === chapter.id;
     const node = document.createElement('button');
     node.type = 'button';
-    node.className = 'adv-map-node ' + (isCompleted ? 'completed ' : '') + (unlocked ? 'available ' : 'locked ') + (isActive ? 'ongoing' : '');
+    node.className = 'adv-map-node chapter-entry ' + (isCompleted ? 'completed ' : '') + (unlocked ? 'available ' : 'locked ') + (isActive ? 'ongoing ' : '') + (entryLevel.chapterIdx === ADVENTURE_CHAPTERS.length - 1 ? 'final' : '');
     node.disabled = !unlocked;
-    node.dataset.levelId = level.id;
+    node.dataset.levelId = entryLevel.id;
+    node.onclick = e => {
+      e.stopPropagation();
+      startAdventureLevel(entryLevel.id);
+    };
+    const [mapX, mapY] = advMapPositionForChapter(entryLevel.chapterIdx);
+    node.style.setProperty('--map-x', mapX + '%');
+    node.style.setProperty('--map-y', mapY + '%');
 
     const badge = document.createElement('span');
     badge.className = 'adv-node-badge';
-    badge.textContent = isCompleted ? '✓' : unlocked ? level.mapLabel : '•';
+    badge.textContent = isCompleted ? '✓' : entryLevel.mapLabel;
 
     const main = document.createElement('span');
     main.className = 'adv-node-main';
     const title = document.createElement('b');
-    title.textContent = level.mapLabel + ' ' + level.name;
+    title.textContent = '第 ' + (entryLevel.chapterIdx + 1) + ' 章：' + chapter.title;
     const meta = document.createElement('span');
-    meta.textContent = '第 ' + (level.chapterIdx + 1) + ' 章：' + level.chapterTitle + '　HP ' + level.hp + ' / ATK ' + level.atk + ' / EXP ' + adventureExpReward(level);
+    meta.textContent = '入口：' + entryLevel.mapLabel + ' ' + entryLevel.name + '　章節進度 ' + chapterLevels.filter(level => completed.has(level.id)).length + ' / ' + chapterLevels.length;
     main.append(title, meta);
 
     const state = document.createElement('span');
     state.className = 'adv-node-state';
-    state.textContent = isActive ? '戰鬥中' : isCompleted ? '已通關' : unlocked ? '可挑戰' : '未解鎖';
+    state.textContent = isActive ? '戰鬥中' : isCompleted ? '已通關' : unlocked ? '可進入' : '未解鎖';
+    const label = '第 ' + (entryLevel.chapterIdx + 1) + ' 章：' + chapter.title + '，入口接到 ' + entryLevel.mapLabel + ' ' + entryLevel.name + '，' + state.textContent;
+    node.title = label;
+    node.setAttribute('aria-label', label);
 
     node.append(badge, main, state);
     path.appendChild(node);
@@ -1523,15 +1601,25 @@ function showAdventureMap() {
   renderAdvMap();
   setBgmThemeForLevel(storyChapterForProgress(advBestProgress()));
 }
-function makeAdventureState(level) {
+function makeAdventureState(level, options = {}) {
   const progress = advBestProgress();
+  const playerMaxHp = progress.heroMaxHp;
+  let playerHp = playerMaxHp;
+  if (Number.isFinite(Number(options.playerHp))) {
+    const previousMaxHp = Number.isFinite(Number(options.playerMaxHp)) && Number(options.playerMaxHp) > 0
+      ? Number(options.playerMaxHp)
+      : playerMaxHp;
+    playerHp = Number(options.playerHp);
+    if (playerMaxHp > previousMaxHp) playerHp += playerMaxHp - previousMaxHp;
+    playerHp = clampedAdventureHp(playerHp, playerMaxHp);
+  }
   return {
     levelId: level.id,
     levelIdx: level.globalIdx,
     chapterIdx: level.chapterIdx,
     monsterIdx: level.levelIdx,
-    playerHp: progress.heroMaxHp,
-    playerMaxHp: progress.heroMaxHp,
+    playerHp,
+    playerMaxHp,
     monsterHp: 0,
     monsterMaxHp: 0,
     monsterAtk: 0,
@@ -1555,9 +1643,13 @@ function startAdventureLevel(levelId, options = {}) {
   document.getElementById('adv-gameover').classList.remove('show');
   over = false; sel = []; setFace('normal');
   const canResume = adv && adv.levelId === levelId && adv.monsterHp > 0 && isValidGrid(grid, COLS, ROWS);
+  if (level.id === 'final-type-golem' && !canResume && !options.skipFinalBossIntro) {
+    openAdventureFinalBossIntro(() => startAdventureLevel(levelId, { ...options, skipFinalBossIntro: true }));
+    return;
+  }
   if (!canResume) {
     localStorage.removeItem(ADV_SAVE_KEY);
-    adv = makeAdventureState(level);
+    adv = makeAdventureState(level, options);
     freshBoard();
     startMonster();
   }
@@ -1604,25 +1696,38 @@ function defeatMonster() {
   const nextLevel = ADVENTURE_LEVELS.find(item => !progress.completedLevelIds.includes(item.id));
   const rewardText = rewards.length ? (' 獲得：' + rewards.join('、') + '。') : '';
   const expText = clearResult.expGained
-    ? (' EXP +' + clearResult.expGained + '。' + (clearResult.levelsGained ? 'Lex 升到 Lv.' + progress.heroLevel + '，Max HP ' + progress.heroMaxHp + '。' : ''))
+    ? (' EXP +' + clearResult.expGained + '。' + (clearResult.levelsGained ? 'Lex 升到 Lv.' + progress.heroLevel + '，Max HP ' + progress.heroMaxHp + '，HP 回滿。' : ''))
     : (clearResult.alreadyCompleted ? ' 已通關關卡不再獲得 EXP。' : '');
   if (nextLevel) {
     renderAdvHud();
     beginAdvAdvance(nextLevel);
-    toast('打倒 ' + defeatedName + '！' + expText + rewardText + '閱讀章節分鏡後前往下一戰：' + nextLevel.name, 2800);
+    const transitionOptions = {
+      fromAdvance: true,
+      playerHp: adv.playerHp,
+      playerMaxHp: adv.playerMaxHp,
+    };
+    const isChapterTransition = nextLevel.chapterId !== level.chapterId;
+    toast(
+      '打倒 ' + defeatedName + '！' + expText + rewardText +
+      (isChapterTransition ? '閱讀下一章分鏡後前往：' : '前往下一戰：') + nextLevel.name,
+      2800
+    );
     advAdvanceTimer = setTimeout(() => {
-      openAdventureClearComic(level, () => startAdventureLevel(nextLevel.id, { fromAdvance: true }));
+      if (isChapterTransition) {
+        openAdventureLevelComic(nextLevel, () => startAdventureLevel(nextLevel.id, transitionOptions));
+      } else {
+        startAdventureLevel(nextLevel.id, transitionOptions);
+      }
     }, ADV_ADVANCE_MS);
     return;
   }
   renderAdvHud();
-  toast('🎉 所有關卡都通關了！' + expText + rewardText + '閱讀最終章分鏡後回到地圖。', 3200);
+  toast('🎉 所有關卡都通關了！' + expText + rewardText + '閱讀結局後回到地圖。', 3200);
   advAdvanceTimer = setTimeout(() => {
-    openAdventureClearComic(level, () => {
+    openAdventureEnding(() => {
       advAdvancing = false;
       clearAdvStageMotion();
       showAdventureMap();
-      setTimeout(() => openStoryModal(ADVENTURE_STORY.endingTitle, ADVENTURE_STORY.ending, ADVENTURE_COMICS.ending), 300);
     });
   }, 900);
 }

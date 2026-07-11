@@ -174,7 +174,7 @@ function fmt(num, digits = 1) {
 }
 
 console.log(`Adventure balance simulation (${RUNS.toLocaleString()} campaigns per profile)`);
-console.log('Assumptions: valid attacks only, automatic low-HP heal, strike used on bosses and chapters 5-7 when available.');
+console.log('Assumptions: valid attacks only, HP refills only on level-up, automatic low-HP heal, strike used on bosses and chapters 5-7 when available.');
 
 for (const [name, profile] of Object.entries(profiles)) {
   const result = simulate(profile);

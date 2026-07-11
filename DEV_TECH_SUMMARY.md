@@ -5,10 +5,12 @@
 ## 檔案結構
 
 - 單檔 `index.html`：HTML + CSS(`<style>`) + JS(`<script>`) 全部在一起，**零建置、零外部資源**（無 CDN、無外部圖片/字型/JS 套件）
-- `enable1.txt`：ENABLE1 英文字典（172,727 字，public domain），`fetch()` 載入成 `Set`
+- `enable1.txt`：ENABLE1 核心英文字典（172,727 字，public domain）
+- `modern-words.txt`：ESDB / SCOWL `en_US` 現代補充字表，只收 lowercase ASCII、3+ 字母、且 ENABLE1 沒有的字
+- `extra-words.txt`：人工補充例外字，例如國籍/語言形容詞或產品需要接受的現代詞
 - 沒有 package.json、沒有 build 工具、沒有其他原始檔
 
-本地測試：因為有 `fetch('enable1.txt')`，**不能直接用 `file://` 開**（CORS 擋），要起本地 HTTP server，例如：
+本地測試：因為字典用 `fetch()` 載入，**不能直接用 `file://` 開**（CORS 擋），要起本地 HTTP server，例如：
 ```
 python -m http.server 8791
 ```

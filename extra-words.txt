@@ -1,0 +1,14 @@
+# Manual dictionary exceptions for words the game should accept.
+# Use this for product decisions, demonyms, or words excluded by the generated
+# modern dictionary filter. Keep one lowercase word per line.
+webpage
+webpages
+wifi
+startup
+startups
+korean
+koreans
+taiwan
+taiwanese
+japanese
+chinese
