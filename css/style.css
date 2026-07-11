@@ -199,6 +199,7 @@
   #adv-hud { display: none; width: 100%; flex-direction: column; align-items: center; margin-bottom: 10px; }
   body.mode-adventure #adv-hud { display: flex; }
   body.mode-adventure.adv-view-map #current,
+  body.mode-adventure.adv-view-map #gem-guide,
   body.mode-adventure.adv-view-map #board,
   body.mode-adventure.adv-view-map #controls { display: none; }
   #adv-map, #adv-battle { width: 100%; }
@@ -218,7 +219,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 210px minmax(250px, 1fr) 240px;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto auto auto;
     gap: clamp(8px, 1.35vh, 13px);
     align-items: stretch;
     max-height: calc(100dvh - 64px);
@@ -245,8 +246,13 @@
   }
   body.mode-adventure.adv-view-battle #adv-hud { grid-column: 1 / -1; margin-bottom: 0; }
   body.mode-adventure.adv-view-battle #current { display: none; }
-  body.mode-adventure.adv-view-battle #board {
+  body.mode-adventure.adv-view-battle #gem-guide {
     grid-column: 2; grid-row: 2;
+    justify-self: center; align-self: end;
+    margin: 0;
+  }
+  body.mode-adventure.adv-view-battle #board {
+    grid-column: 2; grid-row: 3;
     justify-self: center; align-self: center;
     gap: clamp(5px, 1vh, 8px); padding: clamp(9px, 1.4vh, 13px); border-radius: 15px;
     position: relative;
@@ -264,7 +270,7 @@
       inset 0 0 18px rgba(0,0,0,.58);
   }
   body.mode-adventure.adv-view-battle #controls {
-    grid-column: 2; grid-row: 3;
+    grid-column: 2; grid-row: 4;
     justify-content: center; flex-wrap: wrap; margin: 0;
     padding: clamp(7px, 1.2vh, 10px) 12px;
     border: 2px solid #2a1408;
@@ -349,11 +355,20 @@
   body.mode-adventure.adv-view-battle .tile.cursed::after {
     content: "C"; top: 3px; right: 5px; font-size: .72rem; color: #fff2c8;
   }
+  body.mode-adventure.adv-view-battle .tile.locked,
+  body.mode-adventure.adv-view-battle .tile.cursed {
+    animation: negativeTilePulse 1.2s ease-in-out infinite alternate;
+  }
+  body.mode-adventure.adv-view-battle .tile-status-count {
+    width: 18px; height: 18px;
+    right: -6px; bottom: -6px;
+    font-size: .72rem;
+  }
   body.mode-adventure.adv-view-battle #adv-items-panel {
-    display: block; grid-column: 1; grid-row: 2 / span 2;
+    display: block; grid-column: 1; grid-row: 2 / span 3;
   }
   body.mode-adventure.adv-view-battle #adv-skills-panel {
-    display: block; grid-column: 3; grid-row: 2 / span 2;
+    display: block; grid-column: 3; grid-row: 2 / span 3;
   }
   body.mode-adventure.adv-view-battle .adv-side-panel {
     min-height: 0;
@@ -1046,7 +1061,9 @@
     #adv-battle-stage.adv-advancing #adv-player-sprite,
     #adv-battle-stage.adv-advancing #adv-monster-combatant .adv-sprite-card,
     #adv-battle-stage.adv-encountering #adv-player-sprite,
-    #adv-battle-stage.adv-encountering #adv-monster-combatant .adv-sprite-card { animation: none; }
+    #adv-battle-stage.adv-encountering #adv-monster-combatant .adv-sprite-card,
+    body.mode-adventure.adv-view-battle .tile.locked,
+    body.mode-adventure.adv-view-battle .tile.cursed { animation: none; }
   }
 
   @media (max-width: 700px) {
@@ -1059,6 +1076,7 @@
     body.mode-adventure #adv-battle,
     body.mode-adventure #adv-map { min-width: 0; }
     body.mode-adventure.adv-view-battle #adv-hud,
+    body.mode-adventure.adv-view-battle #gem-guide,
     body.mode-adventure.adv-view-battle #board,
     body.mode-adventure.adv-view-battle #controls,
     body.mode-adventure.adv-view-battle #adv-mobile-drawers {
@@ -1299,6 +1317,68 @@
   }
   #hud b { color: #ffd97a; font-family: var(--font-letter); font-size: 1.05rem; }
 
+  #gem-guide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px 9px;
+    max-width: min(520px, calc(100vw - 42px));
+    margin: 0 0 clamp(3px, .8vh, 6px);
+    padding: 5px 10px;
+    border: 1px solid rgba(255,230,160,.22);
+    border-radius: 10px;
+    background: rgba(0,0,0,.24);
+    color: rgba(255,244,216,.88);
+    font-size: .72rem;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+  .gem-guide-title {
+    color: #ffe39a;
+  }
+  .gem-guide-note {
+    color: rgba(255,244,216,.62);
+    font-weight: 750;
+  }
+  .gem-swatch {
+    display: inline-block;
+    width: .72rem;
+    height: .72rem;
+    margin-right: 3px;
+    border-radius: 3px;
+    vertical-align: -.09rem;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.65), 0 0 5px rgba(0,0,0,.32);
+  }
+  .gem-swatch.gem-green { background: linear-gradient(145deg,#b8f2a1,#5fbf4a); }
+  .gem-swatch.gem-gold { background: linear-gradient(145deg,#ffe98a,#e8b420); }
+  .gem-swatch.gem-sapphire { background: linear-gradient(145deg,#a1c8f2,#3a6fd8); }
+  .gem-swatch.gem-diamond { background: linear-gradient(145deg,#fff,#9adcf0); }
+
+  @media (max-width: 700px) {
+    #gem-guide {
+      max-width: 100%;
+      gap: 4px 7px;
+      padding: 5px 8px;
+      font-size: .66rem;
+    }
+    .gem-guide-note {
+      flex-basis: 100%;
+      text-align: center;
+    }
+  }
+
+  @media (max-height: 600px) {
+    #gem-guide {
+      font-size: .64rem;
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+    .gem-guide-note {
+      display: none;
+    }
+  }
+
   /* ===== 當前拼字 ===== */
   #current {
     min-height: clamp(1.6rem, 4vh, 2.1rem); font-size: clamp(1.1rem, 3vh, 1.4rem); letter-spacing: 3px;
@@ -1368,6 +1448,29 @@
   }
   .tile.cursed::after {
     content: "💀"; position: absolute; top: -10px; right: -4px; font-size: .8rem;
+  }
+  .tile-status-count {
+    position: absolute;
+    right: -7px; bottom: -7px;
+    display: grid; place-items: center;
+    width: 19px; height: 19px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,248,221,.92);
+    background: #2f2416;
+    color: #fff4d7;
+    font-family: var(--font-letter);
+    font-size: .72rem;
+    font-weight: 950;
+    line-height: 1;
+    box-shadow: 0 2px 5px rgba(0,0,0,.42);
+    pointer-events: none;
+    z-index: 3;
+  }
+  .tile.locked .tile-status-count { background: #424242; }
+  .tile.cursed .tile-status-count { background: #5a2b92; }
+  @keyframes negativeTilePulse {
+    from { filter: brightness(.95); }
+    to { filter: brightness(1.12); }
   }
   .tile.falling { animation: drop .25s ease-in; }
   @keyframes drop { from { transform: translateY(-56px); opacity: .3; } to { transform: none; opacity: 1; } }

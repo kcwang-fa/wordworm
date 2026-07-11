@@ -2,8 +2,8 @@
 // 傷害分級精神參考自 Boggle 式戰鬥拼字遊戲的通用設計（稀有字母＝雙面刃：磚不好湊但打起來痛），
 // 數值全部用專案既有的 LETTER_SCORE／LETTER_POOL 重新映射，非抄襲任何特定作品的表格。
 const ADV_SKILLS = {
-  lock: { icon: 'L', name: '鎖定磚', desc: '隨機封住 1 格，無法選取。' },
-  curse: { icon: 'C', name: '詛咒磚', desc: '拼入後本次攻擊傷害降低。' },
+  lock: { icon: 'L', name: '鎖定磚', desc: '隨機封住 1 格，無法選取；3 次有效攻擊後解除。' },
+  curse: { icon: 'C', name: '詛咒磚', desc: '拼入後本次攻擊傷害降低；3 次有效攻擊後解除。' },
   counter: { icon: 'ATK', name: '反擊', desc: '未擊倒時回合結尾扣玩家 HP。' },
   pressure: { icon: '2x', name: '雙重干擾', desc: '有機會一次製造 2 顆負面磚。' },
   boss: { icon: 'BOSS', name: '重擊', desc: 'Boss 反擊較痛，血量要顧。' },
@@ -240,7 +240,7 @@ const ADVENTURE_CHAPTERS = [
       {
         id: 'thousand-page-mandrake',
         name: '千頁曼陀羅',
-        hp: 170,
+        hp: 180,
         atk: 12,
         kind: 'book',
         boss: true,
@@ -255,7 +255,7 @@ const ADVENTURE_CHAPTERS = [
       {
         id: 'salt-bookmark',
         name: '海鹽書籤',
-        hp: 132,
+        hp: 144,
         atk: 10,
         kind: 'critter',
         skills: advSkills('lock', 'counter'),
@@ -263,7 +263,7 @@ const ADVENTURE_CHAPTERS = [
       {
         id: 'ragged-sail-letterer',
         name: '破帆字母匠',
-        hp: 144,
+        hp: 156,
         atk: 11,
         kind: 'book',
         skills: advSkills('curse', 'counter'),
@@ -271,7 +271,7 @@ const ADVENTURE_CHAPTERS = [
       {
         id: 'lighthouse-copyeditor',
         name: '燈塔校稿員',
-        hp: 158,
+        hp: 170,
         atk: 11,
         kind: 'critter',
         skills: advSkills('lock', 'pressure'),
@@ -279,7 +279,7 @@ const ADVENTURE_CHAPTERS = [
       {
         id: 'chapter-kraken',
         name: '章節海怪',
-        hp: 172,
+        hp: 184,
         atk: 12,
         kind: 'blob',
         skills: advSkills('curse', 'pressure'),
@@ -287,7 +287,7 @@ const ADVENTURE_CHAPTERS = [
       {
         id: 'storm-binder',
         name: '暴風裝訂師',
-        hp: 190,
+        hp: 212,
         atk: 13,
         kind: 'book',
         boss: true,
@@ -302,7 +302,7 @@ const ADVENTURE_CHAPTERS = [
       {
         id: 'lead-type-ant',
         name: '鉛字工蟻',
-        hp: 148,
+        hp: 166,
         atk: 11,
         kind: 'critter',
         skills: advSkills('lock', 'counter'),
@@ -310,7 +310,7 @@ const ADVENTURE_CHAPTERS = [
       {
         id: 'reverse-print-shade',
         name: '反白幽影',
-        hp: 162,
+        hp: 180,
         atk: 12,
         kind: 'blob',
         skills: advSkills('curse', 'pressure'),
@@ -318,7 +318,7 @@ const ADVENTURE_CHAPTERS = [
       {
         id: 'proof-press-mechanic',
         name: '校樣機械師',
-        hp: 176,
+        hp: 194,
         atk: 12,
         kind: 'book',
         skills: advSkills('lock', 'pressure'),
@@ -326,7 +326,7 @@ const ADVENTURE_CHAPTERS = [
       {
         id: 'mojibake-oracle',
         name: '亂碼先知',
-        hp: 192,
+        hp: 210,
         atk: 13,
         kind: 'blob',
         skills: advSkills('curse', 'pressure'),
@@ -334,7 +334,7 @@ const ADVENTURE_CHAPTERS = [
       {
         id: 'final-type-golem',
         name: '終章活字巨像',
-        hp: 215,
+        hp: 243,
         atk: 15,
         kind: 'book',
         boss: true,

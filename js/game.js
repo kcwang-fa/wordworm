@@ -80,21 +80,42 @@ function checkLevelUp() {
 const boardEl = document.getElementById('board');
 const rand = a => a[Math.floor(Math.random() * a.length)];
 const VOWELS = 'AEIOU';
+const VOWEL_FLOOR_RATIO = .32;
 /* Boggle 經典 16 骰面配方（公開設計，母音與常見組合分佈經數十年驗證）
    每次生磚＝隨機挑一顆骰擲一面，比純頻率隨機更常出「拼得起來」的盤面 */
 const BOGGLE_DICE = [
   'AAEEGN','ABBJOO','ACHOPS','AFFKPS','AOOTTW','CIMOTU','DEILRX','DELRVY',
   'DISTTY','EEGHNW','EEINSU','EHRTVW','EIOSST','ELRTTY','HIMNQU','HLNNRZ'
 ];
-function boardVowelRatio() {
+function boardVowelRatio(board = grid) {
   let v = 0, n = 0;
-  for (const col of grid) for (const t of col) { n++; if (VOWELS.includes(t.letter[0])) v++; }
+  for (const col of board) for (const t of col) { n++; if (VOWELS.includes(t.letter[0])) v++; }
   return n ? v / n : .4;
 }
+function ensureBoardVowelFloor(board, minRatio = VOWEL_FLOOR_RATIO) {
+  let vowels = 0, total = 0;
+  const consonants = [];
+  for (const col of board) {
+    for (const t of col) {
+      total++;
+      if (VOWELS.includes(t.letter[0])) vowels++;
+      else consonants.push(t);
+    }
+  }
+  let need = Math.ceil(total * minRatio) - vowels;
+  if (need <= 0) return board;
+  need = Math.min(need, consonants.length);
+  for (let i = consonants.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [consonants[i], consonants[j]] = [consonants[j], consonants[i]];
+  }
+  for (let i = 0; i < need; i++) consonants[i].letter = rand(VOWELS);
+  return board;
+}
 function newTile() {
-  // Boggle 骰子生成 + 母音平衡保底（母音比例 < 32% 時 65% 機率補母音）
+  // Boggle 骰子生成；遊戲中補磚時若盤面母音偏低，額外提高母音機率
   let ch;
-  if (grid.length && boardVowelRatio() < .32 && Math.random() < .65) ch = rand(VOWELS);
+  if (grid.length && boardVowelRatio() < VOWEL_FLOOR_RATIO && Math.random() < .65) ch = rand(VOWELS);
   else ch = rand(rand(BOGGLE_DICE));
   return { letter: ch === 'Q' ? 'Qu' : ch, burning: false, gem: null, fresh: true };
 }
@@ -304,6 +325,7 @@ function isValidGrid(g, cols, rows) {
       if ('burning' in t && typeof t.burning !== 'boolean') return false;
       if ('locked' in t && typeof t.locked !== 'boolean') return false;
       if ('cursed' in t && typeof t.cursed !== 'boolean') return false;
+      if ('negativeTurns' in t && (!Number.isFinite(Number(t.negativeTurns)) || Number(t.negativeTurns) < 0)) return false;
       if ('gem' in t && t.gem !== null && !['green', 'gold', 'sapphire', 'diamond'].includes(t.gem)) return false;
     }
   }
@@ -338,6 +360,7 @@ const ADV_HERO_BASE_HP = 100;
 const ADV_HERO_HP_PER_LEVEL = 6;
 const ADV_HERO_ATTACK_STEP = 3;
 const ADV_HERO_LEVEL_CAP = 30;
+const ADV_NEGATIVE_TILE_TURNS = 3;
 function advHeroExpToNext(heroLevel) {
   return 60 + Math.max(0, heroLevel - 1) * 25;
 }
@@ -386,13 +409,34 @@ function grantAdvHeroExp(progress, expAmount) {
 function advHeroSummary(progress) {
   return 'Lex Lv.' + progress.heroLevel + '　HP ' + progress.heroMaxHp + '　傷害 +' + progress.heroAttackBonus;
 }
+function isNegativeTile(tile) {
+  return !!(tile && (tile.locked || tile.cursed));
+}
+function negativeTileTurns(tile) {
+  if (!isNegativeTile(tile)) return 0;
+  const turns = Math.floor(Number(tile.negativeTurns));
+  return Number.isFinite(turns) && turns > 0 ? Math.min(turns, ADV_NEGATIVE_TILE_TURNS) : ADV_NEGATIVE_TILE_TURNS;
+}
+function normaliseAdventureGridStatuses() {
+  for (let c = 0; c < grid.length; c++) for (let r = 0; r < grid[c].length; r++) {
+    const tile = grid[c][r];
+    if (isNegativeTile(tile)) tile.negativeTurns = negativeTileTurns(tile);
+    else tile.negativeTurns = 0;
+  }
+}
 function saveAdventure() {
   if (over) { localStorage.removeItem(ADV_SAVE_KEY); return; }
   const nextAdv = normaliseAdvState(adv);
   if (!nextAdv || !isValidAdvState(nextAdv)) return;
   adv = nextAdv;
   localStorage.setItem(ADV_SAVE_KEY, JSON.stringify({
-    grid: grid.map(col => col.map(t => ({ letter: t.letter, gem: t.gem, locked: !!t.locked, cursed: !!t.cursed }))),
+    grid: grid.map(col => col.map(t => ({
+      letter: t.letter,
+      gem: t.gem,
+      locked: !!t.locked,
+      cursed: !!t.cursed,
+      negativeTurns: negativeTileTurns(t),
+    }))),
     adv: nextAdv
   }));
 }
@@ -442,6 +486,7 @@ function loadAdventure() {
     const nextAdv = normaliseAdvState(s && s.adv);
     if (!s || !isValidGrid(s.grid, COLS, ROWS) || !isValidAdvState(nextAdv)) return false;
     grid = s.grid.map(col => col.map(t => ({ ...t, fresh: false })));
+    normaliseAdventureGridStatuses();
     adv = nextAdv;
     return true;
   } catch { return false; }
@@ -552,6 +597,7 @@ function freshBoard() {
   for (let tries = 0; tries < 6; tries++) {
     grid = [];
     grid = Array.from({length: COLS}, () => Array.from({length: ROWS}, newTile));
+    ensureBoardVowelFloor(grid);
     if (boardPlayable()) return;
   }
 }
@@ -596,6 +642,13 @@ function render() {
       if (t.fresh) { el.classList.add('falling'); t.fresh = false; }
       if (sel.some(s => s.c === c && s.r === r)) el.classList.add('sel');
       el.textContent = t.letter;
+      if (isNegativeTile(t)) {
+        const count = document.createElement('span');
+        count.className = 'tile-status-count';
+        count.textContent = negativeTileTurns(t);
+        count.title = '剩餘 ' + negativeTileTurns(t) + ' 次有效攻擊後解除';
+        el.appendChild(count);
+      }
       el.dataset.c = c; el.dataset.r = r;
       colEl.appendChild(el);
     }
@@ -607,7 +660,8 @@ function render() {
 let dragging = false;
 function tileAt(x, y) {
   const el = document.elementFromPoint(x, y);
-  return el && el.classList.contains('tile') ? { c: +el.dataset.c, r: +el.dataset.r } : null;
+  const tile = el && el.closest ? el.closest('.tile') : null;
+  return tile && boardEl.contains(tile) ? { c: +tile.dataset.c, r: +tile.dataset.r } : null;
 }
 function pick(p) {
   if (over || !p) return;
@@ -1061,6 +1115,7 @@ function clearNegativeTiles() {
     if (grid[c][r].locked || grid[c][r].cursed) {
       grid[c][r].locked = false;
       grid[c][r].cursed = false;
+      grid[c][r].negativeTurns = 0;
       cleared++;
     }
   }
@@ -1128,6 +1183,21 @@ function battleDamage(word, tiles) {
   return Math.max(1, Math.round(dmg));
 }
 // 怪物技能：把場上 1-2 顆磚變成鎖定磚／詛咒磚（策略點：花回合清爛磚 vs 硬拼繞開）
+function tickNegativeTiles() {
+  let cleared = 0;
+  for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) {
+    const tile = grid[c][r];
+    if (!isNegativeTile(tile)) continue;
+    tile.negativeTurns = negativeTileTurns(tile) - 1;
+    if (tile.negativeTurns <= 0) {
+      tile.locked = false;
+      tile.cursed = false;
+      tile.negativeTurns = 0;
+      cleared++;
+    }
+  }
+  return cleared;
+}
 function monsterSkillAlter() {
   const candidates = [];
   for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++)
@@ -1136,8 +1206,14 @@ function monsterSkillAlter() {
   for (let i = 0; i < n; i++) {
     const idx = Math.floor(Math.random() * candidates.length);
     const p = candidates.splice(idx, 1)[0];
-    if (Math.random() < .5) grid[p.c][p.r].locked = true;
-    else grid[p.c][p.r].cursed = true;
+    if (Math.random() < .5) {
+      grid[p.c][p.r].locked = true;
+      grid[p.c][p.r].cursed = false;
+    } else {
+      grid[p.c][p.r].cursed = true;
+      grid[p.c][p.r].locked = false;
+    }
+    grid[p.c][p.r].negativeTurns = ADV_NEGATIVE_TILE_TURNS;
   }
 }
 function monsterCounter() {
@@ -1184,8 +1260,8 @@ function renderAdvSkills(level) {
   if (!list) return;
   list.innerHTML = '';
   const skills = level.skills && level.skills.length ? level.skills : [
-    { icon: 'L', name: '鎖定磚', desc: '隨機封住 1 格，無法選取。' },
-    { icon: 'C', name: '詛咒磚', desc: '拼入後本次攻擊傷害降低。' },
+    { icon: 'L', name: '鎖定磚', desc: '隨機封住 1 格，無法選取；3 次有效攻擊後解除。' },
+    { icon: 'C', name: '詛咒磚', desc: '拼入後本次攻擊傷害降低；3 次有效攻擊後解除。' },
     { icon: 'ATK', name: '反擊', desc: '未擊倒時回合結尾扣玩家 HP。' },
   ];
   for (const skill of skills) {
@@ -1593,6 +1669,7 @@ function submitAdventure(w) {
   const gemTier = w.length >= 8 ? 'diamond' : w.length >= 7 ? 'sapphire' : w.length >= 6 ? 'gold' : w.length >= 5 ? 'green' : null;
   removeTilesAdventure(sel, gemTier);
   sel = [];
+  tickNegativeTiles();
 
   if (adv.monsterHp <= 0) {
     // 刻意設計：斬殺當回合不觸發反擊（怪物已死不能還手），非漏掉的分支
