@@ -47,7 +47,7 @@ python -m http.server 8791
 4. `monsterSkillAlter()`（1010）：隨機把場上 1-2 顆磚變成 `locked` 或 `cursed`
 5. `renderAdvHud()`（1069）：更新 `#adv-hud` 裡的血條/名稱/怪物立繪 DOM——**這是重做 UI 版面時要大改或整個換掉的函式**，目前是直接 `getElementById` 抓幾個固定 id 更新 textContent/style.width
 6. `monsterSpriteSvg(kind, isBoss)`（1029）：回傳怪物 SVG 字串（純字串拼接），三種 kind：`critter`/`blob`/`book`，接口是 `(kind, isBoss) → svg字串`，換美術只需要換這個函式內容，呼叫端不用動
-7. `shuffleAdventure()`（1159）：冒險模式「清除負面磚」按鈕邏輯，清掉場上 locked/cursed，消耗一回合（會觸發 `monsterCounter()`）
+7. 冒險模式負面磚清除改由橡皮擦道具處理，不再提供底部「清除負面磚」按鈕
 8. `checkAdvOver()`（1102）：玩家 HP 歸零時觸發，顯示 `#adv-gameover` 遮罩
 9. `initAdventure(fromSave)`（1113）：進場初始化，`fromSave=true` 時嘗試 `loadAdventure()` 恢復進度
 
