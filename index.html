@@ -13,6 +13,8 @@
     <button id="modesel-classic" class="mode-btn">📖 一般模式</button>
     <button id="modesel-adventure" class="mode-btn">⚔️ 冒險模式</button>
     <button id="modesel-daily" class="mode-btn">📅 每日挑戰</button>
+    <button id="wotd-open" class="mode-btn utility-btn">🔎 每日單字</button>
+    <button id="wordbook-open" class="mode-btn utility-btn">⭐ 我的單字本</button>
   </div>
   <div id="stage">
     <div id="worm-corner">
@@ -194,6 +196,56 @@
     </div>
   </div>
   <div id="toast"></div>
+  <div id="wotd-modal" class="word-modal" role="dialog" aria-modal="true" aria-labelledby="wotd-word">
+    <article id="wotd-card" class="word-card">
+      <div class="word-card-top">
+        <div>
+          <div class="word-card-kicker">Word of the Day</div>
+          <div id="wotd-date" class="word-card-date">—</div>
+        </div>
+        <div class="word-card-actions">
+          <button id="wotd-speak-word" class="icon-btn speech-only" type="button" title="朗讀單字" aria-label="朗讀單字">🔊</button>
+          <button id="wotd-favorite" class="icon-btn" type="button" title="收藏單字" aria-label="收藏單字">☆</button>
+          <button id="wotd-close" class="icon-btn" type="button" title="關閉" aria-label="關閉">✕</button>
+        </div>
+      </div>
+      <div id="wotd-loading" class="word-card-loading">每日單字載入中…</div>
+      <div id="wotd-content" class="word-card-content" hidden>
+        <h2 id="wotd-word">—</h2>
+        <div class="word-meta">
+          <span id="wotd-ipa">—</span>
+          <span id="wotd-pos">—</span>
+        </div>
+        <dl class="word-defs">
+          <div><dt>中文</dt><dd id="wotd-zh">—</dd></div>
+          <div><dt>English</dt><dd id="wotd-en">—</dd></div>
+        </dl>
+        <div class="word-example">
+          <div class="word-example-label">Academic</div>
+          <p id="wotd-academic">—</p>
+          <button id="wotd-speak-academic" class="mini-speak speech-only" type="button" title="朗讀學術例句" aria-label="朗讀學術例句">🔊</button>
+        </div>
+        <div class="word-example">
+          <div class="word-example-label">Everyday</div>
+          <p id="wotd-life">—</p>
+          <button id="wotd-speak-life" class="mini-speak speech-only" type="button" title="朗讀生活例句" aria-label="朗讀生活例句">🔊</button>
+        </div>
+      </div>
+    </article>
+  </div>
+  <div id="wordbook-modal" class="word-modal" role="dialog" aria-modal="true" aria-labelledby="wordbook-title">
+    <article id="wordbook-card" class="word-card wordbook-card">
+      <div class="word-card-top">
+        <div>
+          <div class="word-card-kicker">My Vocabulary Notebook</div>
+          <h2 id="wordbook-title">我的單字本</h2>
+        </div>
+        <button id="wordbook-close" class="icon-btn" type="button" title="關閉" aria-label="關閉">✕</button>
+      </div>
+      <div id="wordbook-empty" class="wordbook-empty">還沒有收藏單字。看到想記的字，按星星就會放進來。</div>
+      <div id="wordbook-list" class="wordbook-list"></div>
+    </article>
+  </div>
   <div id="gameover">
     <h2>📚🔥 圖書館燒起來了！</h2>
     <div class="stats">
@@ -251,5 +303,6 @@
 <script src="js/adventure-data.js"></script>
 <script src="js/daily.js"></script>
 <script src="js/game.js"></script>
+<script src="js/word-of-day.js"></script>
 </body>
 </html>

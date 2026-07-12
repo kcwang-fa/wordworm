@@ -2290,3 +2290,214 @@
     /* 首頁三顆鈕在極窄螢幕縮小內距與字級，盡量一排放下 */
     body.home-screen .mode-btn { padding: 10px 8px; font-size: .9rem; min-height: 48px; }
   }
+
+  /* ===================== 每日單字（Word of the Day）===================== */
+  body.home-screen .mode-btn.utility-btn {
+    min-width: min(180px, calc((100vw - 80px) / 3));
+    background:
+      radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,255,255,.66), transparent 54%),
+      linear-gradient(180deg, #f6dda0, #b98334);
+  }
+  body.home-screen .mode-btn.utility-btn.active {
+    background:
+      radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,255,255,.66), transparent 54%),
+      linear-gradient(180deg, #f6dda0, #b98334);
+    color: #3a240d;
+  }
+
+  .word-modal {
+    position: fixed; inset: 0;
+    display: none; align-items: center; justify-content: center;
+    z-index: 45;
+    padding: 18px;
+    background: rgba(14,7,1,.76);
+  }
+  .word-modal.show { display: flex; }
+  .word-card {
+    width: min(650px, calc(100vw - 32px));
+    max-height: min(760px, calc(100dvh - 34px));
+    overflow: auto;
+    padding: 20px;
+    border: 1px solid rgba(255,217,122,.36);
+    border-radius: 12px;
+    background:
+      linear-gradient(180deg, rgba(255,222,138,.08), transparent 34%),
+      linear-gradient(145deg, #3a210b, #201005 70%);
+    box-shadow:
+      0 22px 45px rgba(0,0,0,.58),
+      inset 0 0 0 2px rgba(255,221,144,.08);
+  }
+  .wordbook-card { width: min(820px, calc(100vw - 32px)); }
+  .word-card-top {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 14px; margin-bottom: 12px;
+  }
+  .word-card-kicker {
+    font-size: .76rem; font-weight: 850; letter-spacing: .08em;
+    text-transform: uppercase; color: #d8c3a0; opacity: .88;
+  }
+  .word-card-date {
+    margin-top: 3px; font-family: var(--font-letter);
+    font-size: .9rem; color: #ffd97a; opacity: .9;
+  }
+  .word-card-actions, .wordbook-actions {
+    display: flex; gap: 7px; align-items: center;
+  }
+  .icon-btn {
+    min-width: 38px; min-height: 38px;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,217,122,.34);
+    background: rgba(0,0,0,.26);
+    color: #fbead2;
+    font-family: var(--font-ui);
+    font-size: 1rem; font-weight: 900;
+    cursor: pointer;
+  }
+  .icon-btn:hover, .mini-speak:hover {
+    border-color: rgba(255,217,122,.72);
+    background: rgba(255,217,122,.16);
+  }
+  .icon-btn.active {
+    color: #ffd97a;
+    background: rgba(255,217,122,.17);
+    text-shadow: 0 0 10px rgba(255,217,122,.25);
+  }
+  body.no-speech .speech-only { display: none !important; }
+
+  .word-card-loading {
+    padding: 28px 0;
+    text-align: center;
+    color: #fbead2;
+    font-weight: 750;
+  }
+  .word-card-content h2, #wordbook-title {
+    margin: 0;
+    font-family: var(--font-display);
+    color: #ffd97a;
+    letter-spacing: .02em;
+  }
+  .word-card-content h2 {
+    font-size: clamp(2.1rem, 7vw, 4rem);
+    line-height: 1.02;
+  }
+  #wordbook-title { font-size: 1.6rem; line-height: 1.15; }
+  .word-meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 6px;
+    font-family: var(--font-letter);
+    color: #f7d99d;
+    font-size: .98rem;
+  }
+  .word-meta span {
+    display: inline-flex; align-items: center;
+    min-height: 26px;
+    padding: 2px 9px;
+    border: 1px solid rgba(255,217,122,.22);
+    border-radius: 999px;
+    background: rgba(0,0,0,.16);
+  }
+  .word-defs {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .word-defs div {
+    padding: 12px;
+    border: 1px solid rgba(255,217,122,.2);
+    border-radius: 8px;
+    background: rgba(0,0,0,.18);
+  }
+  .word-defs.compact {
+    grid-template-columns: 1fr;
+    margin: 10px 0;
+  }
+  .word-defs.compact div { padding: 9px 10px; }
+  .word-defs dt {
+    margin-bottom: 5px;
+    color: #ffd97a;
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .word-defs dd {
+    color: #fbead2;
+    line-height: 1.55;
+    user-select: text;
+    -webkit-user-select: text;
+  }
+  .word-example {
+    position: relative;
+    margin-top: 10px;
+    padding: 12px 48px 12px 12px;
+    border-left: 4px solid rgba(143,212,122,.82);
+    border-radius: 8px;
+    background: rgba(12,6,2,.26);
+  }
+  .word-example.compact {
+    margin-top: 8px;
+    padding: 10px 44px 10px 11px;
+  }
+  .word-example-label {
+    margin-bottom: 4px;
+    color: #8fd47a;
+    font-size: .76rem;
+    font-weight: 900;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+  .word-example p {
+    margin: 0;
+    line-height: 1.55;
+    user-select: text;
+    -webkit-user-select: text;
+  }
+  .mini-speak {
+    position: absolute; top: 10px; right: 10px;
+    width: 30px; height: 30px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,217,122,.3);
+    background: rgba(0,0,0,.25);
+    color: #fbead2;
+    cursor: pointer;
+  }
+  .wordbook-empty {
+    padding: 24px 10px;
+    color: #d8c3a0;
+    text-align: center;
+    line-height: 1.7;
+  }
+  .wordbook-list {
+    display: grid; gap: 12px;
+    margin-top: 12px;
+  }
+  .wordbook-item {
+    padding: 14px;
+    border: 1px solid rgba(255,217,122,.24);
+    border-radius: 8px;
+    background: rgba(0,0,0,.18);
+  }
+  .wordbook-head {
+    display: flex; justify-content: space-between; gap: 10px; align-items: flex-start;
+  }
+  .wordbook-head h3 {
+    margin: 0;
+    color: #ffd97a;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    line-height: 1.1;
+  }
+  .remove-word { color: #ffb08a; }
+
+  @media (max-width: 700px) {
+    .word-modal { padding: 12px; align-items: flex-start; }
+    .word-card {
+      width: calc(100vw - 24px);
+      max-height: calc(100dvh - 24px);
+      padding: 15px;
+    }
+    .word-defs { grid-template-columns: 1fr; }
+    .wordbook-head { align-items: stretch; }
+    .wordbook-actions { align-self: flex-start; }
+  }
