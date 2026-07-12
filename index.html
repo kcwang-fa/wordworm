@@ -15,7 +15,14 @@
 <link rel="apple-touch-icon-precomposed" sizes="180x180" href="./apple-touch-icon.png">
 <link rel="icon" href="./favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
-<link rel="stylesheet" href="css/style.css?v=20260712f">
+<!-- CSS 已按職責拆檔；載入順序＝原 style.css 的 cascade 順序，不可任意調換
+     （daily-kids.css 內含順序相依的 #mode-select 規則，詳見該檔檔頭說明） -->
+<link rel="stylesheet" href="css/base.css?v=20260713a">
+<link rel="stylesheet" href="css/adventure.css?v=20260713a">
+<link rel="stylesheet" href="css/board.css?v=20260713a">
+<link rel="stylesheet" href="css/gameover.css?v=20260713a">
+<link rel="stylesheet" href="css/daily-kids.css?v=20260713a">
+<link rel="stylesheet" href="css/word-of-day.css?v=20260713a">
 </head>
 <body class="home-screen">
   <div id="library-bg" aria-hidden="true"></div>

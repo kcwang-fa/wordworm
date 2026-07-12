@@ -1,0 +1,269 @@
+  /* ===== 書房舞台（蟲蟲立繪 + 書架框主體，左右並排／手機上下堆疊） ===== */
+  #stage { display: flex; align-items: flex-start; gap: 16px; }
+  #worm-corner {
+    display: flex; flex-direction: column; align-items: center;
+    min-width: 108px; padding-top: 6px;
+  }
+  #worm-stage { display: flex; flex-direction: column; align-items: center; }
+  #worm-stage svg#wormsvg { width: clamp(92px, 16vh, 132px); height: auto; display: block;
+    filter: drop-shadow(0 6px 5px rgba(0,0,0,.4)); }
+  #wormface { display: block; transition: transform .3s; }
+  #worm-shelf { width: 118px; margin-top: -8px; }
+  #speech-bubble {
+    position: relative; margin-top: 10px;
+    background: #fffaf0; color: #4a2f10;
+    border-radius: 14px; padding: 8px 12px;
+    font-family: var(--font-zh-ui);
+    font-size: .78rem; font-weight: 850; text-align: center;
+    letter-spacing: .025em;
+    max-width: 160px; box-shadow: 0 4px 10px rgba(0,0,0,.35);
+    opacity: 0; transform: scale(.85); transition: opacity .22s, transform .22s;
+  }
+  #speech-bubble.show { opacity: 1; transform: scale(1); }
+  #speech-bubble::before {
+    content: ""; position: absolute; top: -7px; left: 50%; margin-left: -7px;
+    border: 7px solid transparent; border-bottom-color: #fffaf0;
+  }
+  @media (max-width: 700px) {
+    body.home-screen #library-bg {
+      background:
+        linear-gradient(180deg, rgba(20,12,5,.26) 0%, rgba(20,12,5,.1) 36%, rgba(20,12,5,.46) 100%),
+        url("../assets/home-cover.png?v=20260712f") 29% center / cover no-repeat;
+    }
+    body.home-screen h1 {
+      margin-top: clamp(20px, 6vh, 42px);
+      font-size: clamp(1.9rem, 10vw, 3rem);
+    }
+    body.home-screen #subtitle { width: min(340px, calc(100vw - 28px)); }
+    body.home-screen #mode-select {
+      flex-direction: column;
+      width: min(300px, calc(100vw - 42px));
+      bottom: clamp(24px, 7vh, 58px);
+    }
+    body.home-screen .mode-btn {
+      width: 100%;
+      min-width: 0;
+      min-height: 54px;
+    }
+    #stage { flex-direction: column; align-items: center; }
+    #worm-corner { flex-direction: row; min-width: 0; padding-top: 0; gap: 6px; }
+    #worm-stage svg#wormsvg { width: 76px; }
+    #worm-shelf { display: none; }
+    #speech-bubble { margin-top: 0; }
+    #speech-bubble::before {
+      top: 50%; left: -7px; margin-left: 0; margin-top: -7px;
+      border-bottom-color: transparent; border-right-color: #fffaf0;
+    }
+  }
+
+  /* ===== 木質書架框（遊戲主體外框） ===== */
+  #game-panel {
+    background:
+      radial-gradient(circle 4px at 15px 15px, #e8c98a 40%, #8a6230 72%, transparent 74%),
+      radial-gradient(circle 4px at calc(100% - 15px) 15px, #e8c98a 40%, #8a6230 72%, transparent 74%),
+      radial-gradient(circle 4px at 15px calc(100% - 15px), #e8c98a 40%, #8a6230 72%, transparent 74%),
+      radial-gradient(circle 4px at calc(100% - 15px) calc(100% - 15px), #e8c98a 40%, #8a6230 72%, transparent 74%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.07) 0 2px, transparent 2px 42px),
+      linear-gradient(155deg, #6b4726 0%, #543a1e 52%, #452f18 100%);
+    border: 5px solid #2f2010; border-radius: 16px;
+    padding: clamp(10px, 1.8vh, 14px) 16px clamp(12px, 2vh, 18px); position: relative;
+    box-shadow: 0 10px 24px rgba(0,0,0,.45), inset 0 0 0 2px rgba(255,210,140,.1);
+    display: flex; flex-direction: column; align-items: center;
+  }
+  #game-panel::before {
+    content: ""; position: absolute; top: -5px; left: -5px; right: -5px; height: 11px;
+    background: linear-gradient(180deg, #86603a, #3a2711);
+    border-radius: 11px 11px 0 0;
+  }
+
+  /* ===== 資訊列 ===== */
+  #hud {
+    display: flex; gap: 14px; align-items: center;
+    background: rgba(0,0,0,.35); border-radius: 12px;
+    padding: clamp(4px, .9vh, 6px) 14px; margin-bottom: clamp(4px, 1vh, 8px);
+    font-family: var(--font-zh-ui); font-size: .85rem; font-weight: 800; letter-spacing: .025em;
+  }
+  #hud b { color: #ffd97a; font-family: var(--font-letter); font-size: 1.05rem; }
+
+  #gem-guide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px 9px;
+    max-width: min(520px, calc(100vw - 42px));
+    margin: 0 0 clamp(3px, .8vh, 6px);
+    padding: 5px 10px;
+    border: 1px solid rgba(255,230,160,.22);
+    border-radius: 10px;
+    background: rgba(0,0,0,.24);
+    color: rgba(255,244,216,.88);
+    font-size: .72rem;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+  .gem-guide-title {
+    color: #ffe39a;
+  }
+  .gem-guide-note {
+    color: rgba(255,244,216,.62);
+    font-weight: 750;
+  }
+  .gem-swatch {
+    display: inline-block;
+    width: .72rem;
+    height: .72rem;
+    margin-right: 3px;
+    border-radius: 3px;
+    vertical-align: -.09rem;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.65), 0 0 5px rgba(0,0,0,.32);
+  }
+  .gem-swatch.gem-green { background: linear-gradient(145deg,#b8f2a1,#5fbf4a); }
+  .gem-swatch.gem-gold { background: linear-gradient(145deg,#ffe98a,#e8b420); }
+  .gem-swatch.gem-sapphire { background: linear-gradient(145deg,#a1c8f2,#3a6fd8); }
+  .gem-swatch.gem-diamond { background: linear-gradient(145deg,#fff,#9adcf0); }
+
+  @media (max-width: 700px) {
+    #gem-guide {
+      max-width: 100%;
+      gap: 4px 7px;
+      padding: 5px 8px;
+      font-size: .66rem;
+    }
+    .gem-guide-note {
+      flex-basis: 100%;
+      text-align: center;
+    }
+  }
+
+  @media (max-height: 600px) {
+    #gem-guide {
+      font-size: .64rem;
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+    .gem-guide-note {
+      display: none;
+    }
+  }
+
+  /* ===== 當前拼字 ===== */
+  #current {
+    min-height: clamp(1.6rem, 4vh, 2.1rem); font-size: clamp(1.1rem, 3vh, 1.4rem); letter-spacing: 3px;
+    font-family: var(--font-letter);
+    font-weight: bold; color: #fff;
+    display: flex; align-items: center; gap: 12px;
+  }
+  #current .score-preview { font-size: .85rem; color: #8fd47a; font-weight: normal; }
+  #current.invalid { color: #e2836a; }
+
+  /* ===== 棋盤（7 欄交錯蜂巢） ===== */
+  #board {
+    display: flex; gap: clamp(3px, .7vh, 4px); padding: clamp(7px, 1.3vh, 10px);
+    background: rgba(0,0,0,.3); border-radius: 14px;
+    touch-action: none;
+  }
+  .col { display: flex; flex-direction: column; gap: 4px; }
+  .tile {
+    width: clamp(40px, 6.4vh, 48px); height: clamp(40px, 6.4vh, 48px); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-letter);
+    font-size: clamp(1.05rem, 2.7vh, 1.25rem); font-weight: 950; color: #6b4a1f;
+    letter-spacing: .02em;
+    background: linear-gradient(155deg, #fffaf0 0%, #f5e3b3 55%, #e9cd8c 100%);
+    box-shadow:
+      0 4px 0 #c9a05c, 0 7px 9px rgba(50,30,5,.4),
+      inset 0 2px 1px rgba(255,255,255,.9), inset 0 -3px 5px rgba(170,120,50,.28);
+    text-shadow: 0 1px 0 rgba(255,255,255,.7);
+    cursor: pointer; position: relative;
+    transition: transform .08s, background .15s, box-shadow .1s;
+  }
+  .tile.sel {
+    background: linear-gradient(155deg, #fff3c4, #ffcf4d);
+    transform: translateY(-2px) scale(1.07);
+    box-shadow:
+      0 2px 0 #c9a05c, 0 0 12px rgba(255,201,60,.75),
+      inset 0 2px 1px rgba(255,255,255,.9);
+    z-index: 2;
+  }
+  .tile.burning {
+    background: linear-gradient(145deg, #ff9a52, #e2542a);
+    color: #fff;
+    animation: flicker .5s infinite alternate;
+  }
+  .tile.burning::after {
+    content: "🔥"; position: absolute; top: -12px; right: -4px; font-size: .9rem;
+  }
+  .tile.gem-green   { background: linear-gradient(145deg,#b8f2a1,#5fbf4a); }
+  .tile.gem-gold    { background: linear-gradient(145deg,#ffe98a,#e8b420); }
+  .tile.gem-sapphire{ background: linear-gradient(145deg,#a1c8f2,#3a6fd8); color:#fff; }
+  .tile.gem-diamond { background: linear-gradient(145deg,#e8f8ff,#9adcf0); }
+  .tile.gem-green::before, .tile.gem-gold::before, .tile.gem-sapphire::before, .tile.gem-diamond::before {
+    content: "◆"; position: absolute; top: 1px; left: 4px; font-size: .55rem; opacity: .8;
+  }
+  @keyframes flicker { from { filter: brightness(1); } to { filter: brightness(1.25); } }
+  /* ===== 冒險模式：鎖定／詛咒磚（負面磚） ===== */
+  .tile.locked {
+    background: linear-gradient(155deg, #9a9a9a, #5f5f5f); color: #ddd;
+    cursor: default; box-shadow: 0 4px 0 #3f3f3f, inset 0 2px 1px rgba(255,255,255,.25);
+  }
+  .tile.locked::after {
+    content: "🔒"; position: absolute; top: -10px; right: -4px; font-size: .8rem;
+  }
+  .tile.cursed {
+    background: linear-gradient(155deg, #c79bf0, #7a4ac2); color: #fff;
+    box-shadow: 0 4px 0 #4e2d82, inset 0 2px 1px rgba(255,255,255,.3);
+  }
+  .tile.cursed::after {
+    content: "💀"; position: absolute; top: -10px; right: -4px; font-size: .8rem;
+  }
+  .tile-status-count {
+    position: absolute;
+    right: -7px; bottom: -7px;
+    display: grid; place-items: center;
+    width: 19px; height: 19px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,248,221,.92);
+    background: #2f2416;
+    color: #fff4d7;
+    font-family: var(--font-letter);
+    font-size: .72rem;
+    font-weight: 950;
+    line-height: 1;
+    box-shadow: 0 2px 5px rgba(0,0,0,.42);
+    pointer-events: none;
+    z-index: 3;
+  }
+  .tile.locked .tile-status-count { background: #424242; }
+  .tile.cursed .tile-status-count { background: #5a2b92; }
+  @keyframes negativeTilePulse {
+    from { filter: brightness(.95); }
+    to { filter: brightness(1.12); }
+  }
+  .tile.falling { animation: drop .25s ease-in; }
+  @keyframes drop { from { transform: translateY(-56px); opacity: .3; } to { transform: none; opacity: 1; } }
+
+  /* ===== 按鈕列 ===== */
+  #controls { display: flex; gap: 10px; margin: clamp(6px, 1.3vh, 10px) 0; }
+  button {
+    font-family: var(--font-zh-ui); font-size: .95rem; font-weight: 850;
+    letter-spacing: .04em;
+    padding: clamp(6px, 1.2vh, 8px) 20px; border: none; border-radius: 10px; cursor: pointer;
+    color: #4a2f10; background: linear-gradient(145deg, #ffd97a, #e8b420);
+    box-shadow: 0 3px 0 #a8834e;
+  }
+  button:active { transform: translateY(2px); box-shadow: 0 1px 0 #a8834e; }
+  button.secondary { background: linear-gradient(145deg, #d8cbb2, #b0a184); }
+  button:disabled { opacity: .45; cursor: default; }
+
+  /* ===== 訊息浮層 ===== */
+  #toast {
+    position: fixed; top: 18%; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,.75); color: #ffd97a; font-family: var(--font-zh-game); font-size: 1.1rem; font-weight: 900;
+    letter-spacing: .05em;
+    padding: 10px 22px; border-radius: 12px; pointer-events: none;
+    opacity: 0; transition: opacity .3s;
+    z-index: 10; text-align: center;
+  }
+  #toast.show { opacity: 1; }
+

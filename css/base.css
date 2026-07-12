@@ -1,0 +1,215 @@
+  /* ===== 基本版面 ===== */
+  :root {
+    --font-zh-ui: "Hiragino Maru Gothic ProN", "Yuanti TC", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    --font-zh-game: "Hannotate TC", "Klee One", "Yuji Syuku", "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+    --font-ui: ui-rounded, "Avenir Next", "Trebuchet MS", var(--font-zh-ui);
+    --font-display: "Iowan Old Style", "Palatino Linotype", var(--font-zh-game);
+    --font-letter: "Arial Rounded MT Bold", "Avenir Next", "Trebuchet MS", "Noto Sans TC", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { min-height: 100%; }
+  body {
+    font-family: var(--font-ui);
+    font-optical-sizing: auto;
+    text-rendering: geometricPrecision;
+    background:
+      radial-gradient(ellipse 85% 45% at 50% -8%, rgba(255,205,130,.22), transparent 62%),
+      linear-gradient(160deg, #3c2a13 0%, #5c3f20 55%, #3c2a13 100%);
+    color: #fbead2;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex; flex-direction: column; align-items: center;
+    user-select: none; -webkit-user-select: none;
+    position: relative;
+    overflow-x: hidden;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  /* ===== 圖書館背景 ===== */
+  #library-bg {
+    position: fixed; inset: 0; z-index: -1; opacity: .55;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,200,110,.3), transparent 70%),
+      linear-gradient(180deg, rgba(21,12,5,.2), rgba(21,12,5,.45)),
+      url("../assets/library-background-gpt.png") center center / cover no-repeat,
+      linear-gradient(160deg, #2c1d0d 0%, #47311a 60%, #2c1d0d 100%);
+  }
+  body.mode-adventure {
+    background:
+      radial-gradient(ellipse 42% 24% at 22% 8%, rgba(85,220,255,.18), transparent 66%),
+      radial-gradient(ellipse 48% 28% at 78% 12%, rgba(194,80,255,.17), transparent 68%),
+      radial-gradient(ellipse 64% 30% at 50% 104%, rgba(129,255,95,.1), transparent 70%),
+      linear-gradient(160deg, #29150b 0%, #422013 46%, #1b0b13 100%);
+  }
+  body.mode-adventure #library-bg {
+    opacity: .78;
+    background:
+      radial-gradient(circle at 16% 18%, rgba(104,245,255,.18) 0 1px, transparent 2px),
+      radial-gradient(circle at 74% 12%, rgba(255,222,132,.2) 0 1px, transparent 2px),
+      radial-gradient(circle at 42% 28%, rgba(201,98,255,.16) 0 1px, transparent 2px),
+      radial-gradient(ellipse 62% 34% at 50% 0%, rgba(255,194,95,.28), transparent 72%),
+      radial-gradient(ellipse 56% 46% at 78% 32%, rgba(139,60,255,.16), transparent 70%),
+      linear-gradient(180deg, rgba(18,8,10,.22), rgba(18,8,10,.5)),
+      url("../assets/library-background-gpt.png") center center / cover no-repeat,
+      linear-gradient(160deg, #17080f 0%, #302012 54%, #120812 100%);
+    background-size: auto, auto, auto, auto, auto, auto, cover, auto;
+  }
+  body.mode-adventure #library-bg::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(circle at 18% 34%, rgba(118,247,255,.28) 0 1px, transparent 2px),
+      radial-gradient(circle at 64% 22%, rgba(255,232,143,.26) 0 1px, transparent 2px),
+      radial-gradient(circle at 78% 58%, rgba(200,93,255,.22) 0 1px, transparent 2px),
+      radial-gradient(circle at 35% 72%, rgba(119,255,122,.18) 0 1px, transparent 2px);
+    background-size: 210px 190px, 260px 220px, 190px 240px, 240px 210px;
+    opacity: .82;
+    animation: magicStars 8s ease-in-out infinite alternate;
+  }
+  h1 {
+    font-family: var(--font-zh-game);
+    font-size: clamp(1rem, 2.5vh, 1.3rem);
+    margin: clamp(4px, 1.2vh, 10px) 0 2px;
+    letter-spacing: .05em;
+    color: #ffd97a;
+    text-shadow: 0 2px 0 rgba(70,35,10,.72), 0 0 12px rgba(255,217,122,.22);
+  }
+  #subtitle {
+    font-family: var(--font-zh-ui);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    opacity: .65;
+    margin-bottom: clamp(3px, .8vh, 6px);
+  }
+
+  /* ===== 首頁封面 ===== */
+  body.home-screen {
+    justify-content: flex-start;
+    overflow: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  body.home-screen #library-bg {
+    opacity: 1;
+    background:
+      linear-gradient(180deg, rgba(20,12,5,.22) 0%, rgba(20,12,5,.08) 36%, rgba(20,12,5,.38) 100%),
+      url("../assets/home-cover.png?v=20260712f") center center / cover no-repeat;
+  }
+  body.home-screen #library-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 1;
+    animation: none;
+    background:
+      radial-gradient(ellipse 70% 34% at 50% 17%, rgba(255,233,168,.14), transparent 64%),
+      linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.18));
+  }
+  body.home-screen h1 {
+    position: relative;
+    z-index: 1;
+    margin-top: clamp(28px, 7vh, 68px);
+    padding: 0 18px;
+    font-size: clamp(2rem, 7vw, 4.6rem);
+    line-height: 1;
+    font-weight: 950;
+    letter-spacing: .045em;
+    color: #fff3bd;
+    text-align: center;
+    text-shadow:
+      0 3px 0 rgba(92,49,12,.72),
+      0 10px 22px rgba(0,0,0,.42),
+      0 0 28px rgba(255,214,117,.38);
+  }
+  body.home-screen #subtitle {
+    position: relative;
+    z-index: 1;
+    width: min(720px, calc(100vw - 34px));
+    margin: 12px auto 0;
+    font-size: clamp(.82rem, 2.1vw, 1.05rem);
+    font-weight: 750;
+    letter-spacing: .045em;
+    line-height: 1.55;
+    color: #fff0cf;
+    text-align: center;
+    opacity: .92;
+    text-shadow: 0 2px 10px rgba(0,0,0,.58);
+  }
+  body.home-screen #mode-select {
+    position: fixed;
+    left: 50%;
+    bottom: calc(clamp(34px, 9vh, 86px) + env(safe-area-inset-bottom));
+    z-index: 2;
+    transform: translateX(-50%);
+    display: flex;
+    gap: clamp(12px, 2.5vw, 22px);
+    width: min(620px, calc(100vw - 32px));
+    margin: 0;
+    justify-content: center;
+  }
+  body.home-screen .mode-btn {
+    /* 四顆主模式鈕並列（一般／冒險／每日／小書蟲），窄螢幕交給後面的 RWD 堆疊 */
+    min-width: min(176px, calc((100vw - 98px) / 4));
+    min-height: 58px;
+    padding: 14px 22px;
+    border-radius: 16px;
+    border-color: rgba(255,238,184,.78);
+    color: #3a240d;
+    font-size: clamp(1rem, 2.7vw, 1.2rem);
+    background:
+      radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,255,255,.72), transparent 54%),
+      linear-gradient(180deg, #fff2bd, #dfae4d);
+    box-shadow:
+      0 5px 0 #7a4918,
+      0 14px 26px rgba(0,0,0,.34),
+      inset 0 0 0 2px rgba(255,255,255,.3);
+    text-shadow: 0 1px 0 rgba(255,255,255,.58);
+  }
+  body.home-screen .mode-btn.active {
+    background:
+      radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,255,255,.82), transparent 52%),
+      linear-gradient(180deg, #fcffd1, #aeea62 52%, #5ca82d);
+    border-color: #fff9cb;
+    color: #24350e;
+  }
+  body.home-screen #stage { display: none; }
+
+  /* ===== 遊戲模式選單（經典／冒險） ===== */
+  #mode-select { display: flex; gap: 8px; margin-bottom: clamp(4px, 1.1vh, 10px); }
+  .mode-btn {
+    font-family: var(--font-zh-ui); font-size: .8rem; font-weight: 850;
+    letter-spacing: .04em;
+    padding: 6px 16px; border: 2px solid rgba(255,210,140,.25); border-radius: 999px;
+    cursor: pointer; background: rgba(0,0,0,.3); color: #d8c3a0;
+    transition: background .15s, border-color .15s, color .15s, transform .1s;
+  }
+  .mode-btn:active { transform: translateY(1px); }
+  .mode-btn.active {
+    background: linear-gradient(145deg, #ffd97a, #e8b420);
+    color: #4a2f10; border-color: #fff2c8;
+  }
+  body.home-screen .top-action-btn,
+  body:not(.home-screen) .mode-entry { display: none; }
+  body:not(.home-screen) #mode-select {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  body:not(.home-screen) .top-action-btn {
+    min-width: 128px;
+    border-color: rgba(255,238,184,.45);
+    background: rgba(24,13,4,.58);
+    color: #fff0cf;
+  }
+  body:not(.home-screen) .top-action-btn[aria-pressed="true"] {
+    background: linear-gradient(145deg, #ffd97a, #b87b27);
+    color: #3a240d;
+    border-color: #fff2c8;
+  }
+  /* 冒險模式下隱藏經典專屬 HUD（Task 70 會補上 #adv-hud 取代） */
+  body.mode-adventure #rankbar,
+  body.mode-adventure #hud,
+  body.mode-adventure #bonusbar,
+  body.mode-adventure #mode { display: none; }
+

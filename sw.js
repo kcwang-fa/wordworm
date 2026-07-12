@@ -1,4 +1,4 @@
-const CACHE_NAME = 'wordworm-pwa-20260712f';
+const CACHE_NAME = 'wordworm-pwa-20260713a';
 
 const PRECACHE_URLS = [
   './',
@@ -6,7 +6,12 @@ const PRECACHE_URLS = [
   './manifest.webmanifest',
   './apple-touch-icon.png',
   './favicon.ico',
-  './css/style.css?v=20260712f',
+  './css/base.css?v=20260713a',
+  './css/adventure.css?v=20260713a',
+  './css/board.css?v=20260713a',
+  './css/gameover.css?v=20260713a',
+  './css/daily-kids.css?v=20260713a',
+  './css/word-of-day.css?v=20260713a',
   './js/story.js',
   './js/adventure-data.js',
   './js/daily.js',

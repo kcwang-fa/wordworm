@@ -1,0 +1,547 @@
+  /* ===================== 每日挑戰（daily）=====================
+     所有選擇器鎖在 body.mode-daily／#daily-*／.tile.used 底下，
+     不影響經典與冒險模式。子畫面（entry/play/locked）由 js/daily.js
+     切換 body 的 daily-view-* class 控制顯隱。 */
+
+  /* 首頁三顆鈕：容器加寬讓桌面一排放下，窄螢幕允許換行 */
+  body.home-screen #mode-select { flex-wrap: wrap; width: min(800px, calc(100vw - 32px)); }
+
+  /* 每日模式下隱藏經典專屬 HUD（等級列／分數列／獎勵字／寶石說明／拼字規則鈕） */
+  body.mode-daily #rankbar,
+  body.mode-daily #hud,
+  body.mode-daily #bonusbar,
+  body.mode-daily #gem-guide,
+  body.mode-daily #mode { display: none; }
+
+  /* ===================== 小書蟲幼兒模式 =====================
+     獨立於棋盤玩法；畫面只保留圖片、三格字母、五顆大按鈕與可收集的蟲身。 */
+  body.mode-kids {
+    background:
+      radial-gradient(ellipse 52% 32% at 50% 0%, rgba(255,255,255,.22), transparent 68%),
+      linear-gradient(180deg, #7fc8ff 0%, #b7e66d 54%, #78b84d 100%);
+    color: #2d230d;
+    overflow: hidden;
+  }
+  body.mode-kids #library-bg {
+    opacity: .42;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255,255,255,.86) 0 22px, transparent 23px),
+      radial-gradient(circle at 72% 14%, rgba(255,255,255,.7) 0 18px, transparent 19px),
+      radial-gradient(circle at 82% 34%, rgba(255,255,255,.52) 0 14px, transparent 15px),
+      linear-gradient(180deg, rgba(255,255,255,.26), rgba(255,255,255,.08));
+  }
+  body.mode-kids h1 {
+    color: #fffbe0;
+    text-shadow: 0 3px 0 rgba(83,124,42,.55), 0 8px 18px rgba(0,0,0,.22);
+  }
+  body.mode-kids #stage {
+    width: min(560px, calc(100vw - 24px));
+    justify-content: center;
+  }
+  body.mode-kids #worm-corner,
+  body.mode-kids #adv-hud,
+  body.mode-kids #daily-hud,
+  body.mode-kids #rankbar,
+  body.mode-kids #hud,
+  body.mode-kids #bonusbar,
+  body.mode-kids #gem-guide,
+  body.mode-kids #current,
+  body.mode-kids #board,
+  body.mode-kids #controls { display: none; }
+  #kids-hud { display: none; width: 100%; }
+  body.mode-kids #kids-hud {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(9px, 1.7vh, 14px);
+  }
+  body.mode-kids #game-panel {
+    width: 100%;
+    min-height: min(760px, calc(100dvh - 104px));
+    padding: clamp(10px, 1.5vh, 16px);
+    border: 5px solid rgba(86,112,38,.7);
+    border-radius: 22px;
+    background:
+      radial-gradient(circle at 20% 18%, rgba(255,255,255,.55), transparent 24%),
+      linear-gradient(180deg, rgba(255,253,220,.96), rgba(255,242,178,.93) 46%, rgba(179,220,116,.94));
+    box-shadow: 0 14px 30px rgba(61,83,26,.28), inset 0 0 0 3px rgba(255,255,255,.46);
+  }
+  body.mode-kids #game-panel::before { display: none; }
+  #kids-toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+  }
+  .kids-icon-btn {
+    width: 62px;
+    height: 62px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: 3px solid rgba(104,129,38,.38);
+    border-radius: 50%;
+    background: linear-gradient(180deg, #fff8c9, #ffd166);
+    box-shadow: 0 5px 0 #bc8830, 0 8px 14px rgba(83,112,35,.22);
+    font-size: 1.85rem;
+  }
+  .kids-icon-btn.holding {
+    background: conic-gradient(#8bd450 0 75%, #fff4be 75% 100%);
+  }
+  #kids-scene {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: clamp(10px, 2vh, 16px);
+    width: 100%;
+  }
+  #kids-theme-icon {
+    position: absolute;
+    top: 2px;
+    left: clamp(8px, 3vw, 20px);
+    width: 54px;
+    height: 54px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,.72);
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,.75), 0 5px 10px rgba(93,112,38,.16);
+    font-size: 2rem;
+  }
+  #kids-picture {
+    width: min(250px, 54vw);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border: 5px solid rgba(104,129,38,.4);
+    border-radius: 34px;
+    background:
+      radial-gradient(circle at 32% 20%, rgba(255,255,255,.85), transparent 30%),
+      linear-gradient(180deg, #fffefa, #ffeaa2);
+    box-shadow: 0 8px 0 #c9a05c, 0 18px 28px rgba(93,112,38,.25);
+    font-size: clamp(6.5rem, 27vw, 10.5rem);
+    line-height: 1;
+  }
+  #kids-picture:active {
+    transform: translateY(3px);
+    box-shadow: 0 5px 0 #c9a05c, 0 12px 20px rgba(93,112,38,.22);
+  }
+  #kids-slots {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(78px, 92px));
+    gap: clamp(8px, 2vw, 14px);
+    justify-content: center;
+  }
+  .kids-slot {
+    height: clamp(78px, 13vh, 94px);
+    display: grid;
+    place-items: center;
+    border: 5px solid rgba(96,118,35,.45);
+    border-radius: 18px;
+    background: rgba(255,255,255,.64);
+    color: #4d3914;
+    font-family: var(--font-letter);
+    font-size: clamp(2.25rem, 8vw, 3.5rem);
+    font-weight: 950;
+    box-shadow: inset 0 -5px 0 rgba(211,177,94,.34);
+  }
+  .kids-slot.filled {
+    animation: kidsSlotPop .2s ease-out;
+    background: linear-gradient(180deg, #fff8cf, #ffd166);
+  }
+  #kids-letter-bank {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(70px, 88px));
+    gap: clamp(8px, 2vw, 12px);
+    justify-content: center;
+    width: 100%;
+  }
+  .kids-letter {
+    min-width: 80px;
+    min-height: 80px;
+    padding: 0;
+    border: 4px solid rgba(94,77,28,.34);
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at 34% 20%, rgba(255,255,255,.76), transparent 30%),
+      linear-gradient(180deg, #ffffff, #ffc85c);
+    color: #4a3310;
+    font-family: var(--font-letter);
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    font-weight: 950;
+    box-shadow: 0 7px 0 #bc8830, 0 12px 18px rgba(93,112,38,.22);
+    text-shadow: 0 2px 0 rgba(255,255,255,.7);
+  }
+  .kids-letter.correct {
+    opacity: .42;
+    transform: translateY(7px) scale(.92);
+    box-shadow: 0 1px 0 #bc8830;
+  }
+  .kids-letter.shake {
+    animation: kidsShake .32s ease-in-out;
+  }
+  #kids-worm-yard {
+    width: 100%;
+    min-height: 94px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 10px 4px 4px;
+  }
+  #kids-worm {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: min-content;
+    padding: 4px 8px;
+  }
+  .kids-worm-head,
+  .kids-worm-segment {
+    flex: 0 0 auto;
+    width: 66px;
+    height: 66px;
+    margin-left: -12px;
+    display: grid;
+    place-items: center;
+    border: 4px solid rgba(74,111,35,.35);
+    border-radius: 50%;
+    background: linear-gradient(145deg, #b7f279, #67bb45);
+    box-shadow: 0 6px 0 #4f8d32, 0 9px 12px rgba(57,87,30,.22);
+    font-size: 2rem;
+  }
+  .kids-worm-head {
+    position: relative;
+    z-index: 2;
+    width: 74px;
+    height: 74px;
+    margin-left: 0;
+    animation: kidsWiggle 1.8s ease-in-out infinite;
+  }
+  .kids-worm-head::before,
+  .kids-worm-head::after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    width: 15px;
+    height: 9px;
+    border: 3px solid #385d22;
+    border-top: 0;
+    border-radius: 0 0 20px 20px;
+    animation: kidsBlink 3.4s infinite;
+  }
+  .kids-worm-head::before { left: 18px; }
+  .kids-worm-head::after { right: 18px; }
+  .kids-worm-eye { display: none; }
+  .kids-worm-segment {
+    background: linear-gradient(145deg, #d8ff94, #7cc84e);
+    font-size: 1.8rem;
+  }
+  .kids-eating #kids-slots {
+    animation: kidsEatWord .75s ease-in-out;
+  }
+  .kids-eating .kids-worm-head {
+    animation: kidsWormEat .75s ease-in-out, kidsWiggle 1.8s ease-in-out infinite .8s;
+  }
+  .kids-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(34,56,18,.58);
+  }
+  .kids-modal.show { display: flex; }
+  .kids-modal-card {
+    position: relative;
+    width: min(520px, calc(100vw - 28px));
+    max-height: calc(100dvh - 36px);
+    overflow: auto;
+    padding: 54px 18px 20px;
+    border: 5px solid rgba(96,118,35,.45);
+    border-radius: 24px;
+    background: linear-gradient(180deg, #fffbe5, #ffe59a);
+    color: #3f2b0d;
+    box-shadow: 0 18px 34px rgba(31,48,12,.34);
+  }
+  .kids-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 1.35rem;
+  }
+  #kids-sticker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+    gap: 12px;
+  }
+  .kids-sticker {
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border: 4px dashed rgba(111,122,44,.32);
+    border-radius: 22px;
+    background: rgba(255,255,255,.56);
+    font-size: 2.8rem;
+  }
+  .kids-parent-card {
+    display: grid;
+    gap: 16px;
+    font-family: var(--font-zh-ui);
+  }
+  .kids-parent-card h2 {
+    font-size: 1.35rem;
+    color: #4e3b14;
+  }
+  .kids-setting-row {
+    display: grid;
+    gap: 8px;
+    font-weight: 850;
+  }
+  #kids-volume {
+    width: 100%;
+    accent-color: #79bd45;
+  }
+  .kids-confetti {
+    position: fixed;
+    inset: 0;
+    z-index: 54;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .kids-confetti i {
+    position: absolute;
+    top: 24%;
+    width: 13px;
+    height: 18px;
+    border-radius: 4px;
+    opacity: 0;
+    animation: kidsConfetti 1.05s ease-out var(--delay) forwards;
+  }
+  @keyframes kidsSlotPop {
+    from { transform: scale(.8); }
+    70% { transform: scale(1.1); }
+    to { transform: scale(1); }
+  }
+  @keyframes kidsShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(7px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(4px); }
+  }
+  @keyframes kidsWiggle {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-4px) rotate(2deg); }
+  }
+  @keyframes kidsBlink {
+    0%, 88%, 100% { transform: scaleY(1); }
+    92% { transform: scaleY(.12); }
+  }
+  @keyframes kidsEatWord {
+    0% { transform: translateX(0) scale(1); opacity: 1; }
+    48% { transform: translateX(-36px) scale(.92); opacity: 1; }
+    100% { transform: translateX(-88px) scale(.55); opacity: 0; }
+  }
+  @keyframes kidsWormEat {
+    0% { transform: translateX(0) scale(1); }
+    48% { transform: translateX(-42px) scale(1.08); }
+    100% { transform: translateX(0) scale(1); }
+  }
+  @keyframes kidsConfetti {
+    0% { transform: translate3d(0, -20px, 0) rotate(0); opacity: 0; }
+    12% { opacity: 1; }
+    100% { transform: translate3d(var(--x), 62vh, 0) rotate(var(--rot)); opacity: 0; }
+  }
+  @media (max-width: 700px) {
+    body.mode-kids #stage {
+      width: min(430px, calc(100vw - 16px));
+    }
+    body.mode-kids #game-panel {
+      min-height: calc(100dvh - 100px);
+    }
+    #kids-letter-bank {
+      grid-template-columns: repeat(5, minmax(54px, 1fr));
+    }
+    .kids-letter {
+      min-width: 0;
+      min-height: 74px;
+      border-radius: 20px;
+    }
+  }
+  @media (max-width: 420px) {
+    body.mode-kids h1 {
+      margin-top: 4px;
+      font-size: 1.2rem;
+    }
+    body.mode-kids #mode-select {
+      margin-bottom: 4px;
+    }
+    body.mode-kids .top-action-btn {
+      min-width: 104px;
+      padding: 7px 10px;
+      font-size: .72rem;
+    }
+    body.mode-kids #game-panel {
+      min-height: calc(100dvh - 92px);
+      padding: 8px;
+      border-radius: 18px;
+    }
+    .kids-icon-btn {
+      width: 52px;
+      height: 52px;
+      font-size: 1.5rem;
+    }
+    #kids-theme-icon {
+      width: 46px;
+      height: 46px;
+      font-size: 1.65rem;
+    }
+    #kids-picture {
+      width: min(208px, 56vw);
+      border-radius: 28px;
+    }
+    #kids-slots {
+      grid-template-columns: repeat(3, minmax(68px, 1fr));
+      width: 100%;
+    }
+    .kids-slot {
+      height: 72px;
+      border-radius: 16px;
+    }
+    .kids-letter {
+      min-height: 66px;
+      border-radius: 17px;
+      font-size: 2rem;
+    }
+    .kids-worm-head,
+    .kids-worm-segment {
+      width: 56px;
+      height: 56px;
+      font-size: 1.55rem;
+    }
+    .kids-worm-head {
+      width: 64px;
+      height: 64px;
+    }
+  }
+
+  /* 每日 HUD 容器：只在每日模式顯示 */
+  #daily-hud { display: none; width: 100%; }
+  body.mode-daily #daily-hud { display: block; }
+
+  /* 三個子畫面預設全關，由 daily-view-* 開對應的那個 */
+  #daily-entry, #daily-locked, #daily-topbar { display: none; }
+  body.mode-daily.daily-view-entry #daily-entry { display: block; }
+  body.mode-daily.daily-view-locked #daily-locked { display: block; }
+  body.mode-daily.daily-view-play #daily-topbar {
+    display: flex; flex-wrap: wrap; gap: 6px 14px;
+    align-items: center; justify-content: center;
+    margin-bottom: 6px;
+  }
+  /* 進場頁與鎖定頁不顯示棋盤與拼字控制（棋盤仍在背後保持合法狀態） */
+  body.mode-daily.daily-view-entry #current,
+  body.mode-daily.daily-view-entry #board,
+  body.mode-daily.daily-view-entry #controls,
+  body.mode-daily.daily-view-locked #current,
+  body.mode-daily.daily-view-locked #board,
+  body.mode-daily.daily-view-locked #controls { display: none; }
+
+  /* 進場／鎖定卡片：沿用遊戲的暗色羊皮紙風 */
+  #daily-entry, #daily-locked {
+    width: min(560px, calc(100vw - 32px));
+    margin: 8px auto;
+    padding: 18px 20px;
+    border: 1px solid rgba(255,217,122,.3);
+    border-radius: 12px;
+    background: rgba(20,10,2,.55);
+    text-align: center;
+  }
+  #daily-entry-title {
+    font-family: var(--font-zh-game);
+    font-size: 1.3rem; color: #ffd97a; margin-bottom: 8px;
+  }
+  .daily-rules-list {
+    list-style: none; padding: 0; margin: 0 0 10px;
+    text-align: left; font-size: .88rem; line-height: 1.75;
+  }
+  .daily-rules-list b { color: #ffd97a; }
+  #daily-entry-streak { font-size: .95rem; margin-bottom: 12px; }
+  #daily-entry-streak b { color: #ff9a52; }
+
+  /* 對局中上方資訊列 */
+  #daily-topbar { font-size: .92rem; }
+  #daily-progress b, #daily-tiles b { color: #ffd97a; }
+  #daily-actions { display: flex; gap: 6px; }
+  #daily-actions button { padding: 4px 12px; font-size: .78rem; }
+
+  /* 用掉的磚＝永久的洞：暗下去、不可點（pointer-events:none 讓
+     拖曳選字的 elementFromPoint 直接穿過洞） */
+  .tile.used {
+    background: rgba(12,6,2,.5);
+    box-shadow: inset 0 3px 10px rgba(0,0,0,.55);
+    border-color: transparent;
+    cursor: default;
+    pointer-events: none;
+    text-shadow: none;
+  }
+
+  /* 鎖定畫面（今日已完成） */
+  #daily-locked h3 { color: #8fd47a; font-size: 1.15rem; margin-bottom: 10px; }
+  #daily-locked-result { font-size: 1rem; line-height: 1.8; margin-bottom: 10px; }
+  .daily-locked-stars { font-size: 1.8rem; letter-spacing: .1em; }
+  #daily-locked-tomorrow { margin-top: 12px; font-size: .85rem; opacity: .8; }
+  #daily-countdown {
+    font-family: var(--font-letter);
+    font-size: 1.7rem; letter-spacing: .12em; color: #ffd97a;
+  }
+
+  /* 結算 modal：顯示機制同 #gameover（加 .show 顯示） */
+  #daily-gameover {
+    position: fixed; inset: 0; background: rgba(20,10,0,.88);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; z-index: 20; text-align: center; padding: 20px;
+  }
+  #daily-gameover.show { display: flex; }
+  #daily-gameover h2 { color: #ffd97a; font-family: var(--font-zh-game); font-size: 1.5rem; letter-spacing: .05em; }
+  #daily-gameover .stats { font-family: var(--font-zh-ui); font-size: 1rem; font-weight: 700; line-height: 1.9; }
+  #daily-f-stars { font-size: 2.2rem; letter-spacing: .12em; }
+  #daily-f-line { color: #ffd97a; font-size: 1.15rem; }
+  #daily-f-words { font-size: .9rem; opacity: .85; }
+
+  /* 規則說明浮層（對局中按「?」開啟） */
+  #daily-rules {
+    position: fixed; inset: 0; background: rgba(10,5,0,.7);
+    display: none; align-items: center; justify-content: center;
+    z-index: 30; padding: 20px;
+  }
+  #daily-rules.show { display: flex; }
+  #daily-rules-card {
+    width: min(480px, calc(100vw - 40px));
+    padding: 18px 20px;
+    border: 1px solid rgba(255,217,122,.35);
+    border-radius: 12px;
+    background: #241305;
+    text-align: center;
+  }
+  #daily-rules-card h3 { color: #ffd97a; margin-bottom: 10px; }
+
+  /* RWD：窄螢幕的每日挑戰版面（斷點沿用全站的 700 / 420） */
+  @media (max-width: 700px) {
+    #daily-entry, #daily-locked { padding: 14px 14px; }
+    .daily-rules-list { font-size: .84rem; }
+  }
+  @media (max-width: 420px) {
+    #daily-topbar { font-size: .8rem; gap: 4px 10px; }
+    #daily-actions button { padding: 3px 9px; font-size: .72rem; }
+    .daily-rules-list { font-size: .8rem; line-height: 1.65; }
+    #daily-countdown { font-size: 1.4rem; }
+    /* 首頁三顆鈕在極窄螢幕縮小內距與字級，盡量一排放下 */
+    body.home-screen .mode-btn { padding: 10px 8px; font-size: .9rem; min-height: 48px; }
+  }
+
