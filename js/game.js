@@ -173,15 +173,19 @@ const MUSIC_MUTED_KEY = 'wordworm_music_muted';
 const savedAudioMuted = localStorage.getItem(AUDIO_MUTED_KEY);
 let AC = null, muted = savedAudioMuted === '1' || (savedAudioMuted === null && localStorage.getItem(MUSIC_MUTED_KEY) === '1'), bgmTimer = null;
 let musicMuted = muted;
+let audioUnlocked = false;
 function ac() { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); return AC; }
-function beep(freq, dur = .09, type = 'triangle', vol = .18, when = 0) {
-  if (muted) return;
+function playTone(freq, dur = .09, type = 'triangle', vol = .18, when = 0) {
   const ctx = ac(), o = ctx.createOscillator(), g = ctx.createGain();
   o.type = type; o.frequency.value = freq;
   g.gain.setValueAtTime(vol, ctx.currentTime + when);
   g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + when + dur);
   o.connect(g); g.connect(ctx.destination);
   o.start(ctx.currentTime + when); o.stop(ctx.currentTime + when + dur + .02);
+}
+function beep(freq, dur = .09, type = 'triangle', vol = .18, when = 0) {
+  if (muted) return;
+  playTone(freq, dur, type, vol, when);
 }
 const sfx = {
   pick: n => beep(320 + n * 45, .07, 'triangle', .14),          // 越選越高（原版精髓）
@@ -300,8 +304,8 @@ function setBgmTheme(themeId = 'classic') {
   activeBgmTheme = BGM_THEMES[nextId];
   bgmStep = 0;
   if (bgmTimer) {
-    clearInterval(bgmTimer);
-    bgmTimer = setInterval(bgmTick, activeBgmTheme.tempoMs || 380);
+    stopBgm();
+    startBgm();
   }
 }
 function setBgmThemeForLevel(level) {
@@ -311,10 +315,10 @@ function bgmTick() {
   const theme = activeBgmTheme || BGM_THEMES.classic;
   const notes = theme.notes || BGM_THEMES.classic.notes;
   const note = notes[bgmStep % notes.length];
-  if (!musicMuted) {
-    beep(note, theme.noteDur || .22, theme.wave || 'sine', theme.volume || .05);
+  if (!muted && !musicMuted) {
+    playTone(note, theme.noteDur || .22, theme.wave || 'sine', theme.volume || .05);
     if (theme.bassEvery && bgmStep % theme.bassEvery === 0) {
-      beep(note / (theme.bassDivisor || 2), theme.bassDur || .4, theme.bassWave || 'sine', theme.bassVolume || .04);
+      playTone(note / (theme.bassDivisor || 2), theme.bassDur || .4, theme.bassWave || 'sine', theme.bassVolume || .04);
     }
   }
   bgmStep++;
@@ -332,14 +336,28 @@ function setAudioMuted(nextMuted) {
   musicMuted = muted;
   localStorage.setItem(AUDIO_MUTED_KEY, muted ? '1' : '0');
   localStorage.setItem(MUSIC_MUTED_KEY, muted ? '1' : '0');
+  if (muted) stopBgm();
+  else if (audioUnlocked) startBgm();
   updateSoundButtons();
 }
 function toggleAudioMuted() {
   setAudioMuted(!muted);
 }
-function startBgm() { if (!bgmTimer) bgmTimer = setInterval(bgmTick, (activeBgmTheme || BGM_THEMES.classic).tempoMs || 380); }
+function stopBgm() {
+  if (!bgmTimer) return;
+  clearInterval(bgmTimer);
+  bgmTimer = null;
+}
+function startBgm() {
+  if (muted || musicMuted) return;
+  stopBgm();
+  bgmTimer = setInterval(bgmTick, (activeBgmTheme || BGM_THEMES.classic).tempoMs || 380);
+}
 document.addEventListener('pointerdown', function once() {
-  ac().resume(); startBgm(); document.removeEventListener('pointerdown', once);
+  audioUnlocked = true;
+  ac().resume();
+  startBgm();
+  document.removeEventListener('pointerdown', once);
 }, { once: true });
 document.getElementById('mute').onclick = toggleAudioMuted;
 document.getElementById('sound-toggle').onclick = toggleAudioMuted;
