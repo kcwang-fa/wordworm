@@ -2312,6 +2312,7 @@
     padding: 18px;
     background: rgba(14,7,1,.76);
   }
+  .word-modal[hidden] { display: none !important; }
   .word-modal.show { display: flex; }
   .word-card {
     width: min(650px, calc(100vw - 32px));

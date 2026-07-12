@@ -199,6 +199,7 @@ function wotdLoadWords() {
 
 function wotdOpenCard() {
   wotdApplySpeechSupport();
+  wotdEls.modal.hidden = false;
   wotdEls.modal.classList.add('show');
   wotdShowLoading();
   wotdLoadWords()
@@ -209,10 +210,12 @@ function wotdOpenCard() {
 function wotdCloseCard() {
   if (wotdIsSpeechSupported()) window.speechSynthesis.cancel();
   wotdEls.modal.classList.remove('show');
+  wotdEls.modal.hidden = true;
 }
 
 function wotdOpenBook() {
   wotdApplySpeechSupport();
+  wotdEls.bookModal.hidden = false;
   wotdEls.bookModal.classList.add('show');
   wotdRenderBook();
   wotdLoadWords().then(() => wotdRenderBook()).catch(() => wotdRenderBook());
@@ -221,6 +224,7 @@ function wotdOpenBook() {
 function wotdCloseBook() {
   if (wotdIsSpeechSupported()) window.speechSynthesis.cancel();
   wotdEls.bookModal.classList.remove('show');
+  wotdEls.bookModal.hidden = true;
 }
 
 function wotdBookItemHtml(item) {
