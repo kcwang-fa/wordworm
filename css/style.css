@@ -147,7 +147,8 @@
     justify-content: center;
   }
   body.home-screen .mode-btn {
-    min-width: min(240px, calc((100vw - 56px) / 2));
+    /* 三顆模式鈕並列（經典／冒險／每日挑戰），寬度改成三等分 */
+    min-width: min(200px, calc((100vw - 80px) / 3));
     min-height: 58px;
     padding: 14px 22px;
     border-radius: 16px;
@@ -2159,4 +2160,133 @@
       line-height: 1.08;
     }
     .adv-comic-panel figcaption { font-size: .7rem; }
+  }
+
+  /* ===================== 每日挑戰（daily）=====================
+     所有選擇器鎖在 body.mode-daily／#daily-*／.tile.used 底下，
+     不影響經典與冒險模式。子畫面（entry/play/locked）由 js/daily.js
+     切換 body 的 daily-view-* class 控制顯隱。 */
+
+  /* 首頁三顆鈕：容器加寬讓桌面一排放下，窄螢幕允許換行 */
+  body.home-screen #mode-select { flex-wrap: wrap; width: min(800px, calc(100vw - 32px)); }
+
+  /* 每日模式下隱藏經典專屬 HUD（等級列／分數列／獎勵字／寶石說明／拼字規則鈕） */
+  body.mode-daily #rankbar,
+  body.mode-daily #hud,
+  body.mode-daily #bonusbar,
+  body.mode-daily #gem-guide,
+  body.mode-daily #mode { display: none; }
+
+  /* 每日 HUD 容器：只在每日模式顯示 */
+  #daily-hud { display: none; width: 100%; }
+  body.mode-daily #daily-hud { display: block; }
+
+  /* 三個子畫面預設全關，由 daily-view-* 開對應的那個 */
+  #daily-entry, #daily-locked, #daily-topbar { display: none; }
+  body.mode-daily.daily-view-entry #daily-entry { display: block; }
+  body.mode-daily.daily-view-locked #daily-locked { display: block; }
+  body.mode-daily.daily-view-play #daily-topbar {
+    display: flex; flex-wrap: wrap; gap: 6px 14px;
+    align-items: center; justify-content: center;
+    margin-bottom: 6px;
+  }
+  /* 進場頁與鎖定頁不顯示棋盤與拼字控制（棋盤仍在背後保持合法狀態） */
+  body.mode-daily.daily-view-entry #current,
+  body.mode-daily.daily-view-entry #board,
+  body.mode-daily.daily-view-entry #controls,
+  body.mode-daily.daily-view-locked #current,
+  body.mode-daily.daily-view-locked #board,
+  body.mode-daily.daily-view-locked #controls { display: none; }
+
+  /* 進場／鎖定卡片：沿用遊戲的暗色羊皮紙風 */
+  #daily-entry, #daily-locked {
+    width: min(560px, calc(100vw - 32px));
+    margin: 8px auto;
+    padding: 18px 20px;
+    border: 1px solid rgba(255,217,122,.3);
+    border-radius: 12px;
+    background: rgba(20,10,2,.55);
+    text-align: center;
+  }
+  #daily-entry-title {
+    font-family: var(--font-zh-game);
+    font-size: 1.3rem; color: #ffd97a; margin-bottom: 8px;
+  }
+  .daily-rules-list {
+    list-style: none; padding: 0; margin: 0 0 10px;
+    text-align: left; font-size: .88rem; line-height: 1.75;
+  }
+  .daily-rules-list b { color: #ffd97a; }
+  #daily-entry-streak { font-size: .95rem; margin-bottom: 12px; }
+  #daily-entry-streak b { color: #ff9a52; }
+
+  /* 對局中上方資訊列 */
+  #daily-topbar { font-size: .92rem; }
+  #daily-progress b, #daily-tiles b { color: #ffd97a; }
+  #daily-actions { display: flex; gap: 6px; }
+  #daily-actions button { padding: 4px 12px; font-size: .78rem; }
+
+  /* 用掉的磚＝永久的洞：暗下去、不可點（pointer-events:none 讓
+     拖曳選字的 elementFromPoint 直接穿過洞） */
+  .tile.used {
+    background: rgba(12,6,2,.5);
+    box-shadow: inset 0 3px 10px rgba(0,0,0,.55);
+    border-color: transparent;
+    cursor: default;
+    pointer-events: none;
+    text-shadow: none;
+  }
+
+  /* 鎖定畫面（今日已完成） */
+  #daily-locked h3 { color: #8fd47a; font-size: 1.15rem; margin-bottom: 10px; }
+  #daily-locked-result { font-size: 1rem; line-height: 1.8; margin-bottom: 10px; }
+  .daily-locked-stars { font-size: 1.8rem; letter-spacing: .1em; }
+  #daily-locked-tomorrow { margin-top: 12px; font-size: .85rem; opacity: .8; }
+  #daily-countdown {
+    font-family: var(--font-letter);
+    font-size: 1.7rem; letter-spacing: .12em; color: #ffd97a;
+  }
+
+  /* 結算 modal：顯示機制同 #gameover（加 .show 顯示） */
+  #daily-gameover {
+    position: fixed; inset: 0; background: rgba(20,10,0,.88);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; z-index: 20; text-align: center; padding: 20px;
+  }
+  #daily-gameover.show { display: flex; }
+  #daily-gameover h2 { color: #ffd97a; font-family: var(--font-zh-game); font-size: 1.5rem; letter-spacing: .05em; }
+  #daily-gameover .stats { font-family: var(--font-zh-ui); font-size: 1rem; font-weight: 700; line-height: 1.9; }
+  #daily-f-stars { font-size: 2.2rem; letter-spacing: .12em; }
+  #daily-f-line { color: #ffd97a; font-size: 1.15rem; }
+  #daily-f-words { font-size: .9rem; opacity: .85; }
+
+  /* 規則說明浮層（對局中按「?」開啟） */
+  #daily-rules {
+    position: fixed; inset: 0; background: rgba(10,5,0,.7);
+    display: none; align-items: center; justify-content: center;
+    z-index: 30; padding: 20px;
+  }
+  #daily-rules.show { display: flex; }
+  #daily-rules-card {
+    width: min(480px, calc(100vw - 40px));
+    padding: 18px 20px;
+    border: 1px solid rgba(255,217,122,.35);
+    border-radius: 12px;
+    background: #241305;
+    text-align: center;
+  }
+  #daily-rules-card h3 { color: #ffd97a; margin-bottom: 10px; }
+
+  /* RWD：窄螢幕的每日挑戰版面（斷點沿用全站的 700 / 420） */
+  @media (max-width: 700px) {
+    #daily-entry, #daily-locked { padding: 14px 14px; }
+    .daily-rules-list { font-size: .84rem; }
+  }
+  @media (max-width: 420px) {
+    #daily-topbar { font-size: .8rem; gap: 4px 10px; }
+    #daily-actions button { padding: 3px 9px; font-size: .72rem; }
+    .daily-rules-list { font-size: .8rem; line-height: 1.65; }
+    #daily-countdown { font-size: 1.4rem; }
+    /* 首頁三顆鈕在極窄螢幕縮小內距與字級，盡量一排放下 */
+    body.home-screen .mode-btn { padding: 10px 8px; font-size: .9rem; min-height: 48px; }
   }

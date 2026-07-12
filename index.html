@@ -12,6 +12,7 @@
   <div id="mode-select">
     <button id="modesel-classic" class="mode-btn">📖 一般模式</button>
     <button id="modesel-adventure" class="mode-btn">⚔️ 冒險模式</button>
+    <button id="modesel-daily" class="mode-btn">📅 每日挑戰</button>
   </div>
   <div id="stage">
     <div id="worm-corner">
@@ -123,6 +124,31 @@
           </div>
         </section>
       </div>
+      <!-- 每日挑戰 HUD：三個子畫面（entry／topbar+棋盤／locked）由
+           body 的 daily-view-* class 切換，邏輯在 js/daily.js -->
+      <div id="daily-hud">
+        <section id="daily-entry" aria-label="每日挑戰說明">
+          <div id="daily-entry-title">📅 每日挑戰 <b id="daily-entry-no">#1</b></div>
+          <div id="daily-entry-rules"></div>
+          <div id="daily-entry-streak">🔥 連續挑戰 <b>0</b> 天</div>
+          <button id="daily-start">開始今日挑戰</button>
+        </section>
+        <div id="daily-topbar">
+          <span id="daily-progress">分數 <b>0</b> / 300</span>
+          <span id="daily-tiles">已用 <b>0</b> 磚｜剩 <b>49</b> 磚</span>
+          <span id="daily-actions">
+            <button id="daily-help" class="secondary" title="查看規則">❓ 規則</button>
+            <button id="daily-endrun" class="secondary">結束挑戰</button>
+          </span>
+        </div>
+        <section id="daily-locked" aria-label="今日已完成">
+          <h3>今日挑戰已完成 ✅</h3>
+          <div id="daily-locked-result"></div>
+          <button id="daily-locked-copy">📋 複製結果</button>
+          <div id="daily-locked-tomorrow">明天再來！距離明日題目</div>
+          <div id="daily-countdown">--:--:--</div>
+        </section>
+      </div>
       <div id="rankbar" style="font-size:.75rem;opacity:.8;margin-bottom:4px;">
         <span id="ranktitle">見習書蟲</span>　<progress id="lvprog" max="100" value="0" style="width:120px;height:8px;"></progress>
       </div>
@@ -179,6 +205,25 @@
     </div>
     <button id="restart">再玩一次</button>
   </div>
+  <!-- 每日挑戰結算（顯示機制同 #gameover：加 .show 顯示） -->
+  <div id="daily-gameover">
+    <h2>📅 每日挑戰 <span id="daily-f-no">#1</span></h2>
+    <div class="stats">
+      <div id="daily-f-stars">⭐⭐⭐</div>
+      <div id="daily-f-line">—</div>
+      <div id="daily-f-words">—</div>
+    </div>
+    <button id="daily-copy">📋 複製結果</button>
+    <button id="daily-close" class="secondary">關閉</button>
+  </div>
+  <!-- 每日挑戰規則浮層（對局中按「?」開啟；點背景或關閉鈕收起） -->
+  <div id="daily-rules" role="dialog" aria-modal="true" aria-label="每日挑戰規則">
+    <div id="daily-rules-card">
+      <h3>📅 每日挑戰規則</h3>
+      <div id="daily-rules-body"></div>
+      <button id="daily-rules-close">知道了</button>
+    </div>
+  </div>
   <div id="adv-gameover">
     <img class="adv-gameover-art" src="assets/ui/adv-gameover-defeat.png" alt="Lex exhausted on an open storybook with a cracked magic staff">
     <div class="adv-gameover-panel">
@@ -204,6 +249,7 @@
 
 <script src="js/story.js"></script>
 <script src="js/adventure-data.js"></script>
+<script src="js/daily.js"></script>
 <script src="js/game.js"></script>
 </body>
 </html>
