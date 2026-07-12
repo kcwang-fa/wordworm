@@ -2759,17 +2759,74 @@
   }
 
   /* ===================== 每日單字（Word of the Day）===================== */
-  body.home-screen .mode-btn.utility-btn {
+  body.home-screen .mode-btn.utility-btn,
+  body.home-screen .mode-btn.sync-action-btn {
     min-width: min(180px, calc((100vw - 80px) / 3));
     background:
       radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,255,255,.66), transparent 54%),
       linear-gradient(180deg, #f6dda0, #b98334);
   }
-  body.home-screen .mode-btn.utility-btn.active {
+  body.home-screen .mode-btn.utility-btn.active,
+  body.home-screen .mode-btn.sync-action-btn.active {
     background:
       radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,255,255,.66), transparent 54%),
       linear-gradient(180deg, #f6dda0, #b98334);
     color: #3a240d;
+  }
+
+  .sync-card { width: min(720px, calc(100vw - 32px)); }
+  .sync-panel {
+    display: grid;
+    gap: 9px;
+    margin-top: 12px;
+    padding: 14px;
+    border: 1px solid rgba(255,217,122,.24);
+    border-radius: 10px;
+    background: rgba(0,0,0,.18);
+  }
+  .sync-panel h3 {
+    margin: 0;
+    color: #ffd97a;
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    letter-spacing: .02em;
+  }
+  .sync-panel p, #sync-status {
+    margin: 0;
+    color: #fbead2;
+    font-size: .9rem;
+    font-weight: 700;
+    line-height: 1.55;
+    opacity: .9;
+  }
+  .sync-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .sync-actions button {
+    padding: 8px 13px;
+    font-size: .82rem;
+  }
+  .sync-code {
+    width: 100%;
+    min-height: 92px;
+    resize: vertical;
+    padding: 10px 11px;
+    border: 1px solid rgba(255,217,122,.28);
+    border-radius: 8px;
+    background: rgba(10,5,1,.52);
+    color: #fff0cf;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .78rem;
+    line-height: 1.45;
+    user-select: text;
+    -webkit-user-select: text;
+  }
+  #sync-status {
+    min-height: 1.4em;
+    margin-top: 10px;
+    color: #ffd97a;
   }
 
   .word-modal {
