@@ -28,7 +28,7 @@ let COLS = 7, ROWS = 7;
 /* ================= 遊戲模式（經典／冒險／每日挑戰） ================= */
 let gameMode = localStorage.getItem('wordworm_gamemode') || 'classic';
 // localStorage 可能被手改成怪值；不認得的模式一律當經典（原本的 fallback 行為）
-if (!['classic', 'adventure', 'daily'].includes(gameMode)) gameMode = 'classic';
+if (!['classic', 'adventure', 'daily', 'kids'].includes(gameMode)) gameMode = 'classic';
 function setBoardSize() {
   if (gameMode === 'adventure') { COLS = 4; ROWS = 4; }
   else { COLS = 7; ROWS = 7; }  // 經典與每日挑戰都是 7×7
@@ -37,9 +37,11 @@ function applyModeClass() {
   document.body.classList.toggle('mode-adventure', gameMode === 'adventure');
   document.body.classList.toggle('mode-classic', gameMode === 'classic');
   document.body.classList.toggle('mode-daily', gameMode === 'daily');
+  document.body.classList.toggle('mode-kids', gameMode === 'kids');
   document.getElementById('modesel-classic').classList.toggle('active', gameMode === 'classic');
   document.getElementById('modesel-adventure').classList.toggle('active', gameMode === 'adventure');
   document.getElementById('modesel-daily').classList.toggle('active', gameMode === 'daily');
+  document.getElementById('modesel-kids').classList.toggle('active', gameMode === 'kids');
   document.getElementById('submit').textContent = gameMode === 'adventure' ? 'Attack / 攻擊' : '拼字！';
   document.getElementById('clear').textContent = gameMode === 'adventure' ? '清除選字' : '清除';
   document.getElementById('shuffle').textContent = '洗牌 (-燃燒)';
@@ -51,6 +53,7 @@ function selectGameMode(mode) {
   if (mode === gameMode) {
     if (wasHomeScreen && mode === 'adventure') initAdventure(true);
     if (wasHomeScreen && mode === 'daily') initDaily(true);
+    if (wasHomeScreen && mode === 'kids' && window.initKidsMode) window.initKidsMode(true);
     return;
   }
   gameMode = mode;
@@ -60,6 +63,7 @@ function selectGameMode(mode) {
   sel = [];
   if (mode === 'adventure') initAdventure(true);
   else if (mode === 'daily') initDaily(true);
+  else if (mode === 'kids' && window.initKidsMode) window.initKidsMode(true);
   else init(true);
 }
 function returnHome() {
@@ -70,7 +74,11 @@ function returnHome() {
   document.getElementById('daily-rules').classList.remove('show');
   document.getElementById('adv-gameover').classList.remove('show');
   document.getElementById('adv-story-modal').classList.remove('show');
-  render(); updateCurrent();
+  if (window.closeKidsPanels) window.closeKidsPanels();
+  if (gameMode !== 'kids') {
+    render();
+    updateCurrent();
+  }
 }
 // 字母出現權重（近似英文頻率，Qu 合併為一磚）
 const LETTER_POOL = (
@@ -770,6 +778,7 @@ function wordScore(word, tiles) {
 }
 function updateCurrent() {
   if (gameMode === 'daily') { updateCurrentDaily(); return; }  // 每日模式用自己的計分預覽（js/daily.js）
+  if (gameMode === 'kids') return;
   const w = currentWord();
   const cur = document.getElementById('current');
   if (!w) {
@@ -791,6 +800,7 @@ document.getElementById('restart').onclick = init;
 document.getElementById('modesel-classic').onclick = () => selectGameMode('classic');
 document.getElementById('modesel-adventure').onclick = () => selectGameMode('adventure');
 document.getElementById('modesel-daily').onclick = () => selectGameMode('daily');
+document.getElementById('modesel-kids').onclick = () => selectGameMode('kids');
 document.getElementById('home-return').onclick = returnHome;
 document.getElementById('adv-story-open').onclick = () => openAdventureStoryFromMap();
 document.getElementById('adv-map-path').onclick = e => {
@@ -1847,4 +1857,7 @@ setBoardSize();
 applyModeClass();
 if (gameMode === 'adventure') initAdventure(true);
 else if (gameMode === 'daily') initDaily(true);  // initDaily 定義在 js/daily.js（載入順序在本檔之前）
+else if (gameMode === 'kids') {
+  // js/kids.js 載入在本檔之後；保留小書蟲模式狀態，讓 kids.js 接手初始化。
+}
 else init(true);

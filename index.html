@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Word Worm 單字蟲蟲</title>
-<link rel="stylesheet" href="css/style.css?v=wotd-20260712b">
+<link rel="stylesheet" href="css/style.css?v=kids-20260712a">
 </head>
 <body class="home-screen">
   <div id="library-bg" aria-hidden="true"></div>
@@ -13,6 +13,7 @@
     <button id="modesel-classic" class="mode-btn mode-entry">📖 一般模式</button>
     <button id="modesel-adventure" class="mode-btn mode-entry">⚔️ 冒險模式</button>
     <button id="modesel-daily" class="mode-btn mode-entry">📅 每日挑戰</button>
+    <button id="modesel-kids" class="mode-btn mode-entry">🐛 小書蟲</button>
     <button id="wotd-open" class="mode-btn mode-entry utility-btn">🔎 每日單字</button>
     <button id="wordbook-open" class="mode-btn mode-entry utility-btn">⭐ 我的單字本</button>
     <button id="home-return" class="mode-btn top-action-btn">🏠 回到首頁</button>
@@ -153,6 +154,22 @@
           <div id="daily-countdown">--:--:--</div>
         </section>
       </div>
+      <section id="kids-hud" aria-label="小書蟲幼兒模式">
+        <div id="kids-toolbar">
+          <button id="kids-sticker-open" class="kids-icon-btn" type="button" aria-label="貼紙簿" title="貼紙簿">📒</button>
+          <button id="kids-speak" class="kids-icon-btn" type="button" aria-label="再聽一次" title="再聽一次">🔊</button>
+          <button id="kids-settings-hold" class="kids-icon-btn" type="button" aria-label="家長設定，長按三秒開啟" title="長按 3 秒開啟家長設定">⚙️</button>
+        </div>
+        <div id="kids-scene">
+          <div id="kids-theme-icon" aria-hidden="true">🌿</div>
+          <button id="kids-picture" type="button" aria-label="圖片，點一下再聽一次">🐱</button>
+          <div id="kids-slots" aria-label="單字空格"></div>
+          <div id="kids-letter-bank" aria-label="字母選項"></div>
+        </div>
+        <div id="kids-worm-yard" aria-label="小書蟲成長">
+          <div id="kids-worm" aria-hidden="true"></div>
+        </div>
+      </section>
       <div id="rankbar" style="font-size:.75rem;opacity:.8;margin-bottom:4px;">
         <span id="ranktitle">見習書蟲</span>　<progress id="lvprog" max="100" value="0" style="width:120px;height:8px;"></progress>
       </div>
@@ -301,11 +318,29 @@
       </div>
     </div>
   </div>
+  <div id="kids-stickerbook" class="kids-modal" role="dialog" aria-modal="true" aria-label="貼紙簿" hidden>
+    <div class="kids-modal-card">
+      <button id="kids-sticker-close" class="kids-modal-close" type="button" aria-label="關閉">✕</button>
+      <div id="kids-sticker-grid" aria-label="已收集貼紙"></div>
+    </div>
+  </div>
+  <div id="kids-parent-panel" class="kids-modal" role="dialog" aria-modal="true" aria-labelledby="kids-parent-title" hidden>
+    <div class="kids-modal-card kids-parent-card">
+      <button id="kids-parent-close" class="kids-modal-close" type="button" aria-label="關閉">✕</button>
+      <h2 id="kids-parent-title">家長角落</h2>
+      <label class="kids-setting-row">
+        <span>小書蟲音量</span>
+        <input id="kids-volume" type="range" min="0" max="1" step="0.05">
+      </label>
+      <button id="kids-reset" class="secondary" type="button">重設小書蟲進度</button>
+    </div>
+  </div>
 
 <script src="js/story.js"></script>
 <script src="js/adventure-data.js"></script>
 <script src="js/daily.js"></script>
 <script src="js/game.js"></script>
+<script src="js/kids.js?v=kids-20260712a"></script>
 <script src="js/word-of-day.js?v=wotd-20260712b"></script>
 </body>
 </html>
