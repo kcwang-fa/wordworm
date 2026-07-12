@@ -251,6 +251,14 @@
     overflow: auto;
     cursor: pointer;
   }
+  #adv-story-modal.has-comic.show-paragraphs.has-ending-slides #adv-story-book > .adv-story-kicker,
+  #adv-story-modal.has-comic.show-paragraphs.has-ending-slides #adv-story-modal-title,
+  #adv-story-modal.has-comic.show-paragraphs.has-ending-slides .adv-story-modal-actions {
+    display: none;
+  }
+  #adv-story-modal.has-comic.show-paragraphs.has-ending-slides.ending-slide-last .adv-story-modal-actions {
+    display: flex;
+  }
   #adv-story-modal.has-ending-slides #adv-story-book {
     width: min(1040px, calc(100vw - 24px));
     max-height: calc(100vh - 28px);
@@ -577,4 +585,3 @@
     }
     .adv-comic-panel figcaption { font-size: .7rem; }
   }
-

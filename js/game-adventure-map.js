@@ -35,6 +35,7 @@ function renderStorySlide(title) {
   body.appendChild(frame);
 
   const isLastSlide = advStorySlideIndex >= advStorySlides.length - 1;
+  modal.classList.toggle('ending-slide-last', isLastSlide);
   hint.textContent = isLastSlide ? '按任意鍵或點一下回到主畫面' : '按任意鍵或點一下繼續下一張';
   modal.setAttribute('aria-label', title + '，第 ' + (advStorySlideIndex + 1) + ' 張，共 ' + advStorySlides.length + ' 張');
 }
@@ -131,6 +132,7 @@ function closeStoryModal() {
   modal.classList.remove('has-comic');
   modal.classList.remove('has-full-comic');
   modal.classList.remove('has-ending-slides');
+  modal.classList.remove('ending-slide-last');
   modal.classList.remove('show-paragraphs');
   modal.removeAttribute('aria-label');
   if (wasOpen && afterClose) afterClose();
