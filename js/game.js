@@ -62,6 +62,16 @@ function selectGameMode(mode) {
   else if (mode === 'daily') initDaily(true);
   else init(true);
 }
+function returnHome() {
+  sel = [];
+  document.body.classList.add('home-screen');
+  document.getElementById('gameover').classList.remove('show');
+  document.getElementById('daily-gameover').classList.remove('show');
+  document.getElementById('daily-rules').classList.remove('show');
+  document.getElementById('adv-gameover').classList.remove('show');
+  document.getElementById('adv-story-modal').classList.remove('show');
+  render(); updateCurrent();
+}
 // 字母出現權重（近似英文頻率，Qu 合併為一磚）
 const LETTER_POOL = (
   'EEEEEEEEEEEE' + 'AAAAAAAAA' + 'IIIIIIIII' + 'OOOOOOOO' + 'NNNNNN' +
@@ -158,9 +168,11 @@ function setFace(mood) {
 }
 
 /* ================= 音效（WebAudio 合成，零外部資源） ================= */
+const AUDIO_MUTED_KEY = 'wordworm_audio_muted';
 const MUSIC_MUTED_KEY = 'wordworm_music_muted';
-let AC = null, muted = false, bgmTimer = null;
-let musicMuted = localStorage.getItem(MUSIC_MUTED_KEY) === '1';
+const savedAudioMuted = localStorage.getItem(AUDIO_MUTED_KEY);
+let AC = null, muted = savedAudioMuted === '1' || (savedAudioMuted === null && localStorage.getItem(MUSIC_MUTED_KEY) === '1'), bgmTimer = null;
+let musicMuted = muted;
 function ac() { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); return AC; }
 function beep(freq, dur = .09, type = 'triangle', vol = .18, when = 0) {
   if (muted) return;
@@ -307,22 +319,31 @@ function bgmTick() {
   }
   bgmStep++;
 }
-function updateMusicButton() {
-  const btn = document.getElementById('mute');
-  btn.textContent = musicMuted ? '🎵 開音樂' : '🎵 關音樂';
-  btn.setAttribute('aria-pressed', musicMuted ? 'true' : 'false');
-  btn.title = musicMuted ? '開啟背景音樂' : '關閉背景音樂';
+function updateSoundButtons() {
+  const buttons = [document.getElementById('mute'), document.getElementById('sound-toggle')].filter(Boolean);
+  for (const btn of buttons) {
+    btn.textContent = muted ? '🔊 開啟音效' : '🔇 關閉音效';
+    btn.setAttribute('aria-pressed', muted ? 'true' : 'false');
+    btn.title = muted ? '開啟音效' : '關閉音效';
+  }
+}
+function setAudioMuted(nextMuted) {
+  muted = !!nextMuted;
+  musicMuted = muted;
+  localStorage.setItem(AUDIO_MUTED_KEY, muted ? '1' : '0');
+  localStorage.setItem(MUSIC_MUTED_KEY, muted ? '1' : '0');
+  updateSoundButtons();
+}
+function toggleAudioMuted() {
+  setAudioMuted(!muted);
 }
 function startBgm() { if (!bgmTimer) bgmTimer = setInterval(bgmTick, (activeBgmTheme || BGM_THEMES.classic).tempoMs || 380); }
 document.addEventListener('pointerdown', function once() {
   ac().resume(); startBgm(); document.removeEventListener('pointerdown', once);
 }, { once: true });
-document.getElementById('mute').onclick = e => {
-  musicMuted = !musicMuted;
-  localStorage.setItem(MUSIC_MUTED_KEY, musicMuted ? '1' : '0');
-  updateMusicButton();
-};
-updateMusicButton();
+document.getElementById('mute').onclick = toggleAudioMuted;
+document.getElementById('sound-toggle').onclick = toggleAudioMuted;
+updateSoundButtons();
 
 /* ================= 拼字規則切換（相鄰連線 / 全盤任選，經典模式限定） ================= */
 function renderModeBtn() {
@@ -752,6 +773,7 @@ document.getElementById('restart').onclick = init;
 document.getElementById('modesel-classic').onclick = () => selectGameMode('classic');
 document.getElementById('modesel-adventure').onclick = () => selectGameMode('adventure');
 document.getElementById('modesel-daily').onclick = () => selectGameMode('daily');
+document.getElementById('home-return').onclick = returnHome;
 document.getElementById('adv-story-open').onclick = () => openAdventureStoryFromMap();
 document.getElementById('adv-map-path').onclick = e => {
   let node = e.target.closest('.adv-map-node');

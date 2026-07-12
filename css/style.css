@@ -187,6 +187,23 @@
     background: linear-gradient(145deg, #ffd97a, #e8b420);
     color: #4a2f10; border-color: #fff2c8;
   }
+  body.home-screen .top-action-btn,
+  body:not(.home-screen) .mode-entry { display: none; }
+  body:not(.home-screen) #mode-select {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  body:not(.home-screen) .top-action-btn {
+    min-width: 128px;
+    border-color: rgba(255,238,184,.45);
+    background: rgba(24,13,4,.58);
+    color: #fff0cf;
+  }
+  body:not(.home-screen) .top-action-btn[aria-pressed="true"] {
+    background: linear-gradient(145deg, #ffd97a, #b87b27);
+    color: #3a240d;
+    border-color: #fff2c8;
+  }
   /* 冒險模式下隱藏經典專屬 HUD（Task 70 會補上 #adv-hud 取代） */
   body.mode-adventure #rankbar,
   body.mode-adventure #hud,
