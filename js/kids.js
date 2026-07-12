@@ -23,6 +23,9 @@
   if (!Number.isFinite(kidsVolume)) kidsVolume = 0.85;
   let holdTimer = null;
   let nextTimer = null;
+  let kidsSpeechPrimed = false;
+  let kidsPendingSpeak = false;
+  let kidsVoices = [];
 
   const el = {
     hud: document.getElementById('kids-hud'),
@@ -205,17 +208,49 @@
     [523, 659, 784, 988].forEach((freq, idx) => kidsTone(freq, 0.12, 'triangle', 0.13, idx * 0.06));
   }
 
-  function speakCurrentWord() {
+  function refreshKidsVoices() {
+    if (!('speechSynthesis' in window)) return [];
+    kidsVoices = speechSynthesis.getVoices();
+    return kidsVoices;
+  }
+
+  function bestKidsVoice() {
+    const voices = kidsVoices.length ? kidsVoices : refreshKidsVoices();
+    return voices.find(v => v.lang === 'en-US') || voices.find(v => /^en[-_]/i.test(v.lang)) || null;
+  }
+
+  function speakCurrentWord(options = {}) {
     if (!current || !('speechSynthesis' in window)) return;
+    if (!options.force && !kidsSpeechPrimed) {
+      kidsPendingSpeak = true;
+      return;
+    }
+    kidsPendingSpeak = false;
     const utter = new SpeechSynthesisUtterance(current.item.word);
     utter.lang = 'en-US';
     utter.rate = 0.8;
     utter.pitch = 1.08;
     utter.volume = kidsVolume;
-    const voices = speechSynthesis.getVoices();
-    utter.voice = voices.find(v => v.lang === 'en-US') || voices.find(v => /^en[-_]/i.test(v.lang)) || null;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(utter);
+    utter.voice = bestKidsVoice();
+    try {
+      speechSynthesis.cancel();
+      if (typeof speechSynthesis.resume === 'function') speechSynthesis.resume();
+      speechSynthesis.speak(utter);
+    } catch (e) {
+      kidsPendingSpeak = true;
+    }
+  }
+
+  function primeKidsSpeech() {
+    kidsSpeechPrimed = true;
+    refreshKidsVoices();
+    if (kidsPendingSpeak) speakCurrentWord({ force: true });
+  }
+
+  function speakFromPress(event) {
+    event.preventDefault();
+    kidsSpeechPrimed = true;
+    speakCurrentWord({ force: true });
   }
 
   function pickLetter(btn) {
@@ -263,7 +298,7 @@
   function completeWord() {
     if (!current) return;
     const item = current.item;
-    speakCurrentWord();
+    speakCurrentWord({ force: true });
     el.hud.classList.add('kids-eating');
     if (!state.completedWords.includes(item.id)) state.completedWords.push(item.id);
     state.wormSegments.push({ id: item.id + '-' + Date.now(), word: item.word, icon: item.icon });
@@ -348,8 +383,17 @@
     renderQuestion();
   }
 
-  el.picture.addEventListener('click', speakCurrentWord);
-  el.speak.addEventListener('click', speakCurrentWord);
+  if ('speechSynthesis' in window) {
+    refreshKidsVoices();
+    if (typeof speechSynthesis.addEventListener === 'function') {
+      speechSynthesis.addEventListener('voiceschanged', refreshKidsVoices);
+    } else {
+      speechSynthesis.onvoiceschanged = refreshKidsVoices;
+    }
+  }
+  document.addEventListener('pointerdown', primeKidsSpeech, { capture: true });
+  el.picture.addEventListener('pointerdown', speakFromPress);
+  el.speak.addEventListener('pointerdown', speakFromPress);
   el.stickerOpen.addEventListener('click', openStickerBook);
   el.stickerClose.addEventListener('click', closeKidsPanels);
   el.parentClose.addEventListener('click', closeKidsPanels);

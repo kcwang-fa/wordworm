@@ -1,4 +1,4 @@
-const CACHE_NAME = 'wordworm-pwa-20260712d';
+const CACHE_NAME = 'wordworm-pwa-20260712e';
 
 const PRECACHE_URLS = [
   './',
@@ -11,7 +11,7 @@ const PRECACHE_URLS = [
   './js/adventure-data.js',
   './js/daily.js',
   './js/game.js',
-  './js/kids.js?v=kids-20260712a',
+  './js/kids.js?v=kids-20260712b',
   './js/word-of-day.js?v=wotd-20260712b',
   './enable1.txt',
   './modern-words.txt',
