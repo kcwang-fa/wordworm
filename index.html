@@ -388,7 +388,10 @@
 <script src="js/story.js"></script>
 <script src="js/adventure-data.js"></script>
 <script src="js/daily.js"></script>
-<script src="js/game.js?v=20260712f"></script>
+<!-- game 系列拆檔中：載入順序有依賴（boot 收攏跨檔繫結與進入點，必須最後） -->
+<script src="js/game.js?v=20260713b"></script>
+<script src="js/game-sync.js?v=20260713b"></script>
+<script src="js/game-boot.js?v=20260713b"></script>
 <script src="js/kids.js?v=kids-20260712b"></script>
 <script src="js/word-of-day.js?v=wotd-20260712b"></script>
 <script>
