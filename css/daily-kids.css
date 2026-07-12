@@ -118,13 +118,13 @@
     background:
       radial-gradient(circle at 32% 20%, rgba(255,255,255,.85), transparent 30%),
       linear-gradient(180deg, #fffefa, #ffeaa2);
-    box-shadow: 0 8px 0 #c9a05c, 0 18px 28px rgba(93,112,38,.25);
+    box-shadow: 0 8px 0 var(--bronze), 0 18px 28px rgba(93,112,38,.25);
     font-size: clamp(6.5rem, 27vw, 10.5rem);
     line-height: 1;
   }
   #kids-picture:active {
     transform: translateY(3px);
-    box-shadow: 0 5px 0 #c9a05c, 0 12px 20px rgba(93,112,38,.22);
+    box-shadow: 0 5px 0 var(--bronze), 0 12px 20px rgba(93,112,38,.22);
   }
   #kids-slots {
     display: grid;
@@ -464,19 +464,19 @@
   }
   #daily-entry-title {
     font-family: var(--font-zh-game);
-    font-size: 1.3rem; color: #ffd97a; margin-bottom: 8px;
+    font-size: 1.3rem; color: var(--gold); margin-bottom: 8px;
   }
   .daily-rules-list {
     list-style: none; padding: 0; margin: 0 0 10px;
     text-align: left; font-size: .88rem; line-height: 1.75;
   }
-  .daily-rules-list b { color: #ffd97a; }
+  .daily-rules-list b { color: var(--gold); }
   #daily-entry-streak { font-size: .95rem; margin-bottom: 12px; }
-  #daily-entry-streak b { color: #ff9a52; }
+  #daily-entry-streak b { color: var(--orange); }
 
   /* 對局中上方資訊列 */
   #daily-topbar { font-size: .92rem; }
-  #daily-progress b, #daily-tiles b { color: #ffd97a; }
+  #daily-progress b, #daily-tiles b { color: var(--gold); }
   #daily-actions { display: flex; gap: 6px; }
   #daily-actions button { padding: 4px 12px; font-size: .78rem; }
 
@@ -492,13 +492,13 @@
   }
 
   /* 鎖定畫面（今日已完成） */
-  #daily-locked h3 { color: #8fd47a; font-size: 1.15rem; margin-bottom: 10px; }
+  #daily-locked h3 { color: var(--leaf-green); font-size: 1.15rem; margin-bottom: 10px; }
   #daily-locked-result { font-size: 1rem; line-height: 1.8; margin-bottom: 10px; }
   .daily-locked-stars { font-size: 1.8rem; letter-spacing: .1em; }
   #daily-locked-tomorrow { margin-top: 12px; font-size: .85rem; opacity: .8; }
   #daily-countdown {
     font-family: var(--font-letter);
-    font-size: 1.7rem; letter-spacing: .12em; color: #ffd97a;
+    font-size: 1.7rem; letter-spacing: .12em; color: var(--gold);
   }
 
   /* 結算 modal：顯示機制同 #gameover（加 .show 顯示） */
@@ -508,10 +508,10 @@
     gap: 14px; z-index: 20; text-align: center; padding: 20px;
   }
   #daily-gameover.show { display: flex; }
-  #daily-gameover h2 { color: #ffd97a; font-family: var(--font-zh-game); font-size: 1.5rem; letter-spacing: .05em; }
+  #daily-gameover h2 { color: var(--gold); font-family: var(--font-zh-game); font-size: 1.5rem; letter-spacing: .05em; }
   #daily-gameover .stats { font-family: var(--font-zh-ui); font-size: 1rem; font-weight: 700; line-height: 1.9; }
   #daily-f-stars { font-size: 2.2rem; letter-spacing: .12em; }
-  #daily-f-line { color: #ffd97a; font-size: 1.15rem; }
+  #daily-f-line { color: var(--gold); font-size: 1.15rem; }
   #daily-f-words { font-size: .9rem; opacity: .85; }
 
   /* 規則說明浮層（對局中按「?」開啟） */
@@ -529,7 +529,7 @@
     background: #241305;
     text-align: center;
   }
-  #daily-rules-card h3 { color: #ffd97a; margin-bottom: 10px; }
+  #daily-rules-card h3 { color: var(--gold); margin-bottom: 10px; }
 
   /* RWD：窄螢幕的每日挑戰版面（斷點沿用全站的 700 / 420） */
   @media (max-width: 700px) {

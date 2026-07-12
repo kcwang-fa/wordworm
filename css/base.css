@@ -5,6 +5,28 @@
     --font-ui: ui-rounded, "Avenir Next", "Trebuchet MS", var(--font-zh-ui);
     --font-display: "Iowan Old Style", "Palatino Linotype", var(--font-zh-game);
     --font-letter: "Arial Rounded MT Bold", "Avenir Next", "Trebuchet MS", "Noto Sans TC", sans-serif;
+
+    /* ===== 主題色變數 =====
+       這些色碼原本散落在各 CSS 檔重複出現（出現 4 次以上的才抽成變數），
+       集中在這裡之後，想調整配色只要改一個地方，全站同步生效。
+       注意：有些相近的顏色（例如 #fff2c8、#ffefbd）刻意「沒有」抽成變數，
+       因為它們是不同的顏色，合併會改變畫面外觀。 */
+    --gold: #ffd97a;         /* 主金黃：標題文字、按鈕邊框、重點高亮 */
+    --gold-deep: #e8b420;    /* 深金：進度條、星等 */
+    --gold-pale: #fff2bd;    /* 淡金：亮部文字 */
+    --gold-soft: #ffe6a3;    /* 柔金：次要文字 */
+    --parchment: #fbead2;    /* 羊皮紙：內文主色 */
+    --ivory: #fffaf0;        /* 象牙白：最亮的文字 */
+    --sand: #e8c98a;         /* 沙色：輔助文字 */
+    --tan: #d8c3a0;          /* 淺棕：說明文字、次要標籤 */
+    --bronze: #c9a05c;       /* 古銅：邊框、分隔線 */
+    --wood-mid: #9c6a2c;     /* 中木色：木框漸層中段 */
+    --wood-brown: #8a6230;   /* 木棕：木框、按鈕底 */
+    --wood-dark: #4a2f10;    /* 深木色：深色文字、陰影 */
+    --wood-deepest: #3a240d; /* 最深木色：暗部背景 */
+    --ink-black: #050302;    /* 墨黑：最深的背景與外框 */
+    --leaf-green: #8fd47a;   /* 葉綠：成功狀態、加分提示 */
+    --orange: #ff9a52;       /* 暖橘：警示、燃燒磚 */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { min-height: 100%; }
@@ -15,7 +37,7 @@
     background:
       radial-gradient(ellipse 85% 45% at 50% -8%, rgba(255,205,130,.22), transparent 62%),
       linear-gradient(160deg, #3c2a13 0%, #5c3f20 55%, #3c2a13 100%);
-    color: #fbead2;
+    color: var(--parchment);
     min-height: 100vh;
     min-height: 100dvh;
     display: flex; flex-direction: column; align-items: center;
@@ -71,7 +93,7 @@
     font-size: clamp(1rem, 2.5vh, 1.3rem);
     margin: clamp(4px, 1.2vh, 10px) 0 2px;
     letter-spacing: .05em;
-    color: #ffd97a;
+    color: var(--gold);
     text-shadow: 0 2px 0 rgba(70,35,10,.72), 0 0 12px rgba(255,217,122,.22);
   }
   #subtitle {
@@ -156,11 +178,11 @@
     padding: 14px 22px;
     border-radius: 16px;
     border-color: rgba(255,238,184,.78);
-    color: #3a240d;
+    color: var(--wood-deepest);
     font-size: clamp(1rem, 2.7vw, 1.2rem);
     background:
       radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,255,255,.72), transparent 54%),
-      linear-gradient(180deg, #fff2bd, #dfae4d);
+      linear-gradient(180deg, var(--gold-pale), #dfae4d);
     box-shadow:
       0 5px 0 #7a4918,
       0 14px 26px rgba(0,0,0,.34),
@@ -182,13 +204,13 @@
     font-family: var(--font-zh-ui); font-size: .8rem; font-weight: 850;
     letter-spacing: .04em;
     padding: 6px 16px; border: 2px solid rgba(255,210,140,.25); border-radius: 999px;
-    cursor: pointer; background: rgba(0,0,0,.3); color: #d8c3a0;
+    cursor: pointer; background: rgba(0,0,0,.3); color: var(--tan);
     transition: background .15s, border-color .15s, color .15s, transform .1s;
   }
   .mode-btn:active { transform: translateY(1px); }
   .mode-btn.active {
-    background: linear-gradient(145deg, #ffd97a, #e8b420);
-    color: #4a2f10; border-color: #fff2c8;
+    background: linear-gradient(145deg, var(--gold), var(--gold-deep));
+    color: var(--wood-dark); border-color: #fff2c8;
   }
   body.home-screen .top-action-btn,
   body:not(.home-screen) .mode-entry { display: none; }
@@ -203,8 +225,8 @@
     color: #fff0cf;
   }
   body:not(.home-screen) .top-action-btn[aria-pressed="true"] {
-    background: linear-gradient(145deg, #ffd97a, #b87b27);
-    color: #3a240d;
+    background: linear-gradient(145deg, var(--gold), #b87b27);
+    color: var(--wood-deepest);
     border-color: #fff2c8;
   }
   /* 冒險模式下隱藏經典專屬 HUD（Task 70 會補上 #adv-hud 取代） */

@@ -11,7 +11,7 @@
   #worm-shelf { width: 118px; margin-top: -8px; }
   #speech-bubble {
     position: relative; margin-top: 10px;
-    background: #fffaf0; color: #4a2f10;
+    background: var(--ivory); color: var(--wood-dark);
     border-radius: 14px; padding: 8px 12px;
     font-family: var(--font-zh-ui);
     font-size: .78rem; font-weight: 850; text-align: center;
@@ -22,7 +22,7 @@
   #speech-bubble.show { opacity: 1; transform: scale(1); }
   #speech-bubble::before {
     content: ""; position: absolute; top: -7px; left: 50%; margin-left: -7px;
-    border: 7px solid transparent; border-bottom-color: #fffaf0;
+    border: 7px solid transparent; border-bottom-color: var(--ivory);
   }
   @media (max-width: 700px) {
     body.home-screen #library-bg {
@@ -52,17 +52,17 @@
     #speech-bubble { margin-top: 0; }
     #speech-bubble::before {
       top: 50%; left: -7px; margin-left: 0; margin-top: -7px;
-      border-bottom-color: transparent; border-right-color: #fffaf0;
+      border-bottom-color: transparent; border-right-color: var(--ivory);
     }
   }
 
   /* ===== 木質書架框（遊戲主體外框） ===== */
   #game-panel {
     background:
-      radial-gradient(circle 4px at 15px 15px, #e8c98a 40%, #8a6230 72%, transparent 74%),
-      radial-gradient(circle 4px at calc(100% - 15px) 15px, #e8c98a 40%, #8a6230 72%, transparent 74%),
-      radial-gradient(circle 4px at 15px calc(100% - 15px), #e8c98a 40%, #8a6230 72%, transparent 74%),
-      radial-gradient(circle 4px at calc(100% - 15px) calc(100% - 15px), #e8c98a 40%, #8a6230 72%, transparent 74%),
+      radial-gradient(circle 4px at 15px 15px, var(--sand) 40%, var(--wood-brown) 72%, transparent 74%),
+      radial-gradient(circle 4px at calc(100% - 15px) 15px, var(--sand) 40%, var(--wood-brown) 72%, transparent 74%),
+      radial-gradient(circle 4px at 15px calc(100% - 15px), var(--sand) 40%, var(--wood-brown) 72%, transparent 74%),
+      radial-gradient(circle 4px at calc(100% - 15px) calc(100% - 15px), var(--sand) 40%, var(--wood-brown) 72%, transparent 74%),
       repeating-linear-gradient(90deg, rgba(0,0,0,.07) 0 2px, transparent 2px 42px),
       linear-gradient(155deg, #6b4726 0%, #543a1e 52%, #452f18 100%);
     border: 5px solid #2f2010; border-radius: 16px;
@@ -83,7 +83,7 @@
     padding: clamp(4px, .9vh, 6px) 14px; margin-bottom: clamp(4px, 1vh, 8px);
     font-family: var(--font-zh-ui); font-size: .85rem; font-weight: 800; letter-spacing: .025em;
   }
-  #hud b { color: #ffd97a; font-family: var(--font-letter); font-size: 1.05rem; }
+  #hud b { color: var(--gold); font-family: var(--font-letter); font-size: 1.05rem; }
 
   #gem-guide {
     display: flex;
@@ -119,7 +119,7 @@
     box-shadow: inset 0 1px 1px rgba(255,255,255,.65), 0 0 5px rgba(0,0,0,.32);
   }
   .gem-swatch.gem-green { background: linear-gradient(145deg,#b8f2a1,#5fbf4a); }
-  .gem-swatch.gem-gold { background: linear-gradient(145deg,#ffe98a,#e8b420); }
+  .gem-swatch.gem-gold { background: linear-gradient(145deg,#ffe98a,var(--gold-deep)); }
   .gem-swatch.gem-sapphire { background: linear-gradient(145deg,#a1c8f2,#3a6fd8); }
   .gem-swatch.gem-diamond { background: linear-gradient(145deg,#fff,#9adcf0); }
 
@@ -154,7 +154,7 @@
     font-weight: bold; color: #fff;
     display: flex; align-items: center; gap: 12px;
   }
-  #current .score-preview { font-size: .85rem; color: #8fd47a; font-weight: normal; }
+  #current .score-preview { font-size: .85rem; color: var(--leaf-green); font-weight: normal; }
   #current.invalid { color: #e2836a; }
 
   /* ===== 棋盤（7 欄交錯蜂巢） ===== */
@@ -170,9 +170,9 @@
     font-family: var(--font-letter);
     font-size: clamp(1.05rem, 2.7vh, 1.25rem); font-weight: 950; color: #6b4a1f;
     letter-spacing: .02em;
-    background: linear-gradient(155deg, #fffaf0 0%, #f5e3b3 55%, #e9cd8c 100%);
+    background: linear-gradient(155deg, var(--ivory) 0%, #f5e3b3 55%, #e9cd8c 100%);
     box-shadow:
-      0 4px 0 #c9a05c, 0 7px 9px rgba(50,30,5,.4),
+      0 4px 0 var(--bronze), 0 7px 9px rgba(50,30,5,.4),
       inset 0 2px 1px rgba(255,255,255,.9), inset 0 -3px 5px rgba(170,120,50,.28);
     text-shadow: 0 1px 0 rgba(255,255,255,.7);
     cursor: pointer; position: relative;
@@ -182,12 +182,12 @@
     background: linear-gradient(155deg, #fff3c4, #ffcf4d);
     transform: translateY(-2px) scale(1.07);
     box-shadow:
-      0 2px 0 #c9a05c, 0 0 12px rgba(255,201,60,.75),
+      0 2px 0 var(--bronze), 0 0 12px rgba(255,201,60,.75),
       inset 0 2px 1px rgba(255,255,255,.9);
     z-index: 2;
   }
   .tile.burning {
-    background: linear-gradient(145deg, #ff9a52, #e2542a);
+    background: linear-gradient(145deg, var(--orange), #e2542a);
     color: #fff;
     animation: flicker .5s infinite alternate;
   }
@@ -195,7 +195,7 @@
     content: "🔥"; position: absolute; top: -12px; right: -4px; font-size: .9rem;
   }
   .tile.gem-green   { background: linear-gradient(145deg,#b8f2a1,#5fbf4a); }
-  .tile.gem-gold    { background: linear-gradient(145deg,#ffe98a,#e8b420); }
+  .tile.gem-gold    { background: linear-gradient(145deg,#ffe98a,var(--gold-deep)); }
   .tile.gem-sapphire{ background: linear-gradient(145deg,#a1c8f2,#3a6fd8); color:#fff; }
   .tile.gem-diamond { background: linear-gradient(145deg,#e8f8ff,#9adcf0); }
   .tile.gem-green::before, .tile.gem-gold::before, .tile.gem-sapphire::before, .tile.gem-diamond::before {
@@ -249,7 +249,7 @@
     font-family: var(--font-zh-ui); font-size: .95rem; font-weight: 850;
     letter-spacing: .04em;
     padding: clamp(6px, 1.2vh, 8px) 20px; border: none; border-radius: 10px; cursor: pointer;
-    color: #4a2f10; background: linear-gradient(145deg, #ffd97a, #e8b420);
+    color: var(--wood-dark); background: linear-gradient(145deg, var(--gold), var(--gold-deep));
     box-shadow: 0 3px 0 #a8834e;
   }
   button:active { transform: translateY(2px); box-shadow: 0 1px 0 #a8834e; }
@@ -259,7 +259,7 @@
   /* ===== 訊息浮層 ===== */
   #toast {
     position: fixed; top: 18%; left: 50%; transform: translateX(-50%);
-    background: rgba(0,0,0,.75); color: #ffd97a; font-family: var(--font-zh-game); font-size: 1.1rem; font-weight: 900;
+    background: rgba(0,0,0,.75); color: var(--gold); font-family: var(--font-zh-game); font-size: 1.1rem; font-weight: 900;
     letter-spacing: .05em;
     padding: 10px 22px; border-radius: 12px; pointer-events: none;
     opacity: 0; transition: opacity .3s;

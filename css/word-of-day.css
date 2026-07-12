@@ -11,7 +11,7 @@
     background:
       radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,255,255,.66), transparent 54%),
       linear-gradient(180deg, #f6dda0, #b98334);
-    color: #3a240d;
+    color: var(--wood-deepest);
   }
 
   .sync-card { width: min(720px, calc(100vw - 32px)); }
@@ -26,14 +26,14 @@
   }
   .sync-panel h3 {
     margin: 0;
-    color: #ffd97a;
+    color: var(--gold);
     font-family: var(--font-display);
     font-size: 1.18rem;
     letter-spacing: .02em;
   }
   .sync-panel p, #sync-status {
     margin: 0;
-    color: #fbead2;
+    color: var(--parchment);
     font-size: .9rem;
     font-weight: 700;
     line-height: 1.55;
@@ -66,7 +66,7 @@
   #sync-status {
     min-height: 1.4em;
     margin-top: 10px;
-    color: #ffd97a;
+    color: var(--gold);
   }
 
   .word-modal {
@@ -99,11 +99,11 @@
   }
   .word-card-kicker {
     font-size: .76rem; font-weight: 850; letter-spacing: .08em;
-    text-transform: uppercase; color: #d8c3a0; opacity: .88;
+    text-transform: uppercase; color: var(--tan); opacity: .88;
   }
   .word-card-date {
     margin-top: 3px; font-family: var(--font-letter);
-    font-size: .9rem; color: #ffd97a; opacity: .9;
+    font-size: .9rem; color: var(--gold); opacity: .9;
   }
   .word-card-actions, .wordbook-actions {
     display: flex; gap: 7px; align-items: center;
@@ -114,7 +114,7 @@
     border-radius: 999px;
     border: 1px solid rgba(255,217,122,.34);
     background: rgba(0,0,0,.26);
-    color: #fbead2;
+    color: var(--parchment);
     font-family: var(--font-ui);
     font-size: 1rem; font-weight: 900;
     cursor: pointer;
@@ -124,7 +124,7 @@
     background: rgba(255,217,122,.16);
   }
   .icon-btn.active {
-    color: #ffd97a;
+    color: var(--gold);
     background: rgba(255,217,122,.17);
     text-shadow: 0 0 10px rgba(255,217,122,.25);
   }
@@ -133,13 +133,13 @@
   .word-card-loading {
     padding: 28px 0;
     text-align: center;
-    color: #fbead2;
+    color: var(--parchment);
     font-weight: 750;
   }
   .word-card-content h2, #wordbook-title {
     margin: 0;
     font-family: var(--font-display);
-    color: #ffd97a;
+    color: var(--gold);
     letter-spacing: .02em;
   }
   .word-card-content h2 {
@@ -180,14 +180,14 @@
   .word-defs.compact div { padding: 9px 10px; }
   .word-defs dt {
     margin-bottom: 5px;
-    color: #ffd97a;
+    color: var(--gold);
     font-size: .78rem;
     font-weight: 900;
     letter-spacing: .06em;
     text-transform: uppercase;
   }
   .word-defs dd {
-    color: #fbead2;
+    color: var(--parchment);
     line-height: 1.55;
     user-select: text;
     -webkit-user-select: text;
@@ -206,7 +206,7 @@
   }
   .word-example-label {
     margin-bottom: 4px;
-    color: #8fd47a;
+    color: var(--leaf-green);
     font-size: .76rem;
     font-weight: 900;
     letter-spacing: .07em;
@@ -224,12 +224,12 @@
     border-radius: 999px;
     border: 1px solid rgba(255,217,122,.3);
     background: rgba(0,0,0,.25);
-    color: #fbead2;
+    color: var(--parchment);
     cursor: pointer;
   }
   .wordbook-empty {
     padding: 24px 10px;
-    color: #d8c3a0;
+    color: var(--tan);
     text-align: center;
     line-height: 1.7;
   }
@@ -248,7 +248,7 @@
   }
   .wordbook-head h3 {
     margin: 0;
-    color: #ffd97a;
+    color: var(--gold);
     font-family: var(--font-display);
     font-size: 1.45rem;
     line-height: 1.1;
