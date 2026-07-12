@@ -388,10 +388,13 @@
 <script src="js/story.js"></script>
 <script src="js/adventure-data.js"></script>
 <script src="js/daily.js"></script>
-<!-- game 系列拆檔中：載入順序有依賴（boot 收攏跨檔繫結與進入點，必須最後） -->
-<script src="js/game.js?v=20260713d"></script>
+<!-- game 系列載入順序有依賴：core 先（共用狀態）、boot 最後（跨檔繫結與進入點），
+     其餘照原始單檔的段落順序排列，詳見各檔檔頭說明 -->
+<script src="js/game-core.js?v=20260713e"></script>
 <script src="js/game-audio.js?v=20260713d"></script>
 <script src="js/game-save.js?v=20260713d"></script>
+<script src="js/game-board.js?v=20260713e"></script>
+<script src="js/game-classic.js?v=20260713e"></script>
 <script src="js/game-adventure.js?v=20260713c"></script>
 <script src="js/game-adventure-map.js?v=20260713c"></script>
 <script src="js/game-sync.js?v=20260713b"></script>

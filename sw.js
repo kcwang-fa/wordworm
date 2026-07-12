@@ -1,4 +1,4 @@
-const CACHE_NAME = 'wordworm-pwa-20260713d';
+const CACHE_NAME = 'wordworm-pwa-20260713e';
 
 const PRECACHE_URLS = [
   './',
@@ -15,9 +15,11 @@ const PRECACHE_URLS = [
   './js/story.js',
   './js/adventure-data.js',
   './js/daily.js',
-  './js/game.js?v=20260713d',
+  './js/game-core.js?v=20260713e',
   './js/game-audio.js?v=20260713d',
   './js/game-save.js?v=20260713d',
+  './js/game-board.js?v=20260713e',
+  './js/game-classic.js?v=20260713e',
   './js/game-adventure.js?v=20260713c',
   './js/game-adventure-map.js?v=20260713c',
   './js/game-sync.js?v=20260713b',
