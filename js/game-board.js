@@ -11,7 +11,7 @@ function renderModeBtn() {
 }
 document.getElementById('mode').onclick = () => {
   easyMode = !easyMode;
-  localStorage.setItem('wordworm_easymode', easyMode ? '1' : '0');
+  localStorage.setItem(profileStorageKey('wordworm_easymode'), easyMode ? '1' : '0');
   renderModeBtn();
   sel = []; render(); updateCurrent();
   pickBonusWord();
@@ -63,7 +63,7 @@ function init(fromSave = false) {
 }
 
 /* ================= 相鄰判定（整齊方格、含斜角 8 方向） ================= */
-let easyMode = localStorage.getItem('wordworm_easymode') === '1';
+let easyMode = localStorage.getItem(profileStorageKey('wordworm_easymode')) === '1';
 function adjacent(a, b) {
   if (gameMode === 'adventure' || gameMode === 'daily' || easyMode) return !(a.c === b.c && a.r === b.r);  // 冒險／每日／輕鬆模式：全盤任選
   const dc = Math.abs(b.c - a.c), dr = Math.abs(b.r - a.r);
@@ -245,4 +245,3 @@ function pickBonusWord() {
 function revalidateBonus() {
   if (bonusWord && !canSpell(bonusWord)) pickBonusWord();
 }
-

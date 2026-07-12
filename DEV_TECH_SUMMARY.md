@@ -71,7 +71,7 @@ python -m http.server 8791
 - `wordworm_gamemode`：`'classic'`/`'adventure'`，記住玩家上次選的模式
 - `wordworm_easymode`：經典模式的「相鄰/任選」拼字規則開關（跟冒險模式無關，冒險模式固定全盤任選）
 
-讀檔都有防禦性驗證（`isValidGrid()` 559 行、`isValidAdvState()` 601 行）：grid 維度、tile 是否有合法 `letter`、adv 數值型別與 chapterIdx/monsterIdx 邊界。驗證失敗會回傳 false，呼叫端 fallback 全新開局，不會 crash。**改資料結構時記得同步更新這兩個驗證函式**，不然新欄位會被舊驗證邏輯誤殺或新驗證邏輯漏檢查。
+讀檔都有防禦性驗證（`isValidClassicGrid()`、`isValidAdventureGrid()`、`isValidAdvState()`）：grid 維度、tile 是否有合法 `letter`、adv 數值型別與 chapterIdx/monsterIdx 邊界。驗證失敗會回傳 false，呼叫端 fallback 全新開局，不會 crash。**改資料結構時記得同步更新對應模式的驗證函式**，不然新欄位會被舊驗證邏輯誤殺或新驗證邏輯漏檢查。
 
 ## 動工前該知道的坑
 

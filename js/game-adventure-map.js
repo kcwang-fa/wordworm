@@ -254,7 +254,7 @@ function showAdventureMap() {
   clearTimeout(advAdvanceTimer);
   advAdvancing = false;
   clearAdvStageMotion();
-  if (adv && adv.monsterHp > 0 && !over && isValidGrid(grid, COLS, ROWS)) saveAdventure();
+  if (adv && adv.monsterHp > 0 && !over && isValidAdventureGrid(grid, COLS, ROWS)) saveAdventure();
   sel = [];
   setAdventureView('map');
   if (grid.length === COLS) { render(); updateCurrent(); }
@@ -302,7 +302,7 @@ function startAdventureLevel(levelId, options = {}) {
   setBgmThemeForLevel(level);
   document.getElementById('adv-gameover').classList.remove('show');
   over = false; sel = []; setFace('normal');
-  const canResume = adv && adv.levelId === levelId && adv.monsterHp > 0 && isValidGrid(grid, COLS, ROWS);
+  const canResume = adv && adv.levelId === levelId && adv.monsterHp > 0 && isValidAdventureGrid(grid, COLS, ROWS);
   if (level.id === 'final-type-golem' && !canResume && !options.skipFinalBossIntro) {
     openAdventureFinalBossIntro(() => startAdventureLevel(levelId, { ...options, skipFinalBossIntro: true }));
     return;

@@ -1,10 +1,10 @@
 /* ================= 每日單字（Word of the Day） =================
- * 獨立於「每日挑戰」模式：只讀 daily_words.json、使用 speechSynthesis、
- * 並把收藏存在 ww_favorite_words。不得連網，也不碰遊戲存檔。
+ * 獨立於「每日挑戰」模式：只讀 data/daily-words.json、使用 speechSynthesis、
+ * 並把收藏存在目前玩家的 ww_favorite_words。不得連網，也不碰遊戲存檔。
  */
 
-const WOTD_WORDS_URL = 'daily_words.json';
-const WOTD_FAVORITES_KEY = 'ww_favorite_words';
+const WOTD_WORDS_URL = 'data/daily-words.json';
+const WOTD_FAVORITES_KEY = profileStorageKey('ww_favorite_words');
 const WOTD_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 let wotdWords = [];
@@ -159,7 +159,7 @@ function wotdShowLoading() {
 
 function wotdShowError() {
   wotdEls.loading.hidden = false;
-  wotdEls.loading.textContent = '每日單字載入失敗，請確認 daily_words.json 有隨網頁一起放在根目錄。';
+  wotdEls.loading.textContent = '每日單字載入失敗，請確認 data/daily-words.json 有隨網頁一起部署。';
   wotdEls.content.hidden = true;
 }
 
@@ -175,13 +175,14 @@ function wotdValidateItem(item) {
 
 function wotdLoadWords() {
   if (wotdLoadPromise) return wotdLoadPromise;
-  wotdLoadPromise = fetch(WOTD_WORDS_URL)
+  const wordsUrl = typeof versionedAssetUrl === 'function' ? versionedAssetUrl(WOTD_WORDS_URL) : WOTD_WORDS_URL;
+  wotdLoadPromise = fetch(wordsUrl, { cache: 'no-cache' })
     .then(r => {
-      if (!r.ok) throw new Error('daily_words.json HTTP ' + r.status);
+      if (!r.ok) throw new Error('data/daily-words.json HTTP ' + r.status);
       return r.json();
     })
     .then(data => {
-      if (!Array.isArray(data)) throw new Error('daily_words.json must be an array');
+      if (!Array.isArray(data)) throw new Error('data/daily-words.json must be an array');
       const seen = new Set();
       wotdWords = data.filter(item => {
         if (!wotdValidateItem(item)) return false;
@@ -191,7 +192,7 @@ function wotdLoadWords() {
         return true;
       });
       wotdByWord = new Map(wotdWords.map(item => [wotdNormalizeWord(item.word), item]));
-      if (!wotdWords.length) throw new Error('daily_words.json has no valid words');
+      if (!wotdWords.length) throw new Error('data/daily-words.json has no valid words');
       return wotdWords;
     });
   return wotdLoadPromise;

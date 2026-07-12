@@ -141,7 +141,7 @@ function freshBoardDaily(ds, a1Parsed) {
 }
 
 /* ---------- 載入字典與 CEFR 字表 ----------
- * 與 js/game.js 的字典載入一致:enable1 + modern-words + extra-words 三檔合併,
+ * 與遊戲端字典載入一致:enable1 + modern-words + extra-words 三檔合併,
  * 過濾規則同 dictionaryWordsFromText()(去空白、跳過 # 註解、純字母、長度 ≥3)。 */
 function readDictFile(name) {
   let text = '';
@@ -155,8 +155,8 @@ const dictWords = [...new Set([
   ...readDictFile('modern-words.txt'),
   ...readDictFile('extra-words.txt'),
 ])];
-// 從 game.js 原始碼直接抽 CEFR 常數,避免手抄出入
-const gameSrc = fs.readFileSync(path.join(ROOT, 'js/game.js'), 'utf8');
+// 從 game-board.js 原始碼直接抽 CEFR 常數,避免手抄出入
+const gameSrc = fs.readFileSync(path.join(ROOT, 'js/game-board.js'), 'utf8');
 const cefrMatch = gameSrc.match(/const CEFR = (\{[\s\S]*?\});/);
 if (!cefrMatch) { console.error('抽不到 CEFR 常數'); process.exit(1); }
 const CEFR = eval('(' + cefrMatch[1] + ')');

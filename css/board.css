@@ -28,7 +28,7 @@
     body.home-screen #library-bg {
       background:
         linear-gradient(180deg, rgba(20,12,5,.26) 0%, rgba(20,12,5,.1) 36%, rgba(20,12,5,.46) 100%),
-        url("../assets/home-cover.png?v=20260712f") 29% center / cover no-repeat;
+        url("../assets/home-cover.png") 29% center / cover no-repeat;
     }
     body.home-screen h1 {
       margin-top: clamp(20px, 6vh, 42px);
@@ -266,4 +266,3 @@
     z-index: 10; text-align: center;
   }
   #toast.show { opacity: 1; }
-

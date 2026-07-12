@@ -22,8 +22,8 @@ const DAILY_GOAL_SCORE = 300;              // 主挑戰目標分數
 const DAILY_STAR_TIERS = [24, 27, 31];     // [⭐⭐⭐, ⭐⭐, ⭐] 磚數上限（2026-07 模擬定案）
 const DAILY_EPOCH = '2026-07-11';          // 題號 #1 的日期
 const DAILY_MIN_TILES_LEFT = 3;            // 剩磚少於這個數就自動結算（拼字至少要 3 磚）
-const DAILY_SAVE_KEY = 'wordworm_daily_save_v1';   // 進行中的局（結算時移除）
-const DAILY_META_KEY = 'wordworm_daily_meta_v1';   // 歷史結果 + streak
+const DAILY_SAVE_KEY = profileStorageKey('wordworm_daily_save_v1');   // 進行中的局（結算時移除）
+const DAILY_META_KEY = profileStorageKey('wordworm_daily_meta_v1');   // 歷史結果 + streak
 
 /* ---------- 模組狀態 ---------- */
 let dailyState = null;          // 進行中的局：{date, score, tilesUsed, wordCount, goalTiles, words}
@@ -205,13 +205,13 @@ function dailyStarsFor(goalTiles) {
 }
 
 /* ================= 存讀檔（防禦性驗證） =================
- * 風格仿照 game.js 的 isValidGrid()/isValidAdvState()：
+ * 風格仿照 game-save.js 的 grid 驗證與 isValidAdvState()：
  * localStorage 內容可能被手改、被舊版寫壞，讀進來前逐欄驗證，
  * 驗證失敗一律當作「沒有存檔」，回到乾淨進場頁，絕不 crash。 */
 const DAILY_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-// 每日棋盤有自己的驗證器，不共用 isValidGrid()：
-// 每日的「洞」是 {letter:'', used:true}，空字串 letter 會被 isValidGrid 打槍。
+// 每日棋盤有自己的驗證器，不共用經典／冒險 grid 驗證：
+// 每日的「洞」是 {letter:'', used:true}，空字串 letter 會被經典／冒險驗證打槍。
 function isValidDailyGrid(g) {
   if (!Array.isArray(g) || g.length !== 7) return false;
   for (const col of g) {

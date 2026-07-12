@@ -1,5 +1,5 @@
 /* ================= 冒險模式：故事資料 ================= */
-const STORY_INTRO_SEEN_KEY = 'wordworm_story_intro_seen_v1';
+const STORY_INTRO_SEEN_KEY = profileStorageKey('wordworm_story_intro_seen_v1');
 
 const ADVENTURE_STORY = {
   introTitle: '活字圖書館的裂縫',

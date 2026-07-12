@@ -1,0 +1,13 @@
+.DS_Store
+**/.DS_Store
+
+.claude/
+.codex_tmp/
+design/
+
+assets/**/*-source.png
+
+node_modules/
+dist/
+build/
+coverage/

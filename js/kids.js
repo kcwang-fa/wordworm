@@ -1,6 +1,6 @@
 (() => {
-  const SAVE_KEY = 'wordworm_kids_save_v1';
-  const VOLUME_KEY = 'wordworm_kids_volume';
+  const SAVE_KEY = profileStorageKey('wordworm_kids_save_v1');
+  const VOLUME_KEY = profileStorageKey('wordworm_kids_volume');
   const WORDS_URL = 'data/kids-words.json';
   const THEME_ORDER = ['animals', 'food', 'home', 'body', 'nature', 'traffic'];
   const STICKER_POOL = ['⭐', '🌈', '🍀', '🎈', '💎', '🌟', '🎀', '🧩', '🍄', '🎵', '🏵️', '🪁'];
@@ -77,7 +77,8 @@
 
   function loadKidsWords() {
     if (!kidsReady) {
-      kidsReady = fetch(WORDS_URL)
+      const wordsUrl = typeof versionedAssetUrl === 'function' ? versionedAssetUrl(WORDS_URL) : WORDS_URL;
+      kidsReady = fetch(wordsUrl, { cache: 'no-cache' })
         .then(r => {
           if (!r.ok) throw new Error('kids words failed');
           return r.json();

@@ -17,17 +17,19 @@
 <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
 <!-- CSS 已按職責拆檔；載入順序＝原 style.css 的 cascade 順序，不可任意調換
      （daily-kids.css 內含順序相依的 #mode-select 規則，詳見該檔檔頭說明） -->
-<link rel="stylesheet" href="css/base.css?v=20260713f">
-<link rel="stylesheet" href="css/adventure.css?v=20260713a">
-<link rel="stylesheet" href="css/board.css?v=20260713a">
-<link rel="stylesheet" href="css/gameover.css?v=20260713a">
-<link rel="stylesheet" href="css/daily-kids.css?v=20260713f">
-<link rel="stylesheet" href="css/word-of-day.css?v=20260713a">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/adventure.css">
+<link rel="stylesheet" href="css/board.css">
+<link rel="stylesheet" href="css/gameover.css">
+<link rel="stylesheet" href="css/daily-kids.css">
+<link rel="stylesheet" href="css/word-of-day.css">
 </head>
 <body class="home-screen">
   <div id="library-bg" aria-hidden="true"></div>
   <h1>Word Worm 單字蟲蟲</h1>
+  <div id="app-version" aria-label="版本號">v1.0.0</div>
   <div id="mode-select">
+    <button id="profile-open" class="mode-btn profile-action-btn">👤 玩家</button>
     <button id="modesel-classic" class="mode-btn mode-entry">📖 一般模式</button>
     <button id="modesel-adventure" class="mode-btn mode-entry">⚔️ 冒險模式</button>
     <button id="modesel-daily" class="mode-btn mode-entry">📅 每日挑戰</button>
@@ -296,7 +298,7 @@
       </div>
       <div class="sync-panel">
         <h3>這台裝置 → 另一台裝置</h3>
-        <p>在電腦按「產生同步資料」，把連結傳到手機打開，或把同步碼貼到手機的匯入欄。</p>
+        <p>在電腦按「產生同步資料」，會匯出目前玩家；把連結傳到手機打開，或把同步碼貼到手機的匯入欄。</p>
         <div class="sync-actions">
           <button id="sync-export" type="button">產生同步資料</button>
           <button id="sync-copy-link" class="secondary" type="button">複製同步連結</button>
@@ -306,13 +308,31 @@
       </div>
       <div class="sync-panel">
         <h3>匯入到這台裝置</h3>
-        <p>匯入會覆蓋這台裝置的 Word Worm 進度。建議先確認不要把比較新的手機進度蓋掉。</p>
+        <p>匯入會覆蓋目前玩家的 Word Worm 進度。建議先確認不要把比較新的手機進度蓋掉。</p>
         <textarea id="sync-import-code" class="sync-code" placeholder="貼上同步碼或同步連結"></textarea>
         <div class="sync-actions">
           <button id="sync-import" type="button">匯入進度</button>
         </div>
       </div>
       <p id="sync-status" aria-live="polite"></p>
+    </article>
+  </div>
+  <div id="profile-modal" class="word-modal" role="dialog" aria-modal="true" aria-labelledby="profile-title" hidden>
+    <article id="profile-card" class="word-card profile-card">
+      <div class="word-card-top">
+        <div>
+          <div class="word-card-kicker">Local Players</div>
+          <h2 id="profile-title">玩家檔案</h2>
+        </div>
+        <button id="profile-close" class="icon-btn" type="button" title="關閉" aria-label="關閉">✕</button>
+      </div>
+      <p class="profile-help">同一台手機或電腦可以切換不同玩家；經典、冒險、每日挑戰、小書蟲和單字本會分開儲存。</p>
+      <div id="profile-list" class="profile-list"></div>
+      <div class="profile-create">
+        <input id="profile-name-input" type="text" maxlength="20" autocomplete="off" placeholder="新玩家名稱">
+        <button id="profile-add" type="button">新增玩家</button>
+      </div>
+      <p id="profile-status" aria-live="polite"></p>
     </article>
   </div>
   <div id="gameover">
@@ -385,22 +405,24 @@
     </div>
   </div>
 
+<script src="js/game-profile.js"></script>
 <script src="js/story.js"></script>
 <script src="js/adventure-data.js"></script>
 <script src="js/daily.js"></script>
 <!-- game 系列載入順序有依賴：core 先（共用狀態）、boot 最後（跨檔繫結與進入點），
      其餘照原始單檔的段落順序排列，詳見各檔檔頭說明 -->
-<script src="js/game-core.js?v=20260713f"></script>
-<script src="js/game-audio.js?v=20260713f"></script>
-<script src="js/game-save.js?v=20260713f"></script>
-<script src="js/game-board.js?v=20260713f"></script>
-<script src="js/game-classic.js?v=20260713f"></script>
-<script src="js/game-adventure.js?v=20260713f"></script>
-<script src="js/game-adventure-map.js?v=20260713f"></script>
-<script src="js/game-sync.js?v=20260713f"></script>
-<script src="js/game-boot.js?v=20260713f"></script>
-<script src="js/kids.js?v=kids-20260712b"></script>
-<script src="js/word-of-day.js?v=wotd-20260712b"></script>
+<script src="js/version.js"></script>
+<script src="js/game-core.js"></script>
+<script src="js/game-audio.js"></script>
+<script src="js/game-save.js"></script>
+<script src="js/game-board.js"></script>
+<script src="js/game-classic.js"></script>
+<script src="js/game-adventure.js"></script>
+<script src="js/game-adventure-map.js"></script>
+<script src="js/game-sync.js"></script>
+<script src="js/game-boot.js"></script>
+<script src="js/kids.js"></script>
+<script src="js/word-of-day.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

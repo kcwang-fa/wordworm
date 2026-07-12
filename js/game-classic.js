@@ -6,12 +6,15 @@
  * 冒險模式的改動不應該碰這個檔案。
  * ============================================================ */
 
-function submit() {
+async function submit() {
   if (over) return;
   const w = currentWord();
   // Boggle 慣例：Qu 磚貢獻 Q+U 兩個字母；這裡檢查的是字母數，不是磚數。
   if (w.length < 3) { toast('至少 3 個字母'); return; }
-  if (!DICT) { toast('字典還在載入…'); return; }
+  if (!DICT) {
+    try { await ensureDictionaryLoaded(); }
+    catch (e) { return; }
+  }
   if (!DICT.has(w.toLowerCase())) { sfx.bad(); setFace('sad'); bubble(quip(QUIPS.bad)); shake();
     setTimeout(() => setFace('normal'), 1200); return; }
   if (gameMode === 'adventure') { submitAdventure(w); return; }

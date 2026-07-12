@@ -3,7 +3,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const TARGET_COUNT = 732;
-const OUT = path.join(ROOT, 'daily_words.json');
+const OUT = path.join(ROOT, 'data', 'daily-words.json');
 
 const CURATED = `
 aberration abeyance abject abjure abnegation abrogate abscond abstruse acerbic

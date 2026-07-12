@@ -1,7 +1,7 @@
 /* ============================================================
  * game-sync.js —— 裝置間進度同步（無後端：同步碼／同步連結）
  * 內容：進度打包/還原、同步碼編解碼、#sync= 連結處理。
- * 依賴 game-save.js 的 key 常數，載入順序必須在它之後。
+ * 匯出/匯入目前玩家檔案；實際 localStorage key 由 game-profile.js 分流。
  * ============================================================ */
 
 
@@ -9,10 +9,10 @@
 const SYNC_PAYLOAD_VERSION = 1;
 const SYNC_HASH_PREFIX = '#sync=';
 const SYNC_STORAGE_KEYS = [
-  SAVE_KEY,
-  HI_KEY,
-  ADV_SAVE_KEY,
-  ADV_PROGRESS_KEY,
+  'wordworm_save_v1',
+  'wordworm_hiscore',
+  'wordworm_save_adventure_v1',
+  'wordworm_adv_progress',
   'wordworm_daily_save_v1',
   'wordworm_daily_meta_v1',
   'wordworm_kids_save_v1',
@@ -59,13 +59,14 @@ function collectSyncPayload() {
   persistCurrentRunBeforeSync();
   const saves = {};
   for (const key of SYNC_STORAGE_KEYS) {
-    const value = localStorage.getItem(key);
+    const value = localStorage.getItem(profileStorageKey(key));
     if (value !== null) saves[key] = value;
   }
   return {
     type: 'wordworm-progress',
     version: SYNC_PAYLOAD_VERSION,
     exportedAt: new Date().toISOString(),
+    profileName: typeof wordwormCurrentProfileName === 'function' ? wordwormCurrentProfileName() : '',
     saves,
   };
 }
@@ -99,7 +100,7 @@ function openSyncModal(prefill = '') {
   if (!modal) return;
   modal.hidden = false;
   modal.classList.add('show');
-  setSyncStatus(prefill ? '偵測到同步連結。確認要覆蓋這台裝置的進度後，按「匯入進度」。' : '');
+  setSyncStatus(prefill ? '偵測到同步連結。確認要覆蓋目前玩家的進度後，按「匯入進度」。' : '');
   if (prefill) document.getElementById('sync-import-code').value = prefill;
 }
 function closeSyncModal() {
@@ -143,9 +144,9 @@ function exportSyncData() {
   }
 }
 function refreshAfterSyncImport() {
-  const nextMode = localStorage.getItem('wordworm_gamemode');
+  const nextMode = localStorage.getItem(profileStorageKey('wordworm_gamemode'));
   gameMode = ['classic', 'adventure', 'daily', 'kids'].includes(nextMode) ? nextMode : 'classic';
-  easyMode = localStorage.getItem('wordworm_easymode') === '1';
+  easyMode = localStorage.getItem(profileStorageKey('wordworm_easymode')) === '1';
   setBoardSize();
   applyModeClass();
   document.getElementById('gameover').classList.remove('show');
@@ -168,9 +169,9 @@ function importSyncData(input) {
       setSyncStatus('這不是 Word Worm 的同步資料，或版本不相容。');
       return;
     }
-    if (!confirm('匯入會覆蓋這台裝置的 Word Worm 進度。確定要匯入嗎？')) return;
-    for (const key of SYNC_STORAGE_KEYS) localStorage.removeItem(key);
-    for (const [key, value] of Object.entries(payload.saves)) localStorage.setItem(key, value);
+    if (!confirm('匯入會覆蓋目前玩家「' + wordwormCurrentProfileName() + '」的 Word Worm 進度。確定要匯入嗎？')) return;
+    for (const key of SYNC_STORAGE_KEYS) localStorage.removeItem(profileStorageKey(key));
+    for (const [key, value] of Object.entries(payload.saves)) localStorage.setItem(profileStorageKey(key), value);
     history.replaceState(null, '', location.href.split('#')[0]);
     refreshAfterSyncImport();
     closeSyncModal();

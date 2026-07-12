@@ -1,42 +1,98 @@
 /* ============================================================
  * game-save.js —— 存讀檔（經典與冒險各自獨立，互不干擾）
- * 內容：所有 localStorage 存讀與防禦性驗證（isValidGrid 等）。
- * ⚠️ key 名（wordworm_save_v1、wordworm_save_adventure_v1…）
+ * 內容：所有 localStorage 存讀與防禦性驗證（isValidClassicGrid / isValidAdventureGrid 等）。
+ * ⚠️ base key 名（wordworm_save_v1、wordworm_save_adventure_v1…）
  * 一改，既有玩家的存檔就會消失——改資料結構時記得同步更新
  * 驗證函式，不然舊驗證會誤殺新欄位。
  * ============================================================ */
 
 /* ================= 存檔（localStorage 自動存） ================= */
-// 存檔完整性檢查共用：grid 形狀／每格 letter 合法，防損毀存檔讓 render 之後 crash
-function isValidGrid(g, cols, rows) {
+const VALID_GEMS = ['green', 'gold', 'sapphire', 'diamond'];
+
+function isValidBaseTile(t) {
+  return !!t && typeof t.letter === 'string' && !!t.letter;
+}
+
+function isValidGemValue(gem) {
+  return gem === null || VALID_GEMS.includes(gem);
+}
+
+// 經典模式 grid：只接受經典玩法會寫入的欄位，避免冒險負面狀態混進來。
+function isValidClassicGrid(g, cols, rows) {
   if (!Array.isArray(g) || g.length !== cols) return false;
   for (const col of g) {
     if (!Array.isArray(col) || col.length !== rows) return false;
     for (const t of col) {
-      if (!t || typeof t.letter !== 'string' || !t.letter) return false;
+      if (!isValidBaseTile(t)) return false;
       if ('burning' in t && typeof t.burning !== 'boolean') return false;
-      if ('locked' in t && typeof t.locked !== 'boolean') return false;
-      if ('cursed' in t && typeof t.cursed !== 'boolean') return false;
-      if ('negativeTurns' in t && (!Number.isFinite(Number(t.negativeTurns)) || Number(t.negativeTurns) < 0)) return false;
-      if ('gem' in t && t.gem !== null && !['green', 'gold', 'sapphire', 'diamond'].includes(t.gem)) return false;
+      if ('gem' in t && !isValidGemValue(t.gem)) return false;
+      if ('locked' in t || 'cursed' in t || 'negativeTurns' in t) return false;
     }
   }
   return true;
 }
 
-const SAVE_KEY = 'wordworm_save_v1', HI_KEY = 'wordworm_hiscore';
+// 冒險模式 grid：允許 locked/cursed/negativeTurns 等戰鬥狀態。
+function isValidAdventureGrid(g, cols, rows) {
+  if (!Array.isArray(g) || g.length !== cols) return false;
+  for (const col of g) {
+    if (!Array.isArray(col) || col.length !== rows) return false;
+    for (const t of col) {
+      if (!isValidBaseTile(t)) return false;
+      if ('burning' in t && typeof t.burning !== 'boolean') return false;
+      if ('locked' in t && typeof t.locked !== 'boolean') return false;
+      if ('cursed' in t && typeof t.cursed !== 'boolean') return false;
+      if ('negativeTurns' in t && (!Number.isFinite(Number(t.negativeTurns)) || Number(t.negativeTurns) < 0)) return false;
+      if ('gem' in t && !isValidGemValue(t.gem)) return false;
+    }
+  }
+  return true;
+}
+
+const SAVE_KEY = profileStorageKey('wordworm_save_v1'), HI_KEY = profileStorageKey('wordworm_hiscore');
+const CLASSIC_SAVE_VERSION = 2;
 function saveGame() {
   if (over) { localStorage.removeItem(SAVE_KEY); return; }
   localStorage.setItem(SAVE_KEY, JSON.stringify({
+    version: CLASSIC_SAVE_VERSION,
     grid: grid.map(col => col.map(t => ({ letter: t.letter, burning: t.burning, gem: t.gem }))),
     score, wordCount, bestWord, bestWordScore, weakStreak, level
   }));
 }
+function normaliseClassicSave(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const version = raw.version === undefined ? 1 : raw.version;
+  if (version !== 1 && version !== CLASSIC_SAVE_VERSION) return null;
+  if (!isValidClassicGrid(raw.grid, COLS, ROWS)) return null;
+
+  const scoreValue = Number(raw.score);
+  const wordCountValue = Number(raw.wordCount);
+  const bestWordScoreValue = Number(raw.bestWordScore);
+  const weakStreakValue = Number(raw.weakStreak);
+  const levelValue = Number(raw.level);
+  if (!Number.isFinite(scoreValue) || scoreValue < 0) return null;
+  if (!Number.isFinite(wordCountValue) || wordCountValue < 0) return null;
+  if (!Number.isFinite(levelValue) || levelValue < 1) return null;
+
+  return {
+    version: CLASSIC_SAVE_VERSION,
+    grid: raw.grid.map(col => col.map(t => ({
+      letter: t.letter,
+      burning: !!t.burning,
+      gem: isValidGemValue(t.gem) ? t.gem : null,
+    }))),
+    score: Math.floor(scoreValue),
+    wordCount: Math.floor(wordCountValue),
+    bestWord: typeof raw.bestWord === 'string' ? raw.bestWord : '',
+    bestWordScore: Number.isFinite(bestWordScoreValue) && bestWordScoreValue >= 0 ? Math.floor(bestWordScoreValue) : 0,
+    weakStreak: Number.isFinite(weakStreakValue) && weakStreakValue >= 0 ? Math.floor(weakStreakValue) : 0,
+    level: Math.floor(levelValue),
+  };
+}
 function loadGame() {
   try {
-    const s = JSON.parse(localStorage.getItem(SAVE_KEY));
-    if (!s || !isValidGrid(s.grid, COLS, ROWS)) return false;
-    if (typeof s.score !== 'number' || typeof s.wordCount !== 'number' || typeof s.level !== 'number') return false;
+    const s = normaliseClassicSave(JSON.parse(localStorage.getItem(SAVE_KEY)));
+    if (!s) return false;
     grid = s.grid.map(col => col.map(t => ({ ...t, fresh: false })));
     score = s.score; wordCount = s.wordCount; bestWord = s.bestWord;
     bestWordScore = s.bestWordScore; weakStreak = s.weakStreak; level = s.level;
@@ -46,7 +102,7 @@ function loadGame() {
 function hiScore() { return +localStorage.getItem(HI_KEY) || 0; }
 
 /* ================= 冒險模式存檔（獨立於經典模式，互不干擾） ================= */
-const ADV_SAVE_KEY = 'wordworm_save_adventure_v1', ADV_PROGRESS_KEY = 'wordworm_adv_progress';
+const ADV_SAVE_KEY = profileStorageKey('wordworm_save_adventure_v1'), ADV_PROGRESS_KEY = profileStorageKey('wordworm_adv_progress');
 const ADV_PROGRESS_VERSION = 4;
 const ADV_HERO_BASE_HP = 100;
 const ADV_HERO_HP_PER_LEVEL = 6;
@@ -180,7 +236,7 @@ function loadAdventure() {
   try {
     const s = JSON.parse(localStorage.getItem(ADV_SAVE_KEY));
     const nextAdv = normaliseAdvState(s && s.adv);
-    if (!s || !isValidGrid(s.grid, COLS, ROWS) || !isValidAdvState(nextAdv)) return false;
+    if (!s || !isValidAdventureGrid(s.grid, COLS, ROWS) || !isValidAdvState(nextAdv)) return false;
     grid = s.grid.map(col => col.map(t => ({ ...t, fresh: false })));
     normaliseAdventureGridStatuses();
     adv = nextAdv;
@@ -280,4 +336,3 @@ function isAdventureLevelUnlocked(levelId, progress = advBestProgress()) {
   const level = adventureLevelById(levelId);
   return !!level && level.globalIdx <= adventureUnlockedIndex(progress);
 }
-

@@ -8,8 +8,9 @@
  * ============================================================ */
 
 /* ================= 字典載入 ================= */
-const WORDWORM_ASSET_VERSION = '20260712f';
+const WORDWORM_ASSET_VERSION = window.WORDWORM_VERSION || 'dev';
 let DICT = null;
+let dictLoadPromise = null;
 function dictionaryWordsFromText(text) {
   return text
     .split(/\r?\n/)
@@ -32,11 +33,45 @@ async function fetchTextAsset(path, options = {}) {
   }
   return response.text();
 }
+function modeNeedsDictionary(mode = gameMode) {
+  return mode === 'classic' || mode === 'adventure' || mode === 'daily';
+}
+function ensureDictionaryLoaded(options = {}) {
+  const { silent = false } = options;
+  if (DICT) return Promise.resolve(DICT);
+  if (dictLoadPromise) return dictLoadPromise;
+  if (!silent) toast('字典載入中…', 1200);
+  dictLoadPromise = Promise.all([
+    fetchTextAsset('enable1.txt', { required: true }),
+    fetchTextAsset('modern-words.txt').catch(() => ''),
+    fetchTextAsset('extra-words.txt').catch(() => ''),
+  ]).then(([coreText, modernText, extraText]) => {
+    const coreWords = dictionaryWordsFromText(coreText);
+    if (!coreWords.length) throw new Error('enable1.txt parsed 0 words');
+    const coreSet = new Set(coreWords);
+    const modernWords = dictionaryWordsFromText(modernText);
+    const extraWords = dictionaryWordsFromText(extraText);
+    const supplementalWords = [...modernWords, ...extraWords];
+    const supplementalSet = new Set(supplementalWords);
+    const extraAdded = [...supplementalSet].filter(w => !coreSet.has(w)).length;
+    DICT = new Set([...coreWords, ...supplementalWords]);
+    toast('字典就緒，開拼！(' + DICT.size.toLocaleString() + ' 字，補充 ' + extraAdded.toLocaleString() + ' 字)');
+    if (gameMode === 'classic' && grid.length && !bonusWord) pickBonusWord();
+    updateCurrent();
+    return DICT;
+  }).catch(error => {
+    dictLoadPromise = null;
+    console.error('Dictionary load failed:', error);
+    toast('字典載入失敗，請重新整理', 4000);
+    throw error;
+  });
+  return dictLoadPromise;
+}
 
 /* ================= 常數 ================= */
 let COLS = 7, ROWS = 7;
 /* ================= 遊戲模式（經典／冒險／每日挑戰） ================= */
-let gameMode = localStorage.getItem('wordworm_gamemode') || 'classic';
+let gameMode = localStorage.getItem(profileStorageKey('wordworm_gamemode')) || 'classic';
 // localStorage 可能被手改成怪值；不認得的模式一律當經典（原本的 fallback 行為）
 if (!['classic', 'adventure', 'daily', 'kids'].includes(gameMode)) gameMode = 'classic';
 function setBoardSize() {
@@ -64,10 +99,11 @@ function selectGameMode(mode) {
     if (wasHomeScreen && mode === 'adventure') initAdventure(true);
     if (wasHomeScreen && mode === 'daily') initDaily(true);
     if (wasHomeScreen && mode === 'kids' && window.initKidsMode) window.initKidsMode(true);
+    if (modeNeedsDictionary(mode)) ensureDictionaryLoaded({ silent: true });
     return;
   }
   gameMode = mode;
-  localStorage.setItem('wordworm_gamemode', mode);
+  localStorage.setItem(profileStorageKey('wordworm_gamemode'), mode);
   applyModeClass();
   setBoardSize();
   sel = [];
@@ -75,6 +111,7 @@ function selectGameMode(mode) {
   else if (mode === 'daily') initDaily(true);
   else if (mode === 'kids' && window.initKidsMode) window.initKidsMode(true);
   else init(true);
+  if (modeNeedsDictionary(mode)) ensureDictionaryLoaded({ silent: true });
 }
 function returnHome() {
   sel = [];
@@ -266,4 +303,3 @@ function setFace(mood) {
     mood === 'happy' ? 'M31 27 Q35 33 39 27' : mood === 'sad' ? 'M32 30 Q35 27 38 30' : 'M32 28 Q35 31 38 28');
   if (mood === 'happy') setTimeout(() => setFace('normal'), 1500);
 }
-
