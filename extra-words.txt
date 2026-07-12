@@ -12,3 +12,15 @@ taiwan
 taiwanese
 japanese
 chinese
+january
+february
+march
+april
+may
+june
+july
+august
+september
+october
+november
+december
