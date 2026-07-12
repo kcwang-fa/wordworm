@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon-precomposed" sizes="180x180" href="./apple-touch-icon.png">
 <link rel="icon" href="./favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
-<link rel="stylesheet" href="css/style.css?v=kids-20260712a">
+<link rel="stylesheet" href="css/style.css?v=20260712f">
 </head>
 <body class="home-screen">
   <div id="library-bg" aria-hidden="true"></div>
@@ -381,13 +381,13 @@
 <script src="js/story.js"></script>
 <script src="js/adventure-data.js"></script>
 <script src="js/daily.js"></script>
-<script src="js/game.js"></script>
+<script src="js/game.js?v=20260712f"></script>
 <script src="js/kids.js?v=kids-20260712b"></script>
 <script src="js/word-of-day.js?v=wotd-20260712b"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(() => {
+      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => {
         // Service workers require http://localhost or HTTPS; file:// preview cannot register.
       });
     });

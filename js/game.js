@@ -1,4 +1,5 @@
 /* ================= 字典載入 ================= */
+const WORDWORM_ASSET_VERSION = '20260712f';
 let DICT = null;
 function dictionaryWordsFromText(text) {
   return text
@@ -6,12 +7,30 @@ function dictionaryWordsFromText(text) {
     .map(line => line.trim().toLowerCase())
     .filter(w => w.length >= 3 && !w.startsWith('#') && /^[a-z]+$/.test(w));
 }
+
+function versionedAssetUrl(path) {
+  const url = new URL(path, document.baseURI);
+  url.searchParams.set('v', WORDWORM_ASSET_VERSION);
+  return url;
+}
+
+async function fetchTextAsset(path, options = {}) {
+  const { required = false } = options;
+  const response = await fetch(versionedAssetUrl(path), { cache: 'no-cache' });
+  if (!response.ok) {
+    if (!required) return '';
+    throw new Error(path + ' HTTP ' + response.status);
+  }
+  return response.text();
+}
+
 Promise.all([
-  fetch('enable1.txt').then(r => r.text()),
-  fetch('modern-words.txt').then(r => r.ok ? r.text() : '').catch(() => ''),
-  fetch('extra-words.txt').then(r => r.ok ? r.text() : '').catch(() => ''),
+  fetchTextAsset('enable1.txt', { required: true }),
+  fetchTextAsset('modern-words.txt').catch(() => ''),
+  fetchTextAsset('extra-words.txt').catch(() => ''),
 ]).then(([coreText, modernText, extraText]) => {
   const coreWords = dictionaryWordsFromText(coreText);
+  if (!coreWords.length) throw new Error('enable1.txt parsed 0 words');
   const coreSet = new Set(coreWords);
   const modernWords = dictionaryWordsFromText(modernText);
   const extraWords = dictionaryWordsFromText(extraText);
@@ -21,7 +40,10 @@ Promise.all([
   DICT = new Set([...coreWords, ...supplementalWords]);
   toast('字典就緒，開拼！(' + DICT.size.toLocaleString() + ' 字，補充 ' + extraAdded.toLocaleString() + ' 字)');
   if (!bonusWord) pickBonusWord();
-}).catch(() => toast('字典載入失敗，請重新整理', 4000));
+}).catch(error => {
+  console.error('Dictionary load failed:', error);
+  toast('字典載入失敗，請重新整理', 4000);
+});
 
 /* ================= 常數 ================= */
 let COLS = 7, ROWS = 7;
@@ -923,6 +945,10 @@ document.getElementById('adv-battle-reset').onclick = restartAdventureGame;
 document.getElementById('adv-back-map').onclick = showAdventureMap;
 document.getElementById('adv-story-close').onclick = closeStoryModal;
 document.getElementById('adv-story-modal').onclick = e => {
+  if (e.currentTarget.classList.contains('has-ending-slides')) {
+    advanceStorySlide();
+    return;
+  }
   const clickAnywhereToClose = e.currentTarget.classList.contains('has-comic') && !e.currentTarget.classList.contains('show-paragraphs');
   if (clickAnywhereToClose || e.target.id === 'adv-story-modal') closeStoryModal();
 };
@@ -935,6 +961,10 @@ document.getElementById('adv-mobile-drawers').onclick = e => {
   if (btn) useAdventureItem(btn.dataset.advItem);
 };
 document.addEventListener('keydown', e => {
+  if (advStorySlides && !e.repeat && advanceStorySlide()) {
+    e.preventDefault();
+    return;
+  }
   if (e.key === 'Escape') closeStoryModal();
 });
 
@@ -1175,6 +1205,8 @@ let advAdvancing = false;
 let advAdvanceTimer = null;
 let advEncounterTimer = null;
 let advStoryAfterClose = null;
+let advStorySlides = null;
+let advStorySlideIndex = 0;
 const ADV_ADVANCE_MS = 1500;
 const ADV_ENCOUNTER_MS = 620;
 
@@ -1558,20 +1590,70 @@ function renderAdvStoryCard(progress) {
   textEl.textContent = chapterStory.logline;
   goalEl.textContent = '目標：' + chapterStory.goal;
 }
+function renderStorySlide(title) {
+  if (!advStorySlides || !advStorySlides.length) return;
+  const modal = document.getElementById('adv-story-modal');
+  const body = document.getElementById('adv-story-modal-body');
+  const hint = document.getElementById('adv-story-hint');
+  const slide = advStorySlides[advStorySlideIndex];
+  body.innerHTML = '';
+
+  const frame = document.createElement('article');
+  frame.className = 'adv-ending-slide';
+
+  const img = document.createElement('img');
+  img.className = 'adv-ending-slide-image';
+  img.src = slide.image;
+  img.alt = slide.alt || title;
+  img.loading = 'eager';
+  frame.appendChild(img);
+
+  const textBox = document.createElement('div');
+  textBox.className = 'adv-ending-slide-text';
+  for (const text of slide.paragraphs || []) {
+    const p = document.createElement('p');
+    p.textContent = text;
+    textBox.appendChild(p);
+  }
+  frame.appendChild(textBox);
+  body.appendChild(frame);
+
+  const isLastSlide = advStorySlideIndex >= advStorySlides.length - 1;
+  hint.textContent = isLastSlide ? '按任意鍵或點一下回到主畫面' : '按任意鍵或點一下繼續下一張';
+  modal.setAttribute('aria-label', title + '，第 ' + (advStorySlideIndex + 1) + ' 張，共 ' + advStorySlides.length + ' 張');
+}
+function advanceStorySlide() {
+  const modal = document.getElementById('adv-story-modal');
+  if (!modal.classList.contains('show') || !advStorySlides || !advStorySlides.length) return false;
+  if (advStorySlideIndex < advStorySlides.length - 1) {
+    advStorySlideIndex++;
+    renderStorySlide(document.getElementById('adv-story-modal-title').textContent);
+  } else {
+    closeStoryModal();
+  }
+  return true;
+}
 function openStoryModal(title, paragraphs, comic = null, options = {}) {
   const modal = document.getElementById('adv-story-modal');
   const titleEl = document.getElementById('adv-story-modal-title');
   const body = document.getElementById('adv-story-modal-body');
+  advStorySlides = null;
+  advStorySlideIndex = 0;
   advStoryAfterClose = typeof options.onClose === 'function' ? options.onClose : null;
   const hasFullComic = !!(comic && comic.fullImage);
-  const hasComic = !!(comic && (comic.fullImage || (comic.panels && comic.panels.length)));
-  const showParagraphs = !hasComic || !!options.showParagraphsWithComic;
+  const hasSlides = !!(comic && comic.slides && comic.slides.length);
+  const hasComic = !!(comic && (comic.fullImage || hasSlides || (comic.panels && comic.panels.length)));
+  const showParagraphs = !hasComic || (!hasSlides && !!options.showParagraphsWithComic);
   modal.classList.toggle('has-comic', hasComic);
   modal.classList.toggle('has-full-comic', hasFullComic);
+  modal.classList.toggle('has-ending-slides', hasSlides);
   modal.classList.toggle('show-paragraphs', hasComic && !!options.showParagraphsWithComic);
   titleEl.textContent = title;
   body.innerHTML = '';
-  if (hasComic) {
+  if (hasSlides) {
+    advStorySlides = comic.slides;
+    renderStorySlide(title);
+  } else if (hasComic) {
     const page = document.createElement('div');
     page.className = 'adv-comic-page' + (hasFullComic ? ' full-image' : '');
     if (hasFullComic) {
@@ -1627,10 +1709,14 @@ function closeStoryModal() {
   const wasOpen = modal.classList.contains('show');
   const afterClose = advStoryAfterClose;
   advStoryAfterClose = null;
+  advStorySlides = null;
+  advStorySlideIndex = 0;
   modal.classList.remove('show');
   modal.classList.remove('has-comic');
   modal.classList.remove('has-full-comic');
+  modal.classList.remove('has-ending-slides');
   modal.classList.remove('show-paragraphs');
+  modal.removeAttribute('aria-label');
   if (wasOpen && afterClose) afterClose();
 }
 function openAdventureStoryFromMap() {

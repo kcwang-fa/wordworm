@@ -116,27 +116,36 @@ const ADVENTURE_COMICS = {
   ending: {
     ribbon: 'Finale',
     title: '已由單字蟲蟲校正',
-    panels: [
+    slides: [
       {
-        size: 'wide',
-        scene: 'core',
-        actors: ['worm', 'golem'],
-        bubble: '錯誤不該被刪除，應該被修正。',
-        caption: '最後一個單字落下，終章活字巨像停止了錯誤指令。'
+        image: 'assets/story/chapter-7-ending-1-golem-peace.png',
+        alt: '終章活字巨像跪在安靜下來的圖書館中，胸口的原初字典泛著金色修補光痕',
+        paragraphs: [
+          '最後一個單字落下時，整座圖書館安靜了。',
+          '不是死寂，而是那種深夜書庫該有的安靜：紙張微微呼吸，書架輕輕伸展，遠處的索引卡自己排回正確位置。',
+          '終章活字巨像跪下來，胸口的《原初字典》慢慢合上。裂縫沒有完全消失，只留下一道細細的金色書痕，像被仔細修補過的舊頁。'
+        ]
       },
       {
-        size: 'half',
-        scene: 'open-book',
-        actors: ['book'],
-        bubble: '......',
-        caption: '《原初字典》慢慢合上，只留下一道金色書痕。'
+        image: 'assets/story/chapter-7-ending-2-library-restored.png',
+        alt: '入口書庫恢復秩序，紙頁鼠整理目錄卡，紫墨與逗號角色安靜待在旁邊',
+        paragraphs: [
+          '你爬回入口書庫。',
+          '紙頁鼠把目錄卡推回原位。墨漬怪變成一滴乖巧的紫墨。逗號巨人縮成一枚正常大小的逗號，雖然看起來還是很想亂插話。',
+          '館長的銅牌重新浮現完整句子：',
+          '「當文字失序時，請找到仍願意拼字的人。」'
+        ]
       },
       {
-        size: 'half',
-        scene: 'library',
-        actors: ['worm'],
-        bubble: '請勿餵食錯字。',
-        caption: '明天，讀者只會發現某本書突然變得清楚了一點。'
+        image: 'assets/story/chapter-7-ending-3-book-spine.png',
+        alt: '單字蟲蟲打著呵欠鑽回字典書脊，晨光照進恢復平靜的圖書館',
+        paragraphs: [
+          '你打了個呵欠，鑽回字典書脊裡。',
+          '明天圖書館會照常開門。讀者不會知道今晚發生過什麼。',
+          '他們只會發現，某本很久以前讀不懂的書，突然變得清楚了一點。',
+          '而在頁角，有一行小小的字：',
+          '「已由單字蟲蟲校正。請勿餵食錯字。」'
+        ]
       }
     ]
   },
