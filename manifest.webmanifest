@@ -1,0 +1,32 @@
+{
+  "id": "./",
+  "name": "Word Worm 單字蟲蟲",
+  "short_name": "Word Worm",
+  "description": "在手機上拼字、冒險、挑戰每日單字。",
+  "lang": "zh-Hant",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#3c2a13",
+  "theme_color": "#5c3f20",
+  "categories": ["games", "education"],
+  "icons": [
+    {
+      "src": "./assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./assets/icons/maskable-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

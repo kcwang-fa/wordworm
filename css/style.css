@@ -22,6 +22,9 @@
     user-select: none; -webkit-user-select: none;
     position: relative;
     overflow-x: hidden;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
   }
   /* ===== 圖書館背景 ===== */
   #library-bg {
@@ -137,7 +140,7 @@
   body.home-screen #mode-select {
     position: fixed;
     left: 50%;
-    bottom: clamp(34px, 9vh, 86px);
+    bottom: calc(clamp(34px, 9vh, 86px) + env(safe-area-inset-bottom));
     z-index: 2;
     transform: translateX(-50%);
     display: flex;
