@@ -1344,28 +1344,30 @@ function renderAdvFloatingWord() {
   }
 }
 function renderAdvSkills(level) {
-  const list = document.getElementById('adv-skills-list');
-  if (!list) return;
-  list.innerHTML = '';
   const skills = level.skills && level.skills.length ? level.skills : [
     { icon: 'L', name: '鎖定磚', desc: '隨機封住 1 格，無法選取；3 次有效攻擊後解除。' },
     { icon: 'C', name: '詛咒磚', desc: '拼入後本次攻擊傷害降低；3 次有效攻擊後解除。' },
     { icon: 'ATK', name: '反擊', desc: '未擊倒時回合結尾扣玩家 HP。' },
   ];
-  for (const skill of skills) {
-    const item = document.createElement('div');
-    item.className = 'adv-skill';
-    const icon = document.createElement('div');
-    icon.className = 'adv-skill-icon';
-    icon.textContent = skill.icon;
-    const body = document.createElement('div');
-    const name = document.createElement('b');
-    name.textContent = skill.name;
-    const desc = document.createElement('span');
-    desc.textContent = skill.desc;
-    body.append(name, desc);
-    item.append(icon, body);
-    list.appendChild(item);
+  for (const listId of ['adv-skills-list', 'adv-mobile-skills-list']) {
+    const list = document.getElementById(listId);
+    if (!list) continue;
+    list.innerHTML = '';
+    for (const skill of skills) {
+      const item = document.createElement('div');
+      item.className = 'adv-skill';
+      const icon = document.createElement('div');
+      icon.className = 'adv-skill-icon';
+      icon.textContent = skill.icon;
+      const body = document.createElement('div');
+      const name = document.createElement('b');
+      name.textContent = skill.name;
+      const desc = document.createElement('span');
+      desc.textContent = skill.desc;
+      body.append(name, desc);
+      item.append(icon, body);
+      list.appendChild(item);
+    }
   }
   document.getElementById('adv-skill-monster-tag').textContent = level.name;
   document.getElementById('adv-skills-summary').textContent = skills.length + ' 個怪物技能，可展開';
