@@ -1,3 +1,10 @@
+/* ============================================================
+ * game-audio.js —— 音效與背景音樂（WebAudio 合成，零外部資源）
+ * 內容：音效庫 sfx、BGM 主題與循環、靜音開關與按鈕狀態。
+ * 為什麼獨立成檔：音訊完全獨立於遊戲邏輯，只讀寫自己的
+ * 靜音設定（wordworm_audio_muted / wordworm_music_muted）。
+ * ============================================================ */
+
 /* ================= 音效（WebAudio 合成，零外部資源） ================= */
 const AUDIO_MUTED_KEY = 'wordworm_audio_muted';
 const MUSIC_MUTED_KEY = 'wordworm_music_muted';

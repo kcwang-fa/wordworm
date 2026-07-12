@@ -1,3 +1,10 @@
+/* ============================================================
+ * game-adventure.js —— 冒險模式：戰鬥層
+ * 內容：戰鬥狀態 adv、道具欄、傷害公式 battleDamage、
+ *       怪物反擊與技能、負面磚、戰鬥 HUD 渲染。
+ * 關卡資料在 adventure-data.js，故事文本在 story.js。
+ * ============================================================ */
+
 
 /* ================= 冒險模式：戰鬥狀態 ================= */
 let adv = null; // { chapterIdx, monsterIdx, playerHp, playerMaxHp, monsterHp, monsterMaxHp, monsterAtk, monsterName, monsterKind, isBoss }

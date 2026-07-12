@@ -1,3 +1,11 @@
+/* ============================================================
+ * game-adventure-map.js —— 冒險模式：地圖與流程層
+ * 內容：故事 modal（含第七章結局動畫）、冒險地圖、
+ *       關卡進出、submitAdventure、冒險相關事件繫結。
+ * 事件繫結放本檔尾端：它們直接引用本檔函式名，
+ * 同檔內函式宣告會提升（hoisting），跨檔就會 ReferenceError。
+ * ============================================================ */
+
 function renderStorySlide(title) {
   if (!advStorySlides || !advStorySlides.length) return;
   const modal = document.getElementById('adv-story-modal');

@@ -4,7 +4,14 @@
 
 ## 檔案結構
 
-- 單檔 `index.html`：HTML + CSS(`<style>`) + JS(`<script>`) 全部在一起，**零建置、零外部資源**（無 CDN、無外部圖片/字型/JS 套件）
+> 2026-07-12 重構：原單檔已拆分為多檔（零建置原則不變，仍是多個 `<script>`/`<link>` 標籤＋全域函式，沒有 bundler、沒有 ES modules）。本文件其餘段落引用的「index.html 行號」是拆分前的舊行號，函式說明仍然有效，找程式碼請改用下面的檔案對照。
+
+- `index.html`：HTML 骨架＋Service Worker 註冊
+- `css/`：六檔，載入順序＝cascade 順序（見 index.html）——`base.css`（:root 變數、首頁）、`adventure.css`、`board.css`、`gameover.css`、`daily-kids.css`（兩模式因 `#mode-select` 順序相依合檔，勿拆）、`word-of-day.css`
+- `js/` game 系列九檔，載入順序有依賴（core 最先、boot 最後，各檔檔頭有職責說明）：`game-core.js`（共用狀態/字典工具/計分/棋盤生成）、`game-audio.js`、`game-save.js`（所有 localStorage key 集中於此）、`game-board.js`（渲染/互動）、`game-classic.js`（submit dispatcher＋經典核心）、`game-adventure.js`（戰鬥層）、`game-adventure-map.js`（地圖/故事/流程）、`game-sync.js`、`game-boot.js`（跨模組繫結與進入點）
+- `js/` 其他：`story.js`（故事文本）、`adventure-data.js`（關卡資料）、`daily.js`（每日挑戰，須在 game 檔前載入）、`kids.js`、`word-of-day.js`
+- `sw.js`：PWA 快取。**PRECACHE_URLS 硬編碼檔名＋版本，拆檔/改版時必須與 index.html 標籤逐字元同步**，任一條 404 會讓整批快取安裝失敗
+- **零建置、零外部資源**（無 CDN、無外部圖片/字型/JS 套件）
 - `enable1.txt`：ENABLE1 核心英文字典（172,727 字，public domain）
 - `modern-words.txt`：ESDB / SCOWL `en_US` 現代補充字表，只收 lowercase ASCII、3+ 字母、且 ENABLE1 沒有的字
 - `extra-words.txt`：人工補充例外字，例如國籍/語言形容詞或產品需要接受的現代詞
