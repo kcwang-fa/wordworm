@@ -190,12 +190,12 @@
   },
   {
     "word": "alienate",
-    "ipa": "/ælɪːnætɛ/",
+    "ipa": "/ˈeɪliəneɪt/",
     "pos": "v.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"alienate\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"alienate\" in my notebook after hearing it in a serious discussion."
+    "zh": "使疏遠、離間",
+    "en": "to make someone feel isolated, estranged, or hostile",
+    "academic_example": "Heavy-handed reforms may alienate the communities they are intended to help.",
+    "life_example": "Changing every plan at the last minute will alienate the people doing the work."
   },
   {
     "word": "allay",
@@ -523,12 +523,12 @@
   },
   {
     "word": "benign",
-    "ipa": "/bɛnɪgn/",
-    "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"benign\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"benign\" in my notebook after hearing it in a serious discussion."
+    "ipa": "/bɪˈnaɪn/",
+    "pos": "adj.",
+    "zh": "良性的、無害的；和善的",
+    "en": "not harmful; gentle or kindly",
+    "academic_example": "Most benign tumors do not invade surrounding tissue, but they still require monitoring.",
+    "life_example": "The message looked suspicious, but it turned out to be benign."
   },
   {
     "word": "bequeath",
@@ -667,12 +667,12 @@
   },
   {
     "word": "cogent",
-    "ipa": "/kɑgɛnt/",
+    "ipa": "/ˈkoʊdʒənt/",
     "pos": "adj.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"cogent\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"cogent\" in my notebook after hearing it in a serious discussion."
+    "zh": "有說服力且條理清楚的",
+    "en": "clear, logical, and convincing",
+    "academic_example": "The article offers a cogent explanation for the decline in voter turnout.",
+    "life_example": "Her argument for postponing the trip was cogent: the storm was already closing roads."
   },
   {
     "word": "commensurate",
@@ -928,12 +928,12 @@
   },
   {
     "word": "desiccate",
-    "ipa": "/dɛsɪkkætɛ/",
+    "ipa": "/ˈdɛsɪkeɪt/",
     "pos": "v.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"desiccate\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"desiccate\" in my notebook after hearing it in a serious discussion."
+    "zh": "使乾燥、脫水；使失去活力",
+    "en": "to dry something thoroughly or remove its vitality",
+    "academic_example": "The preservation protocol used silica gel to desiccate the specimens before storage.",
+    "life_example": "The summer heat can desiccate herbs left on the windowsill."
   },
   {
     "word": "despondent",
@@ -1153,12 +1153,12 @@
   },
   {
     "word": "engender",
-    "ipa": "/ɛngɛndɛr/",
-    "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"engender\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"engender\" in my notebook after hearing it in a serious discussion."
+    "ipa": "/ɪnˈdʒendər/",
+    "pos": "v.",
+    "zh": "造成、引起、產生",
+    "en": "to cause a feeling, condition, or situation to develop",
+    "academic_example": "Opaque decision-making can engender distrust among affected communities.",
+    "life_example": "A tiny scheduling mistake can engender a surprising amount of chaos."
   },
   {
     "word": "enigmatic",
@@ -1297,12 +1297,12 @@
   },
   {
     "word": "fatuous",
-    "ipa": "/fætʌæʊs/",
+    "ipa": "/ˈfætʃuəs/",
     "pos": "adj.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"fatuous\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"fatuous\" in my notebook after hearing it in a serious discussion."
+    "zh": "愚蠢而空洞的、自以為是的",
+    "en": "silly, foolish, and lacking serious thought",
+    "academic_example": "The editorial dismissed the proposal as fatuous because it ignored basic funding constraints.",
+    "life_example": "Buying a new printer to avoid one paper jam was a fatuous solution."
   },
   {
     "word": "felicity",
@@ -1360,12 +1360,12 @@
   },
   {
     "word": "fortuitous",
-    "ipa": "/fɑrtʌɪtæʊs/",
+    "ipa": "/fɔːrˈtuːɪtəs/",
     "pos": "adj.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"fortuitous\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"fortuitous\" in my notebook after hearing it in a serious discussion."
+    "zh": "偶然發生的、意外幸運的",
+    "en": "happening by chance, often with a fortunate result",
+    "academic_example": "The discovery was fortuitous, arising from an error in the sampling schedule.",
+    "life_example": "A fortuitous empty seat appeared just as her laptop battery hit one percent."
   },
   {
     "word": "frugal",
@@ -2134,12 +2134,12 @@
   },
   {
     "word": "paucity",
-    "ipa": "/pæʌsɪti/",
+    "ipa": "/ˈpɔːsəti/",
     "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"paucity\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"paucity\" in my notebook after hearing it in a serious discussion."
+    "zh": "少量、缺乏、不足",
+    "en": "a lack or insufficient amount of something",
+    "academic_example": "The paucity of longitudinal data limits conclusions about long-term outcomes.",
+    "life_example": "There was a surprising paucity of snacks at a meeting scheduled through lunch."
   },
   {
     "word": "pedantic",
@@ -2278,12 +2278,12 @@
   },
   {
     "word": "prevaricate",
-    "ipa": "/prɛværɪkætɛ/",
+    "ipa": "/prɪˈværɪkeɪt/",
     "pos": "v.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"prevaricate\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"prevaricate\" in my notebook after hearing it in a serious discussion."
+    "zh": "支吾其詞、閃爍其辭",
+    "en": "to avoid telling the truth directly, often by speaking evasively",
+    "academic_example": "Officials continued to prevaricate when asked about the missing procurement records.",
+    "life_example": "When I asked who ate the last slice, my brother began to prevaricate immediately."
   },
   {
     "word": "pristine",
@@ -2539,12 +2539,12 @@
   },
   {
     "word": "stoic",
-    "ipa": "/stɑɪk/",
+    "ipa": "/ˈstoʊɪk/",
     "pos": "adj.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"stoic\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"stoic\" in my notebook after hearing it in a serious discussion."
+    "zh": "堅忍克制的，不輕易流露痛苦或情緒",
+    "en": "enduring pain or difficulty without showing emotion or complaint",
+    "academic_example": "The memoir presents a stoic response to political exile and personal loss.",
+    "life_example": "Jay stayed stoic during the delay, even though everyone else was visibly annoyed."
   },
   {
     "word": "stringent",
@@ -2764,12 +2764,12 @@
   },
   {
     "word": "virulent",
-    "ipa": "/vɪrʌlɛnt/",
+    "ipa": "/ˈvɪrələnt/",
     "pos": "adj.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"virulent\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"virulent\" in my notebook after hearing it in a serious discussion."
+    "zh": "劇毒的、致病力強的；惡意強烈的",
+    "en": "extremely harmful, infectious, or hostile",
+    "academic_example": "A more virulent strain could overwhelm hospitals if vaccination rates fall.",
+    "life_example": "The review was so virulent that the owner replied with a full apology."
   },
   {
     "word": "visceral",
@@ -2908,12 +2908,12 @@
   },
   {
     "word": "belated",
-    "ipa": "/bɛlætɛd/",
-    "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"belated\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"belated\" in my notebook after hearing it in a serious discussion."
+    "ipa": "/bɪˈleɪtɪd/",
+    "pos": "adj.",
+    "zh": "遲來的、延遲的",
+    "en": "coming or happening later than expected",
+    "academic_example": "The agency issued a belated acknowledgment of the data collection error.",
+    "life_example": "I sent a belated birthday message after realizing I had the wrong date."
   },
   {
     "word": "belligerent",
@@ -3241,12 +3241,12 @@
   },
   {
     "word": "disinterested",
-    "ipa": "/dɪsɪntɛrɛstɛd/",
-    "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"disinterested\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"disinterested\" in my notebook after hearing it in a serious discussion."
+    "ipa": "/dɪsˈɪntrəstɪd/",
+    "pos": "adj.",
+    "zh": "公正無私的、不受個人利益影響的",
+    "en": "impartial and not influenced by personal advantage",
+    "academic_example": "The ethics board sought a disinterested reviewer with no ties to the sponsor.",
+    "life_example": "Ask someone disinterested to judge the contest, not your roommate."
   },
   {
     "word": "dissonance",
@@ -3745,12 +3745,12 @@
   },
   {
     "word": "irrefutable",
-    "ipa": "/ɪrrɛfʌtæblɛ/",
+    "ipa": "/ˌɪrɪˈfjuːtəbəl/",
     "pos": "adj.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"irrefutable\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"irrefutable\" in my notebook after hearing it in a serious discussion."
+    "zh": "無法反駁的、確鑿的",
+    "en": "impossible to deny or disprove",
+    "academic_example": "The DNA evidence provided irrefutable support for revising the conviction.",
+    "life_example": "The empty cake box was irrefutable proof that someone had raided the fridge."
   },
   {
     "word": "lacuna",
@@ -3889,12 +3889,12 @@
   },
   {
     "word": "nonchalant",
-    "ipa": "/nɑntʃælænt/",
+    "ipa": "/ˌnɑːnʃəˈlɑːnt/",
     "pos": "adj.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"nonchalant\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"nonchalant\" in my notebook after hearing it in a serious discussion."
+    "zh": "若無其事的、漠不關心的",
+    "en": "appearing calm and unconcerned",
+    "academic_example": "The interviewees adopted a nonchalant tone when discussing routine surveillance.",
+    "life_example": "She looked nonchalant, but she had rehearsed that presentation all week."
   },
   {
     "word": "normative",
@@ -4033,12 +4033,12 @@
   },
   {
     "word": "postulate",
-    "ipa": "/pɑstʌlætɛ/",
+    "ipa": "/ˈpɑːstʃəleɪt/",
     "pos": "v.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"postulate\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"postulate\" in my notebook after hearing it in a serious discussion."
+    "zh": "假定、主張；提出作為推論前提",
+    "en": "to assume or propose something as a basis for reasoning",
+    "academic_example": "The model postulates that migration increases when local wages stagnate.",
+    "life_example": "Before blaming the router, let's postulate that the cable might simply be loose."
   },
   {
     "word": "precipitous",
@@ -4087,12 +4087,12 @@
   },
   {
     "word": "proclivity",
-    "ipa": "/prɑklɪvɪti/",
+    "ipa": "/proʊˈklɪvəti/",
     "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"proclivity\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"proclivity\" in my notebook after hearing it in a serious discussion."
+    "zh": "傾向、癖好、容易做某事的習性",
+    "en": "a natural tendency or inclination",
+    "academic_example": "The study examined whether early exposure predicted a proclivity toward risk-taking.",
+    "life_example": "He has a proclivity for joining projects right before they become complicated."
   },
   {
     "word": "promulgate",
@@ -4150,12 +4150,12 @@
   },
   {
     "word": "quiescent",
-    "ipa": "/kwɪːskɛnt/",
+    "ipa": "/kwiˈɛsənt/",
     "pos": "adj.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"quiescent\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"quiescent\" in my notebook after hearing it in a serious discussion."
+    "zh": "靜止的、暫時不活動的",
+    "en": "inactive or still, especially temporarily",
+    "academic_example": "The virus can remain quiescent in host cells before reactivation.",
+    "life_example": "The project was quiescent for months until a new client revived it."
   },
   {
     "word": "quotidian",
@@ -4375,12 +4375,12 @@
   },
   {
     "word": "surmise",
-    "ipa": "/sʌrmɪsɛ/",
+    "ipa": "/sərˈmaɪz/",
     "pos": "v.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"surmise\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"surmise\" in my notebook after hearing it in a serious discussion."
+    "zh": "推測、臆測",
+    "en": "to infer something without certain proof",
+    "academic_example": "Researchers surmise that the settlement expanded after the river changed course.",
+    "life_example": "From the wet umbrella, I surmised that it had started raining again."
   },
   {
     "word": "sycophant",
@@ -4519,12 +4519,12 @@
   },
   {
     "word": "winsome",
-    "ipa": "/wɪnsɑmɛ/",
-    "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"winsome\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"winsome\" in my notebook after hearing it in a serious discussion."
+    "ipa": "/ˈwɪnsəm/",
+    "pos": "adj.",
+    "zh": "討喜的、迷人的、天真可愛的",
+    "en": "charming in a simple, appealing way",
+    "academic_example": "The campaign relied on a winsome narrative that softened the candidate's technocratic image.",
+    "life_example": "Her winsome smile made the tense room relax for a moment."
   },
   {
     "word": "alchemy",
@@ -4852,12 +4852,12 @@
   },
   {
     "word": "diffuse",
-    "ipa": "/dɪffʌsɛ/",
-    "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"diffuse\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"diffuse\" in my notebook after hearing it in a serious discussion."
+    "ipa": "/dɪˈfjuːs/",
+    "pos": "adj.",
+    "zh": "分散的、不集中的；冗長散漫的",
+    "en": "spread out or lacking focus",
+    "academic_example": "The essay's diffuse structure weakens an otherwise promising argument.",
+    "life_example": "The light was diffuse enough that the photo looked soft instead of harsh."
   },
   {
     "word": "dilatory",
@@ -5167,12 +5167,12 @@
   },
   {
     "word": "histrionic",
-    "ipa": "/hɪstrɪənɪk/",
+    "ipa": "/ˌhɪstriˈɑːnɪk/",
     "pos": "adj.",
-    "zh": "社會、政治或文化討論相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"histrionic\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"histrionic\" in my notebook after hearing it in a serious discussion."
+    "zh": "過度戲劇化的、誇張做作的",
+    "en": "overly dramatic or theatrical in expression or behavior",
+    "academic_example": "The critique describes the speech as histrionic rather than substantively persuasive.",
+    "life_example": "His histrionic reaction to a typo made the whole team go quiet."
   },
   {
     "word": "hypercritical",
@@ -5356,12 +5356,12 @@
   },
   {
     "word": "inviolable",
-    "ipa": "/ɪnvɪəlæblɛ/",
+    "ipa": "/ɪnˈvaɪələbəl/",
     "pos": "adj.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"inviolable\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"inviolable\" in my notebook after hearing it in a serious discussion."
+    "zh": "不可侵犯的、不可違背的",
+    "en": "too important or sacred to be violated",
+    "academic_example": "The constitution treats freedom of conscience as an inviolable right.",
+    "life_example": "In our group chat, weekend sleep is an inviolable rule."
   },
   {
     "word": "irreverent",
@@ -5500,12 +5500,12 @@
   },
   {
     "word": "monumental",
-    "ipa": "/mɑnʌmɛntæl/",
+    "ipa": "/ˌmɑːnjuˈmentl/",
     "pos": "adj.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"monumental\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"monumental\" in my notebook after hearing it in a serious discussion."
+    "zh": "重大的、巨大的；紀念碑式的",
+    "en": "extremely important, large, or impressive",
+    "academic_example": "The trial produced a monumental shift in how courts interpret digital privacy.",
+    "life_example": "Cleaning the garage felt like a monumental task, so we started with one shelf."
   },
   {
     "word": "multifaceted",
@@ -5644,12 +5644,12 @@
   },
   {
     "word": "posthumous",
-    "ipa": "/pɑsθʌmæʊs/",
+    "ipa": "/ˈpɑːstʃəməs/",
     "pos": "adj.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"posthumous\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"posthumous\" in my notebook after hearing it in a serious discussion."
+    "zh": "死後發生、出版或授予的",
+    "en": "occurring, published, or awarded after someone's death",
+    "academic_example": "The author's posthumous essays complicated earlier interpretations of her work.",
+    "life_example": "The singer received a posthumous award two years after his final album."
   },
   {
     "word": "pragmatism",
@@ -5698,12 +5698,12 @@
   },
   {
     "word": "proliferation",
-    "ipa": "/prɑlɪfɛræʃən/",
+    "ipa": "/prəˌlɪfəˈreɪʃən/",
     "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"proliferation\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"proliferation\" in my notebook after hearing it in a serious discussion."
+    "zh": "快速增加、擴散、增生",
+    "en": "rapid increase or spread",
+    "academic_example": "The proliferation of low-cost sensors has changed environmental monitoring.",
+    "life_example": "There has been a proliferation of unread tabs on my browser."
   },
   {
     "word": "quarantine",
@@ -5905,12 +5905,12 @@
   },
   {
     "word": "sobriety",
-    "ipa": "/sɑbrɪːti/",
+    "ipa": "/səˈbraɪəti/",
     "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"sobriety\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"sobriety\" in my notebook after hearing it in a serious discussion."
+    "zh": "清醒、節制；嚴肅克制的狀態",
+    "en": "the state of being sober, restrained, or serious",
+    "academic_example": "The committee's report was praised for its sobriety in assessing the fiscal risks.",
+    "life_example": "After the first panic passed, a bit of sobriety helped us choose a realistic plan."
   },
   {
     "word": "sociopolitical",
@@ -6130,12 +6130,12 @@
   },
   {
     "word": "abalienation",
-    "ipa": "/æbælɪːnæʃən/",
+    "ipa": "/æbˌeɪliəˈneɪʃən/",
     "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"abalienation\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"abalienation\" in my notebook after hearing it in a serious discussion."
+    "zh": "財產讓渡；疏離、轉移",
+    "en": "the transfer of property or rights; also estrangement",
+    "academic_example": "The manuscript uses abalienation to describe the transfer of land from the estate to the crown.",
+    "life_example": "The legal form was about abalienation of ownership, which means the property was being transferred."
   },
   {
     "word": "abbreviation",
@@ -6337,12 +6337,12 @@
   },
   {
     "word": "abscision",
-    "ipa": "/æbssɪʒən/",
+    "ipa": "/æbˈsɪʒən/",
     "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"abscision\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"abscision\" in my notebook after hearing it in a serious discussion."
+    "zh": "切除、切斷、截去",
+    "en": "the act of cutting off or removing something",
+    "academic_example": "The procedure requires careful abscision of damaged tissue without disturbing nearby vessels.",
+    "life_example": "The gardener's clean abscision of the broken branch helped the tree heal."
   },
   {
     "word": "abscission",
@@ -6463,12 +6463,12 @@
   },
   {
     "word": "abstriction",
-    "ipa": "/æbstrɪkʃən/",
+    "ipa": "/æbˈstrɪkʃən/",
     "pos": "n.",
-    "zh": "抽象、理論或概念分析相關的 C2 進階詞彙",
-    "en": "A C2-level word used for precise expression in formal, academic, or literary contexts.",
-    "academic_example": "The article uses \"abstriction\" to frame a nuanced point in the wider argument.",
-    "life_example": "I wrote \"abstriction\" in my notebook after hearing it in a serious discussion."
+    "zh": "以收縮或縊縮方式分離、脫落",
+    "en": "separation by constriction, especially in biological contexts",
+    "academic_example": "Abstriction describes the pinching-off process by which certain fungal spores separate.",
+    "life_example": "This is a technical word: think of abstriction as a tiny part being pinched off rather than sliced."
   },
   {
     "word": "abstrusion",
