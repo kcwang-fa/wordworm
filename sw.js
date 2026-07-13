@@ -31,6 +31,8 @@ const PRECACHE_URLS = [
   versioned('./js/story.js'),
   versioned('./js/adventure-data.js'),
   versioned('./js/daily.js'),
+  versioned('./js/daily-leaderboard-config.js'),
+  versioned('./js/daily-leaderboard.js'),
   versioned('./js/game-core.js'),
   versioned('./js/game-audio.js'),
   versioned('./js/game-save.js'),

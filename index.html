@@ -39,6 +39,7 @@
       <div id="more-menu-panel" role="menu" aria-label="更多選項" hidden>
         <button id="profile-open" class="more-menu-item" type="button" role="menuitem">👤 玩家</button>
         <button id="wordbook-open" class="more-menu-item" type="button" role="menuitem">⭐ 我的單字本</button>
+        <button id="daily-leaderboard-menu" class="more-menu-item" type="button" role="menuitem">🌍 每日排行榜</button>
         <button id="sync-open" class="more-menu-item" type="button" role="menuitem">🔁 同步進度</button>
       </div>
     </div>
@@ -162,7 +163,10 @@
           <div id="daily-entry-title">📅 每日挑戰 <b id="daily-entry-no">#1</b></div>
           <div id="daily-entry-rules"></div>
           <div id="daily-entry-streak">🔥 連續挑戰 <b>0</b> 天</div>
-          <button id="daily-start">開始今日挑戰</button>
+          <div class="daily-entry-actions">
+            <button id="daily-start">開始今日挑戰</button>
+            <button id="daily-leaderboard-open" class="secondary" type="button">🌍 全球排行榜</button>
+          </div>
         </section>
         <div id="daily-topbar">
           <span id="daily-progress">分數 <b>0</b> / 300</span>
@@ -175,7 +179,10 @@
         <section id="daily-locked" aria-label="今日已完成">
           <h3>今日挑戰已完成 ✅</h3>
           <div id="daily-locked-result"></div>
-          <button id="daily-locked-copy">📋 複製結果</button>
+          <div class="daily-locked-actions">
+            <button id="daily-locked-copy">📋 複製結果</button>
+            <button id="daily-locked-leaderboard" class="secondary" type="button">🌍 看排行榜</button>
+          </div>
           <div id="daily-locked-tomorrow">明天再來！距離明日題目</div>
           <div id="daily-countdown">--:--:--</div>
         </section>
@@ -366,8 +373,11 @@
       <div id="daily-f-line">—</div>
       <div id="daily-f-words">—</div>
     </div>
-    <button id="daily-copy">📋 複製結果</button>
-    <button id="daily-close" class="secondary">關閉</button>
+    <div class="daily-gameover-actions">
+      <button id="daily-copy">📋 複製結果</button>
+      <button id="daily-f-leaderboard" class="secondary" type="button">🌍 看排行榜</button>
+      <button id="daily-close" class="secondary">關閉</button>
+    </div>
   </div>
   <!-- 每日挑戰規則浮層（對局中按「?」開啟；點背景或關閉鈕收起） -->
   <div id="daily-rules" role="dialog" aria-modal="true" aria-label="每日挑戰規則">
@@ -376,6 +386,25 @@
       <div id="daily-rules-body"></div>
       <button id="daily-rules-close">知道了</button>
     </div>
+  </div>
+  <div id="daily-leaderboard-modal" class="word-modal" role="dialog" aria-modal="true" aria-labelledby="daily-leaderboard-title" hidden>
+    <article id="daily-leaderboard-card" class="word-card">
+      <div class="word-card-top">
+        <div>
+          <div class="word-card-kicker">Daily Challenge</div>
+          <h2 id="daily-leaderboard-title">全球排行榜</h2>
+          <div id="daily-leaderboard-date" class="word-card-date">—</div>
+        </div>
+        <button id="daily-leaderboard-close" class="icon-btn" type="button" title="關閉" aria-label="關閉">✕</button>
+      </div>
+      <div id="daily-leaderboard-tabs" role="tablist" aria-label="排行榜類型">
+        <button class="daily-leaderboard-tab active" type="button" data-daily-leaderboard-tab="today" role="tab" aria-selected="true">今天</button>
+        <button class="daily-leaderboard-tab" type="button" data-daily-leaderboard-tab="yesterday" role="tab" aria-selected="false">昨天</button>
+        <button class="daily-leaderboard-tab" type="button" data-daily-leaderboard-tab="all_time" role="tab" aria-selected="false">累計</button>
+      </div>
+      <div id="daily-leaderboard-status" aria-live="polite">排行榜載入中…</div>
+      <div id="daily-leaderboard-list"></div>
+    </article>
   </div>
   <div id="adv-gameover">
     <img class="adv-gameover-art" src="assets/ui/adv-gameover-defeat.webp" width="1024" height="1536" loading="lazy" decoding="async" alt="Lex exhausted on an open storybook with a cracked magic staff">
@@ -424,6 +453,8 @@
 <script src="js/story.js"></script>
 <script src="js/adventure-data.js"></script>
 <script src="js/daily.js"></script>
+<script src="js/daily-leaderboard-config.js"></script>
+<script src="js/daily-leaderboard.js"></script>
 <!-- game 系列載入順序有依賴：core 先（共用狀態）、boot 最後（跨檔繫結與進入點），
      其餘照原始單檔的段落順序排列，詳見各檔檔頭說明 -->
 <script src="js/version.js"></script>

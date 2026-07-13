@@ -439,6 +439,7 @@ function settleDaily(reason) {
   render(); renderDailyHud();
   sfx.levelup();
   showDailyGameover(result, streak);
+  if (window.submitDailyLeaderboard) window.submitDailyLeaderboard(result, streak);
 }
 
 // 結算 modal（樣式同 #gameover 的 .show 顯示機制）
