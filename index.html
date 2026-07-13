@@ -33,11 +33,11 @@
     <button id="modesel-adventure" class="mode-btn mode-entry">⚔️ 冒險模式</button>
     <button id="modesel-daily" class="mode-btn mode-entry">📅 每日挑戰</button>
     <button id="modesel-kids" class="mode-btn mode-entry">🐛 小書蟲</button>
+    <button id="profile-open" class="mode-btn mode-entry profile-action-btn" type="button">👤 玩家</button>
     <button id="wotd-open" class="mode-btn mode-entry utility-btn">🔎 每日單字</button>
     <div id="more-menu" class="more-menu mode-entry">
       <button id="more-toggle" class="mode-btn utility-btn" type="button" aria-expanded="false" aria-controls="more-menu-panel">⋯ 更多</button>
       <div id="more-menu-panel" role="menu" aria-label="更多選項" hidden>
-        <button id="profile-open" class="more-menu-item" type="button" role="menuitem">👤 玩家</button>
         <button id="wordbook-open" class="more-menu-item" type="button" role="menuitem">⭐ 我的單字本</button>
         <button id="daily-leaderboard-menu" class="more-menu-item" type="button" role="menuitem">🌍 每日排行榜</button>
         <button id="sync-open" class="more-menu-item" type="button" role="menuitem">🔁 同步進度</button>
@@ -343,6 +343,10 @@
         <button id="profile-close" class="icon-btn" type="button" title="關閉" aria-label="關閉">✕</button>
       </div>
       <p class="profile-help">同一台手機或電腦可以切換不同玩家；經典、冒險、每日挑戰、小書蟲和單字本會分開儲存。</p>
+      <div class="profile-current">
+        <span>目前玩家：<b id="profile-current-name">玩家 1</b></span>
+        <button id="profile-rename-current" class="secondary profile-mini-btn" type="button">改目前名稱</button>
+      </div>
       <div id="profile-list" class="profile-list"></div>
       <div class="profile-create">
         <input id="profile-name-input" type="text" maxlength="20" autocomplete="off" placeholder="新玩家名稱">

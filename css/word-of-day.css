@@ -85,6 +85,28 @@
     gap: 9px;
     margin-top: 14px;
   }
+  .profile-current {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+    margin-top: 12px;
+    padding: 10px 11px;
+    border: 1px solid rgba(255,217,122,.34);
+    border-radius: 8px;
+    background: rgba(255,217,122,.1);
+    color: #fff0cf;
+    font-family: var(--font-zh-ui);
+    font-size: .92rem;
+    font-weight: 850;
+  }
+  .profile-current span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .profile-current b {
+    color: var(--gold);
+  }
   .profile-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
@@ -137,6 +159,16 @@
     min-height: 1.4em;
     margin-top: 10px;
     color: var(--gold);
+  }
+  @media (max-width: 480px) {
+    .profile-current,
+    .profile-create {
+      grid-template-columns: 1fr;
+    }
+    .profile-current button,
+    .profile-create button {
+      width: 100%;
+    }
   }
 
   .word-modal {

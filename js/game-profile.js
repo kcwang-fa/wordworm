@@ -139,8 +139,10 @@ function wordwormSetProfileStatus(message) {
 
 function wordwormRenderProfileButton() {
   const button = document.getElementById('profile-open');
-  if (!button) return;
-  button.textContent = '👤 玩家：' + wordwormCurrentProfileName();
+  const currentName = wordwormCurrentProfileName();
+  if (button) button.textContent = '👤 玩家：' + currentName;
+  const currentNameLabel = document.getElementById('profile-current-name');
+  if (currentNameLabel) currentNameLabel.textContent = currentName;
 }
 
 function wordwormRenderProfileList() {
@@ -252,11 +254,13 @@ function wordwormBindProfileUi() {
   const add = document.getElementById('profile-add');
   const input = document.getElementById('profile-name-input');
   const list = document.getElementById('profile-list');
+  const renameCurrent = document.getElementById('profile-rename-current');
   if (open) open.addEventListener('click', wordwormOpenProfileModal);
   if (close) close.addEventListener('click', wordwormCloseProfileModal);
   if (modal) modal.addEventListener('click', e => { if (e.target === modal) wordwormCloseProfileModal(); });
   if (add) add.addEventListener('click', wordwormCreateProfileFromInput);
   if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') wordwormCreateProfileFromInput(); });
+  if (renameCurrent) renameCurrent.addEventListener('click', () => wordwormRenameProfile(wordwormActiveProfileId()));
   if (list) list.addEventListener('click', e => {
     const switchTarget = e.target.closest('[data-profile-id]');
     const renameTarget = e.target.closest('[data-rename-profile-id]');

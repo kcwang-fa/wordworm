@@ -187,8 +187,9 @@
     z-index: 2;
     transform: translateX(-50%);
     display: flex;
+    flex-wrap: wrap;
     gap: clamp(12px, 2.5vw, 22px);
-    width: min(620px, calc(100vw - 32px));
+    width: min(760px, calc(100vw - 32px));
     margin: 0;
     justify-content: center;
   }
@@ -231,8 +232,8 @@
     transform: translateY(1px);
   }
   body.home-screen .mode-btn {
-    /* 四顆主模式鈕並列（一般／冒險／每日／小書蟲），窄螢幕交給後面的 RWD 堆疊 */
-    min-width: min(176px, calc((100vw - 98px) / 4));
+    /* 主模式與工具入口可換行；窄螢幕交給後面的 RWD 堆疊 */
+    min-width: min(170px, calc((100vw - 104px) / 4));
     min-height: 58px;
     padding: 14px 22px;
     border-radius: 16px;
