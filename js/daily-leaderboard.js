@@ -294,6 +294,7 @@ async function submitDailyLeaderboard(result, streak) {
 }
 
 document.getElementById('daily-leaderboard-open').onclick = () => openDailyLeaderboard('today');
+document.getElementById('daily-play-leaderboard').onclick = () => openDailyLeaderboard('today');
 document.getElementById('daily-locked-leaderboard').onclick = () => openDailyLeaderboard('today');
 document.getElementById('daily-f-leaderboard').onclick = () => openDailyLeaderboard('today');
 document.getElementById('daily-leaderboard-menu').onclick = () => openDailyLeaderboard('today');
