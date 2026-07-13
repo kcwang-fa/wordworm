@@ -256,16 +256,32 @@ function monsterCounter() {
   // 負面磚頻率（Vickie 2026-07-09 回饋：原 30%/50% 太頻繁，調慢一半）
   if (Math.random() < (adv.isBoss ? .25 : .15)) monsterSkillAlter();
 }
-function monsterSpriteSvg(kind, isBoss) {
-  const assets = {
-    critter: 'assets/characters/enemy-critter.webp',
-    blob: 'assets/characters/enemy-blob.webp',
-    book: 'assets/characters/enemy-book-boss.webp',
-  };
-  const src = assets[kind] || assets.book;
+const ADV_MONSTER_FALLBACK_ASSETS = {
+  critter: 'assets/characters/enemy-critter.webp',
+  blob: 'assets/characters/enemy-blob.webp',
+  book: 'assets/characters/enemy-book-boss.webp',
+};
+function advEscapeAttr(value) {
+  return String(value || '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[ch]));
+}
+function advMonsterSpritePath(level) {
+  return level && level.id ? 'assets/characters/enemies/' + level.id + '.webp' : '';
+}
+function monsterSpriteHtml(level) {
+  const kind = level && level.kind;
+  const isBoss = !!(level && level.boss);
+  const fallback = ADV_MONSTER_FALLBACK_ASSETS[kind] || ADV_MONSTER_FALLBACK_ASSETS.book;
+  const src = advMonsterSpritePath(level) || fallback;
   const bossClass = isBoss ? ' is-boss' : '';
-  const alt = isBoss ? '日式奇幻 Boss 怪物' : '日式奇幻怪物';
-  return '<img class="adv-character-img adv-monster-img' + bossClass + '" src="' + src + '" width="720" height="720" decoding="async" alt="' + alt + '">';
+  const size = isBoss ? 640 : 512;
+  const alt = level && level.name ? level.name : (isBoss ? '日式奇幻 Boss 怪物' : '日式奇幻怪物');
+  return '<img class="adv-character-img adv-monster-img' + bossClass + '" src="' + advEscapeAttr(src) + '" width="' + size + '" height="' + size + '" decoding="async" alt="' + advEscapeAttr(alt) + '" onerror="this.onerror=null;this.src=\'' + advEscapeAttr(fallback) + '\'">';
 }
 function renderAdvFloatingWord() {
   const wrap = document.getElementById('adv-floating-word');
@@ -361,7 +377,7 @@ function renderAdvHud() {
   document.getElementById('adv-chapter').textContent = '第 ' + (level.chapterIdx + 1) + ' 章：' + level.chapterTitle + '　' + level.mapLabel;
   document.getElementById('adv-player-name').textContent = 'Lex Lv.' + progress.heroLevel;
   document.getElementById('adv-monster-name').textContent = (adv.isBoss ? 'Boss ' : '') + adv.monsterName;
-  document.getElementById('adv-monster-sprite').innerHTML = monsterSpriteSvg(adv.monsterKind, adv.isBoss);
+  document.getElementById('adv-monster-sprite').innerHTML = monsterSpriteHtml(level);
   document.getElementById('adv-monster-hpbar').style.width = Math.max(0, adv.monsterHp / adv.monsterMaxHp * 100) + '%';
   document.getElementById('adv-monster-hptext').textContent = Math.max(0, adv.monsterHp) + '/' + adv.monsterMaxHp;
   document.getElementById('adv-player-hpbar').style.width = Math.max(0, adv.playerHp / adv.playerMaxHp * 100) + '%';
