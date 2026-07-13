@@ -206,12 +206,16 @@
         <span>最佳 <b id="bestword">—</b></span>
       </div>
       <div id="bonusbar" style="font-size:.8rem;margin-bottom:2px;">🎯 獎勵單字：<b id="bonusword" style="color:#8fd47a;letter-spacing:2px;">—</b> <span style="opacity:.6;">(×3 分)</span></div>
+      <div id="classic-pressure" aria-live="polite">
+        <span id="classic-pressure-main">🔥 Lv.1-2 安全期</span>
+        <span id="classic-pressure-note">5 字母以上可降低燃燒壓力</span>
+      </div>
       <div id="gem-guide" aria-label="寶石磚獎勵說明">
         <span class="gem-guide-title">◆ 寶石磚</span>
-        <span><span class="gem-swatch gem-green"></span>綠磚：攻擊 +4</span>
-        <span><span class="gem-swatch gem-gold"></span>黃磚：攻擊 +8</span>
-        <span><span class="gem-swatch gem-sapphire"></span>藍磚：攻擊 +12</span>
-        <span><span class="gem-swatch gem-diamond"></span>鑽石磚：攻擊 +20</span>
+        <span><span class="gem-swatch gem-green"></span><span id="gem-guide-green">綠磚：分數 +100</span></span>
+        <span><span class="gem-swatch gem-gold"></span><span id="gem-guide-gold">黃磚：分數 +250</span></span>
+        <span><span class="gem-swatch gem-sapphire"></span><span id="gem-guide-sapphire">藍磚：分數 +500</span></span>
+        <span><span class="gem-swatch gem-diamond"></span><span id="gem-guide-diamond">鑽石磚：分數 +1000</span></span>
       </div>
       <div id="current">&nbsp;</div>
       <div id="board"></div>
@@ -341,6 +345,7 @@
   </div>
   <div id="gameover">
     <h2>📚🔥 圖書館燒起來了！</h2>
+    <div id="fgamereason">燃燒磚到達底部，遊戲結束。</div>
     <div class="stats">
       最終等級：<b id="flevel">1</b>（<span id="frank">見習書蟲</span>）<br>
       最終分數：<b id="fscore">0</b><br>

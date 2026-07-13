@@ -108,6 +108,42 @@
   .gem-guide-title {
     color: #ffe39a;
   }
+  #classic-pressure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    width: min(520px, calc(100vw - 42px));
+    margin: 0 0 clamp(3px, .8vh, 6px);
+    padding: 5px 10px;
+    border: 1px solid rgba(255,230,160,.18);
+    border-radius: 10px;
+    background: rgba(0,0,0,.22);
+    color: rgba(255,244,216,.86);
+    font-family: var(--font-zh-ui);
+    font-size: .72rem;
+    font-weight: 850;
+    line-height: 1.35;
+  }
+  body:not(.mode-classic) #classic-pressure { display: none; }
+  #classic-pressure-main {
+    color: #ffe39a;
+  }
+  #classic-pressure-note {
+    color: rgba(255,244,216,.68);
+  }
+  #classic-pressure.warn {
+    border-color: rgba(255,217,122,.42);
+    background: rgba(80,44,10,.36);
+  }
+  #classic-pressure.danger {
+    border-color: rgba(255,132,82,.72);
+    background: rgba(100,28,8,.5);
+  }
+  #classic-pressure.danger #classic-pressure-main {
+    color: #ffb27a;
+  }
   .gem-guide-note {
     color: rgba(255,244,216,.62);
     font-weight: 750;
@@ -127,6 +163,16 @@
   .gem-swatch.gem-diamond { background: linear-gradient(145deg,#fff,#9adcf0); }
 
   @media (max-width: 700px) {
+    #classic-pressure {
+      width: 100%;
+      gap: 3px 7px;
+      padding: 5px 8px;
+      font-size: .66rem;
+    }
+    #classic-pressure-note {
+      flex-basis: 100%;
+      text-align: center;
+    }
     #gem-guide {
       max-width: 100%;
       gap: 4px 7px;
@@ -155,10 +201,25 @@
     min-height: clamp(1.6rem, 4vh, 2.1rem); font-size: clamp(1.1rem, 3vh, 1.4rem); letter-spacing: 3px;
     font-family: var(--font-letter);
     font-weight: bold; color: #fff;
-    display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 12px;
+    max-width: min(520px, calc(100vw - 42px));
+    text-align: center;
   }
-  #current .score-preview { font-size: .85rem; color: var(--leaf-green); font-weight: normal; }
+  #current .current-word {
+    min-width: 1ch;
+    overflow-wrap: anywhere;
+  }
+  #current .score-preview,
+  #current .word-status {
+    font-family: var(--font-zh-ui);
+    font-size: .76rem;
+    letter-spacing: .02em;
+    color: rgba(255,244,216,.7);
+    font-weight: 850;
+  }
+  #current .word-status.valid { color: var(--leaf-green); }
   #current.invalid { color: #e2836a; }
+  #current.pending { color: rgba(255,255,255,.86); }
 
   /* ===== 棋盤（7 欄交錯蜂巢） ===== */
   #board {
@@ -204,6 +265,25 @@
   .tile.gem-green::before, .tile.gem-gold::before, .tile.gem-sapphire::before, .tile.gem-diamond::before {
     content: "◆"; position: absolute; top: 1px; left: 4px; font-size: .55rem; opacity: .8;
   }
+  .tile-order {
+    position: absolute;
+    right: 3px;
+    bottom: 2px;
+    display: grid;
+    place-items: center;
+    min-width: 15px;
+    height: 15px;
+    padding: 0 3px;
+    border-radius: 999px;
+    background: rgba(68,40,8,.72);
+    color: #fff7dc;
+    font-family: var(--font-letter);
+    font-size: .58rem;
+    font-weight: 950;
+    line-height: 1;
+    box-shadow: 0 1px 3px rgba(0,0,0,.28);
+    pointer-events: none;
+  }
   @keyframes flicker { from { filter: brightness(1); } to { filter: brightness(1.25); } }
   /* ===== 冒險模式：鎖定／詛咒磚（負面磚） ===== */
   .tile.locked {
@@ -248,6 +328,14 @@
 
   /* ===== 按鈕列 ===== */
   #controls { display: flex; gap: 10px; margin: clamp(6px, 1.3vh, 10px) 0; }
+  body.mode-classic #controls {
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: min(520px, calc(100vw - 42px));
+  }
+  body.mode-classic #controls button {
+    min-width: 92px;
+  }
   button {
     font-family: var(--font-zh-ui); font-size: .95rem; font-weight: 850;
     letter-spacing: .04em;
@@ -258,6 +346,26 @@
   button:active { transform: translateY(2px); box-shadow: 0 1px 0 #a8834e; }
   button.secondary { background: linear-gradient(145deg, #d8cbb2, #b0a184); }
   button:disabled { opacity: .45; cursor: default; }
+
+  @media (max-width: 700px) {
+    body.mode-classic #controls {
+      width: min(360px, 100%);
+      gap: 8px;
+    }
+    body.mode-classic #submit {
+      flex: 1 0 100%;
+      min-height: 42px;
+    }
+    body.mode-classic #clear,
+    body.mode-classic #shuffle,
+    body.mode-classic #mode {
+      flex: 1 1 calc(33.333% - 8px);
+      min-width: 0;
+      padding-left: 8px;
+      padding-right: 8px;
+      font-size: .78rem;
+    }
+  }
 
   /* ===== 訊息浮層 ===== */
   #toast {

@@ -111,6 +111,14 @@ const MANUAL = {
     academic_example: 'Mobile devices have become ubiquitous in contemporary learning environments.',
     life_example: 'Coffee shops are ubiquitous near the station.'
   },
+  umbrage: {
+    ipa: '/ˈʌmbrɪdʒ/',
+    pos: 'n.',
+    zh: '因覺得被冒犯、輕視或不尊重而產生的不悅、怒意',
+    en: 'offence or resentment caused by something perceived as insulting, disrespectful, or unfair',
+    academic_example: 'The minister took umbrage at the report\'s implication that the policy had been drafted without proper consultation.',
+    life_example: 'Mia took umbrage when her teammate dismissed her idea before she had finished explaining it.'
+  },
   ameliorate: {
     ipa: '/əˈmiːliəreɪt/',
     pos: 'v.',

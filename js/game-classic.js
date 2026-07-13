@@ -73,6 +73,7 @@ function submitClassic(w) {
   revalidateBonus();
   render(); updateCurrent(); updateHud();
   checkLevelUp();
+  updateClassicPressure();
   saveGame();
   checkOver();
 }
@@ -146,10 +147,48 @@ function shuffle() {
   else toast('洗好了～（Lv.3 之後洗牌會有燃燒磚代價喔）', 1800);
   revalidateBonus();
   render(); updateCurrent();
+  updateClassicPressure();
   saveGame();
 }
 
 /* ================= HUD / 結束 ================= */
+function classicBurnStreakLimit() {
+  return Math.max(2, 5 - Math.floor(level / 4));
+}
+function classicBurningStats() {
+  let count = 0, lowest = -1;
+  for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) {
+    if (!grid[c] || !grid[c][r] || !grid[c][r].burning) continue;
+    count++;
+    lowest = Math.max(lowest, r);
+  }
+  return {
+    count,
+    lowest,
+    stepsToBottom: lowest === -1 ? Infinity : ROWS - 1 - lowest,
+  };
+}
+function updateClassicPressure() {
+  const box = document.getElementById('classic-pressure');
+  const main = document.getElementById('classic-pressure-main');
+  const note = document.getElementById('classic-pressure-note');
+  if (!box || !main || !note) return;
+  box.classList.remove('warn', 'danger');
+  if (gameMode !== 'classic') return;
+  const stats = classicBurningStats();
+  if (level < 3) {
+    main.textContent = '🔥 Lv.' + level + ' 安全期';
+    note.textContent = 'Lv.3 後短字會累積燃燒壓力；5 字母以上可降壓';
+    return;
+  }
+  const limit = classicBurnStreakLimit();
+  main.textContent = '🔥 短字壓力 ' + weakStreak + '/' + limit;
+  const burnText = stats.count ? '｜場上燃燒磚 ' + stats.count + ' 顆' : '';
+  const speedText = level < 5 ? 'Lv.3-4 每 2 次提交下沉' : '每次提交都會下沉';
+  note.textContent = speedText + burnText + '｜5 字母以上可降壓';
+  box.classList.toggle('warn', weakStreak >= Math.max(1, limit - 1) || stats.stepsToBottom <= 2);
+  box.classList.toggle('danger', weakStreak >= limit || stats.stepsToBottom <= 1);
+}
 function updateHud() {
   document.getElementById('score').textContent = score.toLocaleString();
   document.getElementById('wordcount').textContent = wordCount;
@@ -168,5 +207,7 @@ function checkOver() {
   document.getElementById('fscore').textContent = score.toLocaleString();
   document.getElementById('fwords').textContent = wordCount;
   document.getElementById('fbest').textContent = bestWord || '—';
+  const reason = document.getElementById('fgamereason');
+  if (reason) reason.textContent = '燃燒磚到達底部，遊戲結束。下次可以優先把燃燒磚拼進單字，或用 5 字母以上單字降壓。';
   document.getElementById('gameover').classList.add('show');
 }

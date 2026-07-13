@@ -66,6 +66,7 @@ function init(fromSave = false) {
   setFace('normal'); renderModeBtn();
   if (DICT) pickBonusWord();
   render(); updateHud(); checkLevelUp();
+  if (typeof updateClassicPressure === 'function') updateClassicPressure();
   if (fromSave && score > 0) toast('讀取存檔，歡迎回來 🐛', 1600);
 }
 
@@ -93,8 +94,15 @@ function render() {
       if (t.cursed) el.classList.add('cursed');
       if (t.used) el.classList.add('used');    // 每日挑戰的洞（磚用掉不補）；經典／冒險的磚沒有這個欄位
       if (t.fresh) { el.classList.add('falling'); t.fresh = false; }
-      if (sel.some(s => s.c === c && s.r === r)) el.classList.add('sel');
+      const selectedIndex = sel.findIndex(s => s.c === c && s.r === r);
+      if (selectedIndex !== -1) el.classList.add('sel');
       el.textContent = t.letter;
+      if (selectedIndex !== -1) {
+        const order = document.createElement('span');
+        order.className = 'tile-order';
+        order.textContent = selectedIndex + 1;
+        el.appendChild(order);
+      }
       if (isNegativeTile(t)) {
         const count = document.createElement('span');
         count.className = 'tile-status-count';
@@ -111,10 +119,24 @@ function render() {
 
 /* ================= 選字互動（點選 + 拖曳） ================= */
 let dragging = false;
+let lastInvalidPickAt = 0;
+let lastInvalidPickKey = '';
 function tileAt(x, y) {
   const el = document.elementFromPoint(x, y);
   const tile = el && el.closest ? el.closest('.tile') : null;
   return tile && boardEl.contains(tile) ? { c: +tile.dataset.c, r: +tile.dataset.r } : null;
+}
+function signalInvalidPick(p) {
+  if (gameMode !== 'classic' || easyMode || !p) return;
+  const key = p.c + ':' + p.r;
+  const now = Date.now();
+  if (key === lastInvalidPickKey && now - lastInvalidPickAt < 650) return;
+  lastInvalidPickKey = key;
+  lastInvalidPickAt = now;
+  const tile = boardEl.querySelector('[data-c="' + p.c + '"][data-r="' + p.r + '"]');
+  if (tile) tile.animate([{transform:'scale(1)'},{transform:'scale(.92)'},{transform:'scale(1)'}], {duration:150});
+  if (!dragging) toast('相鄰拼字要連隔壁，可以斜角', 1200);
+  if (navigator.vibrate) navigator.vibrate(20);
 }
 function pick(p) {
   if (over || !p) return;
@@ -128,6 +150,8 @@ function pick(p) {
     sfx.pick(sel.length);
   } else if (!dragging) {
     sel = [p];                                            // 點不相鄰的 = 重新開始選
+  } else {
+    signalInvalidPick(p);
   }
   render(); updateCurrent();
 }
@@ -164,9 +188,30 @@ function updateCurrent() {
     if (gameMode === 'adventure') renderAdvFloatingWord();
     return;
   }
-  const valid = DICT && DICT.has(w.toLowerCase());
-  cur.classList.toggle('invalid', !valid);
-  cur.innerHTML = w + (valid ? ' <span class="score-preview">+' + wordScore(w, sel) + '</span>' : '');
+  const valid = !!(DICT && DICT.has(w.toLowerCase()));
+  const canValidate = !!DICT && w.length >= 3;
+  cur.classList.toggle('invalid', canValidate && !valid);
+  cur.classList.toggle('pending', !canValidate);
+  cur.textContent = '';
+  const word = document.createElement('span');
+  word.className = 'current-word';
+  word.textContent = w;
+  cur.appendChild(word);
+  const status = document.createElement('span');
+  status.className = 'word-status';
+  if (!DICT) {
+    status.textContent = '字典載入中';
+  } else if (w.length < 3) {
+    status.textContent = '還差 ' + (3 - w.length) + ' 字母';
+  } else if (!valid) {
+    status.textContent = '字典中沒有';
+  } else {
+    const isBonusPreview = gameMode === 'classic' && w.toUpperCase() === bonusWord;
+    const previewScore = wordScore(w, sel) * (isBonusPreview ? 3 : 1);
+    status.classList.add('valid');
+    status.textContent = (isBonusPreview ? 'Bonus ×3 ' : '有效 ') + '+' + previewScore;
+  }
+  cur.appendChild(status);
   if (gameMode === 'adventure') renderAdvFloatingWord();
 }
 

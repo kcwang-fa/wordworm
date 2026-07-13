@@ -78,6 +78,15 @@ function setBoardSize() {
   if (gameMode === 'adventure') { COLS = 4; ROWS = 4; }
   else { COLS = 7; ROWS = 7; }  // 經典與每日挑戰都是 7×7
 }
+function renderGemGuideLabels() {
+  const labels = gameMode === 'adventure'
+    ? { green: '綠磚：攻擊 +4', gold: '黃磚：攻擊 +8', sapphire: '藍磚：攻擊 +12', diamond: '鑽石磚：攻擊 +20' }
+    : { green: '綠磚：分數 +100', gold: '黃磚：分數 +250', sapphire: '藍磚：分數 +500', diamond: '鑽石磚：分數 +1000' };
+  for (const [tier, text] of Object.entries(labels)) {
+    const el = document.getElementById('gem-guide-' + tier);
+    if (el) el.textContent = text;
+  }
+}
 function applyModeClass() {
   document.body.classList.toggle('mode-adventure', gameMode === 'adventure');
   document.body.classList.toggle('mode-classic', gameMode === 'classic');
@@ -91,6 +100,7 @@ function applyModeClass() {
   document.getElementById('clear').textContent = gameMode === 'adventure' ? '清除選字' : '清除';
   document.getElementById('shuffle').textContent = '洗牌：出燃燒磚';
   document.getElementById('shuffle').hidden = gameMode !== 'classic';  // 洗牌是經典限定（每日挑戰磚數固定不能洗）
+  renderGemGuideLabels();
 }
 function selectGameMode(mode) {
   const wasHomeScreen = document.body.classList.contains('home-screen');

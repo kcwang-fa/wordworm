@@ -6,6 +6,14 @@
   }
   #gameover.show { display: flex; }
   #gameover h2 { color: var(--orange); font-family: var(--font-zh-game); font-size: 1.6rem; letter-spacing: .05em; }
+  #fgamereason {
+    max-width: min(520px, calc(100vw - 40px));
+    color: rgba(255,244,216,.82);
+    font-family: var(--font-zh-ui);
+    font-size: .92rem;
+    font-weight: 800;
+    line-height: 1.55;
+  }
   #gameover .stats { font-family: var(--font-zh-ui); font-size: 1rem; font-weight: 700; line-height: 1.9; letter-spacing: .025em; }
   #gameover .stats b { color: var(--gold); }
   .gameover-actions {
