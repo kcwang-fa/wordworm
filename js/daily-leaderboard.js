@@ -293,15 +293,20 @@ async function submitDailyLeaderboard(result, streak) {
   }
 }
 
-document.getElementById('daily-leaderboard-open').onclick = () => openDailyLeaderboard('today');
-document.getElementById('daily-play-leaderboard').onclick = () => openDailyLeaderboard('today');
-document.getElementById('daily-locked-leaderboard').onclick = () => openDailyLeaderboard('today');
-document.getElementById('daily-f-leaderboard').onclick = () => openDailyLeaderboard('today');
-document.getElementById('daily-leaderboard-menu').onclick = () => openDailyLeaderboard('today');
-document.getElementById('daily-leaderboard-close').onclick = closeDailyLeaderboard;
-document.getElementById('daily-leaderboard-modal').onclick = e => {
+function bindDailyLeaderboardClick(id, handler) {
+  const el = document.getElementById(id);
+  if (el) el.onclick = handler;
+}
+
+bindDailyLeaderboardClick('daily-leaderboard-open', () => openDailyLeaderboard('today'));
+bindDailyLeaderboardClick('daily-play-leaderboard', () => openDailyLeaderboard('today'));
+bindDailyLeaderboardClick('daily-locked-leaderboard', () => openDailyLeaderboard('today'));
+bindDailyLeaderboardClick('daily-f-leaderboard', () => openDailyLeaderboard('today'));
+bindDailyLeaderboardClick('daily-leaderboard-menu', () => openDailyLeaderboard('today'));
+bindDailyLeaderboardClick('daily-leaderboard-close', closeDailyLeaderboard);
+bindDailyLeaderboardClick('daily-leaderboard-modal', e => {
   if (e.target.id === 'daily-leaderboard-modal') closeDailyLeaderboard();
-};
+});
 document.querySelectorAll('.daily-leaderboard-tab').forEach(button => {
   button.onclick = () => {
     setDailyLeaderboardTab(button.dataset.dailyLeaderboardTab);
