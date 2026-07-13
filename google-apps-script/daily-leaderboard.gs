@@ -21,16 +21,20 @@ const WW_ALL_TIME_HEADERS = [
   'bestScore', 'threeStarCount', 'twoStarCount', 'oneStarCount',
   'zeroStarReachedCount', 'failedCount', 'lastPlayedDate', 'updatedAt'
 ];
+const WW_SUBMISSION_LIMIT_HEADERS = ['date', 'playerId', 'count', 'updatedAt'];
 const WW_TODAY_SHEET = 'today';
 const WW_YESTERDAY_SHEET = 'yesterday';
 const WW_ALL_TIME_SHEET = 'all_time';
+const WW_SUBMISSION_LIMIT_SHEET = 'submission_limits';
 const WW_PROP_TODAY_DATE = 'wordworm_today_date';
+const WW_MAX_DAILY_SUBMISSIONS_PER_PLAYER = 20;
 
 function setupDailyLeaderboardSheets() {
   const ss = SpreadsheetApp.getActive();
   ensureSheet_(ss, WW_TODAY_SHEET, WW_DAILY_HEADERS);
   ensureSheet_(ss, WW_YESTERDAY_SHEET, WW_DAILY_HEADERS);
   ensureSheet_(ss, WW_ALL_TIME_SHEET, WW_ALL_TIME_HEADERS);
+  ensureSheet_(ss, WW_SUBMISSION_LIMIT_SHEET, WW_SUBMISSION_LIMIT_HEADERS);
   const props = PropertiesService.getDocumentProperties();
   if (!props.getProperty(WW_PROP_TODAY_DATE)) {
     props.setProperty(WW_PROP_TODAY_DATE, todayString_());
@@ -55,36 +59,44 @@ function doGet(e) {
 }
 
 function doPost(e) {
-  const body = parsePostBody_(e);
-  if (body.action !== 'submitDaily') return json_({ ok: false, error: 'Unknown action' });
-  return json_(handleSubmit_(body, 50));
+  return json_({ ok: false, error: 'POST submissions are disabled' });
 }
 
 function handleSubmit_(body, limit) {
   const payload = normaliseSubmission_(body);
   if (!payload) return { ok: false, error: 'Invalid submission' };
 
-  rolloverIfNeeded_(payload.date);
-  const dates = currentLeaderboardDates_();
-  let target = null;
-  if (payload.date === dates.today) target = WW_TODAY_SHEET;
-  else if (payload.date === dates.yesterday) target = WW_YESTERDAY_SHEET;
-  else return leaderboardsResponse_(limit, { accepted: false, reason: 'Date is not today or yesterday' });
+  const lock = LockService.getDocumentLock();
+  if (!lock.tryLock(5000)) {
+    return leaderboardsResponse_(limit, { accepted: false, reason: 'Server is busy' });
+  }
 
-  const ss = SpreadsheetApp.getActive();
-  const sheet = ensureSheet_(ss, target, WW_DAILY_HEADERS);
-  const upsert = upsertDailyRow_(sheet, payload);
-  if (upsert.changed) updateAllTime_(ensureSheet_(ss, WW_ALL_TIME_SHEET, WW_ALL_TIME_HEADERS), payload, upsert.previous);
-
-  return leaderboardsResponse_(limit, { accepted: upsert.changed });
-}
-
-function parsePostBody_(e) {
-  if (!e || !e.postData || !e.postData.contents) return {};
   try {
-    return JSON.parse(e.postData.contents);
-  } catch (err) {
-    return {};
+    rolloverIfNeeded_(payload.date);
+    const dates = currentLeaderboardDates_();
+    let target = null;
+    if (payload.date === dates.today) target = WW_TODAY_SHEET;
+    else if (payload.date === dates.yesterday) target = WW_YESTERDAY_SHEET;
+    else return leaderboardsResponse_(limit, { accepted: false, reason: 'Date is not today or yesterday' });
+
+    const ss = SpreadsheetApp.getActive();
+    const limitSheet = ensureSheet_(ss, WW_SUBMISSION_LIMIT_SHEET, WW_SUBMISSION_LIMIT_HEADERS);
+    const rateLimit = recordDailySubmission_(limitSheet, payload);
+    if (!rateLimit.allowed) {
+      return leaderboardsResponse_(limit, {
+        accepted: false,
+        reason: 'Daily submission limit reached',
+        submissionLimit: WW_MAX_DAILY_SUBMISSIONS_PER_PLAYER
+      });
+    }
+
+    const sheet = ensureSheet_(ss, target, WW_DAILY_HEADERS);
+    const upsert = upsertDailyRow_(sheet, payload);
+    if (upsert.changed) updateAllTime_(ensureSheet_(ss, WW_ALL_TIME_SHEET, WW_ALL_TIME_HEADERS), payload, upsert.previous);
+
+    return leaderboardsResponse_(limit, { accepted: upsert.changed });
+  } finally {
+    lock.releaseLock();
   }
 }
 
@@ -126,6 +138,11 @@ function ensureSheet_(ss, name, headers) {
     sheet.getRange(1, 1, 1, width).setValues([headers]);
     sheet.setFrozenRows(1);
   }
+  headers.forEach((header, idx) => {
+    if (['date', 'lastPlayedDate', 'submittedAt', 'updatedAt'].includes(header)) {
+      sheet.getRange(2, idx + 1, Math.max(1, sheet.getMaxRows() - 1), 1).setNumberFormat('@');
+    }
+  });
   return sheet;
 }
 
@@ -166,7 +183,7 @@ function normaliseSubmission_(raw) {
 
 function upsertDailyRow_(sheet, payload) {
   const rows = getRows_(sheet, WW_DAILY_HEADERS);
-  const idx = rows.findIndex(row => row.date === payload.date && row.playerId === payload.playerId);
+  const idx = rows.findIndex(row => sheetDateString_(row.date) === payload.date && row.playerId === payload.playerId);
   const values = dailyValues_(payload);
   if (idx < 0) {
     sheet.appendRow(values);
@@ -175,14 +192,30 @@ function upsertDailyRow_(sheet, payload) {
 
   const previous = rowToDaily_(rows[idx]);
   if (!isBetterDaily_(payload, previous)) {
-    if (previous.playerName !== payload.playerName) {
-      sheet.getRange(idx + 2, 4).setValue(payload.playerName);
-    }
     return { changed: false, previous };
   }
 
   sheet.getRange(idx + 2, 1, 1, WW_DAILY_HEADERS.length).setValues([values]);
   return { changed: true, previous };
+}
+
+function recordDailySubmission_(sheet, payload) {
+  const rows = getRows_(sheet, WW_SUBMISSION_LIMIT_HEADERS);
+  const idx = rows.findIndex(row => sheetDateString_(row.date) === payload.date && row.playerId === payload.playerId);
+  const now = new Date().toISOString();
+  if (idx < 0) {
+    sheet.appendRow([payload.date, payload.playerId, 1, now]);
+    return { allowed: true, count: 1 };
+  }
+
+  const currentCount = Math.max(0, Math.floor(Number(rows[idx].count) || 0));
+  if (currentCount >= WW_MAX_DAILY_SUBMISSIONS_PER_PLAYER) {
+    return { allowed: false, count: currentCount };
+  }
+
+  const nextCount = currentCount + 1;
+  sheet.getRange(idx + 2, 3, 1, 2).setValues([[nextCount, now]]);
+  return { allowed: true, count: nextCount };
 }
 
 function dailyValues_(row) {
@@ -300,7 +333,7 @@ function getRows_(sheet, headers) {
 
 function rowToDaily_(row) {
   return {
-    date: String(row.date || ''),
+    date: sheetDateString_(row.date),
     dayNo: Number(row.dayNo) || 0,
     playerId: String(row.playerId || ''),
     playerName: cleanName_(row.playerName),
@@ -327,7 +360,7 @@ function rowToAllTime_(row) {
     oneStarCount: Number(row.oneStarCount) || 0,
     zeroStarReachedCount: Number(row.zeroStarReachedCount) || 0,
     failedCount: Number(row.failedCount) || 0,
-    lastPlayedDate: String(row.lastPlayedDate || ''),
+    lastPlayedDate: sheetDateString_(row.lastPlayedDate),
     updatedAt: String(row.updatedAt || '')
   };
 }
@@ -390,6 +423,13 @@ function todayString_() {
 function normaliseDate_(value) {
   const s = String(value || '').trim();
   return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : '';
+}
+
+function sheetDateString_(value) {
+  if (Object.prototype.toString.call(value) === '[object Date]' && !isNaN(value.getTime())) {
+    return Utilities.formatDate(value, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+  }
+  return normaliseDate_(value);
 }
 
 function dateNumber_(date) {
