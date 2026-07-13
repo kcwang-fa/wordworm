@@ -1,17 +1,47 @@
 # Manual dictionary exceptions for words the game should accept.
-# Use this for product decisions, demonyms, or words excluded by the generated
-# modern dictionary filter. Keep one lowercase word per line.
+# Use this for product decisions, dates, weekdays, countries, languages,
+# demonyms, or common life words excluded by the main dictionary.
+# Keep one lowercase word per line.
+
+# Common web / life words
+app
+apps
+blog
+blogs
+email
+emails
+emoji
+emojis
+internet
+online
+podcast
+podcasts
+selfie
+selfies
+smartphone
+smartphones
+startup
+startups
+texting
 webpage
 webpages
 wifi
-startup
-startups
-korean
-koreans
-taiwan
-taiwanese
-japanese
-chinese
+
+# Dates / calendar words
+today
+tomorrow
+yesterday
+weekday
+weekdays
+weekend
+weekends
+monday
+tuesday
+wednesday
+thursday
+friday
+saturday
+sunday
 january
 february
 march
@@ -24,3 +54,62 @@ september
 october
 november
 december
+spring
+summer
+autumn
+winter
+
+# Common countries / regions
+america
+argentina
+australia
+brazil
+canada
+china
+england
+france
+germany
+india
+indonesia
+ireland
+italy
+japan
+korea
+malaysia
+mexico
+philippines
+portugal
+singapore
+spain
+taiwan
+thailand
+usa
+vietnam
+
+# Common languages / demonyms
+american
+argentine
+australian
+brazilian
+british
+canadian
+chinese
+english
+filipino
+french
+german
+indian
+indonesian
+irish
+italian
+japanese
+korean
+koreans
+malaysian
+mexican
+portuguese
+singaporean
+spanish
+taiwanese
+thai
+vietnamese

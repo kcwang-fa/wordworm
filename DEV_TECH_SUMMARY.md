@@ -12,9 +12,9 @@
 - `js/` 其他：`story.js`（故事文本）、`adventure-data.js`（關卡資料）、`daily.js`（每日挑戰，須在 game 檔前載入）、`kids.js`、`word-of-day.js`
 - `sw.js`：PWA 快取。**PRECACHE_URLS 硬編碼檔名＋版本，拆檔/改版時必須與 index.html 標籤逐字元同步**，任一條 404 會讓整批快取安裝失敗
 - **零建置、零外部資源**（無 CDN、無外部圖片/字型/JS 套件）
-- `enable1.txt`：ENABLE1 核心英文字典（172,727 字，public domain）
-- `modern-words.txt`：ESDB / SCOWL `en_US` 現代補充字表，只收 lowercase ASCII、3+ 字母、且 ENABLE1 沒有的字
-- `extra-words.txt`：人工補充例外字，例如國籍/語言形容詞或產品需要接受的現代詞
+- `enable1.txt`：Wordworm 主字典；來源為 ESDB / SCOWL `en_US-large`（size 70），只收 lowercase ASCII、3+ 字母並去重。檔名沿用 `enable1.txt` 以降低程式載入面的改動。
+- `extra-words.txt`：人工補充例外字，例如日期、星期、國家、語言/國籍、或產品需要接受的生活常見詞
+- `modern-words.txt`：舊 ENABLE1 時代的補充字表，目前不再由遊戲載入
 - 沒有 package.json、沒有 build 工具、沒有其他原始檔
 
 本地測試：因為字典用 `fetch()` 載入，**不能直接用 `file://` 開**（CORS 擋），要起本地 HTTP server，例如：

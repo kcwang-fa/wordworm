@@ -411,7 +411,7 @@ function uniq(words) {
 
 function fallbackWords(needed, existing) {
   const files = [
-    path.join(ROOT, 'modern-words.txt'),
+    path.join(ROOT, 'enable1.txt'),
     '/usr/share/dict/web2',
   ];
   const candidates = [];

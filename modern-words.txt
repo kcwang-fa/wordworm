@@ -1,3 +1,9 @@
+# Legacy supplemental dictionary for Wordworm.
+# Deprecated: Wordworm now uses ESDB / SCOWL en_US-large (size 70) as the
+# main dictionary in enable1.txt, plus extra-words.txt for manual exceptions.
+# This file is kept for reference only and is not loaded by the game.
+#
+# Original notes:
 # Modern supplemental dictionary for Wordworm.
 # Source: ESDB / SCOWL generated en_US wordlist from en-wl/wordlist-diff.
 # URL: https://github.com/en-wl/wordlist-diff/blob/master/en_US.txt

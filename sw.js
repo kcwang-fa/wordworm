@@ -43,7 +43,6 @@ const PRECACHE_URLS = [
   versioned('./js/kids.js'),
   versioned('./js/word-of-day.js'),
   versioned('./enable1.txt'),
-  versioned('./modern-words.txt'),
   versioned('./extra-words.txt'),
   versioned('./data/daily-words.json'),
   versioned('./data/kids-words.json'),
