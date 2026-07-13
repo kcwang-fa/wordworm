@@ -127,6 +127,7 @@
     line-height: 1.35;
   }
   body:not(.mode-classic) #classic-pressure { display: none; }
+  #classic-pressure[hidden] { display: none; }
   #classic-pressure-main {
     color: #ffe39a;
   }

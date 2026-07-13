@@ -174,6 +174,7 @@ function updateClassicPressure() {
   const note = document.getElementById('classic-pressure-note');
   if (!box || !main || !note) return;
   box.classList.remove('warn', 'danger');
+  box.hidden = gameMode !== 'classic';
   if (gameMode !== 'classic') return;
   const stats = classicBurningStats();
   if (level < 3) {

@@ -88,7 +88,7 @@ function render() {
       const t = grid[c][r];
       const el = document.createElement('div');
       el.className = 'tile';
-      if (t.burning) el.classList.add('burning');
+      if (gameMode === 'classic' && t.burning) el.classList.add('burning');
       if (t.gem) el.classList.add('gem-' + t.gem);
       if (t.locked) el.classList.add('locked');
       if (t.cursed) el.classList.add('cursed');
@@ -218,7 +218,7 @@ function updateCurrent() {
 
 /* ================= 蟲蟲台詞 ================= */
 const QUIPS = {
-  short: ['嗯⋯⋯這樣也算啦', '三個字母？我牙縫都塞不滿🐛', '小菜。真的很小。', '好，暖身而已對吧？', '省著點拼，燃燒磚在看著你喔'],
+  short: ['嗯⋯⋯這樣也算啦', '三個字母？我牙縫都塞不滿🐛', '小菜。真的很小。', '好，暖身而已對吧？', '先暖身可以，但等一下要來真的喔'],
   mid: ['不錯嘛，有在動腦！', '嗯嗯，這個有書卷味了', '好吃好吃🐛', '及格！繼續保持', '我開始對你有點期待了'],
   long: ['哇喔！！這個字我要裱框！', '你的字彙量是吃字典長大的嗎！', '太漂亮了，我要感動落淚🥹', '這就是傳說中的高手嗎', '請收下書蟲的膝蓋（如果我有的話）'],
   bad: ['呃，這個字典裡沒有耶，換個字試試？', '你發明新單字了嗎？很有創意但不行，換一組字母吧', '嗯？拼歪了拼歪了，清掉重排看看', '我讀過十七萬個字，沒看過這個🐛 換個字試試？'],

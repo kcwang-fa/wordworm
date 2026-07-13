@@ -100,6 +100,8 @@ function applyModeClass() {
   document.getElementById('clear').textContent = gameMode === 'adventure' ? '清除選字' : '清除';
   document.getElementById('shuffle').textContent = '洗牌：出燃燒磚';
   document.getElementById('shuffle').hidden = gameMode !== 'classic';  // 洗牌是經典限定（每日挑戰磚數固定不能洗）
+  const classicPressure = document.getElementById('classic-pressure');
+  if (classicPressure) classicPressure.hidden = gameMode !== 'classic';
   renderGemGuideLabels();
 }
 function selectGameMode(mode) {
