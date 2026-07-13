@@ -258,14 +258,14 @@ function monsterCounter() {
 }
 function monsterSpriteSvg(kind, isBoss) {
   const assets = {
-    critter: 'assets/characters/enemy-critter.png',
-    blob: 'assets/characters/enemy-blob.png',
-    book: 'assets/characters/enemy-book-boss.png',
+    critter: 'assets/characters/enemy-critter.webp',
+    blob: 'assets/characters/enemy-blob.webp',
+    book: 'assets/characters/enemy-book-boss.webp',
   };
   const src = assets[kind] || assets.book;
   const bossClass = isBoss ? ' is-boss' : '';
   const alt = isBoss ? '日式奇幻 Boss 怪物' : '日式奇幻怪物';
-  return '<img class="adv-character-img adv-monster-img' + bossClass + '" src="' + src + '" alt="' + alt + '">';
+  return '<img class="adv-character-img adv-monster-img' + bossClass + '" src="' + src + '" width="720" height="720" decoding="async" alt="' + alt + '">';
 }
 function renderAdvFloatingWord() {
   const wrap = document.getElementById('adv-floating-word');

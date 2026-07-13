@@ -579,8 +579,8 @@ document.getElementById('daily-start').onclick = () => startDailyRun();
 document.getElementById('daily-endrun').onclick = () => {
   if (over || !dailyState) return;
   const warn = dailyState.goalTiles === null
-    ? '還沒達標喔！現在結算會以「未達標」收場，今天就不能再玩了。確定要結束嗎？'
-    : '現在結算今天的挑戰嗎？結算後要等明天才有新題目。';
+    ? '放棄當日挑戰？\n\n還沒達標喔。現在結算會以「未達標」收場，今天就不能再玩了。'
+    : '結束當日挑戰？\n\n現在會直接結算今天的挑戰，結算後要等明天才有新題目。';
   if (confirm(warn)) settleDaily('manual');
 };
 document.getElementById('daily-help').onclick = () => toggleDailyRules();

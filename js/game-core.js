@@ -89,7 +89,7 @@ function applyModeClass() {
   document.getElementById('modesel-kids').classList.toggle('active', gameMode === 'kids');
   document.getElementById('submit').textContent = gameMode === 'adventure' ? 'Attack / 攻擊' : '拼字！';
   document.getElementById('clear').textContent = gameMode === 'adventure' ? '清除選字' : '清除';
-  document.getElementById('shuffle').textContent = '洗牌 (-燃燒)';
+  document.getElementById('shuffle').textContent = '洗牌：出燃燒磚';
   document.getElementById('shuffle').hidden = gameMode !== 'classic';  // 洗牌是經典限定（每日挑戰磚數固定不能洗）
 }
 function selectGameMode(mode) {

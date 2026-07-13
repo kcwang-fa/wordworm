@@ -11,6 +11,7 @@
   body.mode-adventure.adv-view-map #board,
   body.mode-adventure.adv-view-map #controls { display: none; }
   #adv-map, #adv-battle { width: 100%; }
+  /* 冒險道具/技能有桌面側欄與手機摘要兩套 DOM；切換斷點固定在 700px。 */
   #adv-items-panel, #adv-skills-panel, #adv-mobile-drawers { display: none; }
   body.adv-view-map #adv-battle,
   body.adv-view-battle #adv-map { display: none; }
@@ -62,7 +63,7 @@
   body.mode-adventure.adv-view-battle #board {
     grid-column: 2; grid-row: 3;
     justify-self: center; align-self: center;
-    gap: clamp(5px, 1vh, 8px); padding: clamp(9px, 1.4vh, 13px); border-radius: 15px;
+    gap: clamp(3px, .8vh, 6px); padding: clamp(8px, 1.2vh, 12px); border-radius: 15px;
     position: relative;
     border: 4px solid #241208;
     background:
@@ -103,15 +104,14 @@
       inset 0 0 0 2px rgba(255,255,255,.5);
     text-shadow: 0 1px 0 rgba(255,255,255,.65);
   }
-  body.mode-adventure.adv-view-battle #clear,
-  body.mode-adventure.adv-view-battle #mute {
+  body.mode-adventure.adv-view-battle #clear {
     padding: clamp(8px, 1.35vh, 10px) 14px; font-size: clamp(.82rem, 1.65vh, .92rem);
     color: #3f260d;
     border-color: #f0ce7f;
     background: linear-gradient(180deg, #ffe9a6, #c8872e);
     box-shadow: 0 3px 0 #744115, inset 0 1px 0 rgba(255,255,255,.5);
   }
-  body.mode-adventure.adv-view-battle .col { gap: 7px; }
+  body.mode-adventure.adv-view-battle .col { gap: 5px; }
   body.mode-adventure.adv-view-battle .tile {
     width: clamp(44px, 6.1vh, 56px); height: clamp(44px, 6.1vh, 56px); border-radius: 9px;
     font-size: clamp(1.18rem, 2.75vh, 1.48rem);
@@ -323,7 +323,7 @@
     border-radius: 16px;
     background:
       linear-gradient(180deg, rgba(24,11,5,.06), rgba(24,11,5,.2)),
-      url("../assets/maps/adventure-map.png") center / cover no-repeat;
+      url("../assets/maps/adventure-map.webp") center / cover no-repeat;
     box-shadow:
       0 14px 28px rgba(0,0,0,.38),
       inset 0 0 0 2px rgba(255,239,162,.15),
@@ -591,7 +591,7 @@
     background-position: center bottom;
   }
   #adv-battle-stage.adv-stage-dusty-library .adv-stage-far {
-    background-image: url("../assets/stages/dusty-library-far.png");
+    background-image: url("../assets/stages/dusty-library-far.webp");
   }
   .adv-stage-far::after {
     content: ""; position: absolute; inset: 0;
@@ -608,7 +608,7 @@
     filter: drop-shadow(0 8px 7px rgba(0,0,0,.24));
   }
   #adv-battle-stage.adv-stage-dusty-library .adv-stage-mid {
-    background-image: url("../assets/stages/dusty-library-mid.png");
+    background-image: url("../assets/stages/dusty-library-mid.webp");
   }
   .adv-stage-ground {
     left: -14%; right: -14%; bottom: -10px; height: 42%;
@@ -618,7 +618,7 @@
     filter: drop-shadow(0 -8px 9px rgba(0,0,0,.28));
   }
   #adv-battle-stage.adv-stage-dusty-library .adv-stage-ground {
-    background-image: url("../assets/stages/dusty-library-ground.png");
+    background-image: url("../assets/stages/dusty-library-ground.webp");
   }
   .adv-stage-ground::after {
     content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 26%;
@@ -1100,12 +1100,12 @@
     .adv-nameplate { min-width: 0; width: 100%; padding: 5px 7px; }
     .adv-name-row { font-size: .72rem; gap: 6px; }
     .hpbar-wrap { height: 8px; }
-    body.mode-adventure.adv-view-battle #board { gap: 5px; padding: 8px; }
-    body.mode-adventure.adv-view-battle .tile { width: 40px; height: 40px; font-size: 1.08rem; }
+    body.mode-adventure.adv-view-battle #board { gap: 3px; padding: 6px; }
+    body.mode-adventure.adv-view-battle .col { gap: 3px; }
+    body.mode-adventure.adv-view-battle .tile { width: 44px; height: 44px; font-size: 1.08rem; }
     body.mode-adventure.adv-view-battle #controls { gap: 8px; }
     body.mode-adventure.adv-view-battle #submit { flex: 1 1 100%; min-width: 0; padding: 9px 16px; font-size: .9rem; }
-    body.mode-adventure.adv-view-battle #clear,
-    body.mode-adventure.adv-view-battle #mute { flex: 1 1 42%; padding: 6px 8px; font-size: .72rem; }
+    body.mode-adventure.adv-view-battle #clear { flex: 1 1 42%; padding: 6px 8px; font-size: .72rem; }
     .adv-drawer-row { overflow: hidden; }
     .adv-drawer-row span {
       min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -1178,8 +1178,8 @@
     body.mode-adventure.adv-view-battle #game-panel { gap: 7px; }
     #adv-battle-stage { min-height: 180px; }
     body.mode-adventure.adv-view-battle .tile {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       font-size: 1.08rem;
     }
   }
@@ -1206,13 +1206,12 @@
       max-width: 100px;
       max-height: 72px;
     }
-    body.mode-adventure.adv-view-battle #board { gap: 5px; padding: 8px; border-radius: 14px; }
+    body.mode-adventure.adv-view-battle #board { gap: 2px; padding: 5px; border-radius: 14px; }
+    body.mode-adventure.adv-view-battle .col { gap: 2px; }
     body.mode-adventure.adv-view-battle .tile {
-      width: 38px; height: 38px; border-radius: 10px; font-size: 1.02rem;
+      width: 44px; height: 44px; border-radius: 10px; font-size: 1.02rem;
     }
-    body.mode-adventure.adv-view-battle #clear,
-    body.mode-adventure.adv-view-battle #mute { font-size: .73rem; }
+    body.mode-adventure.adv-view-battle #clear { font-size: .73rem; }
     .adv-node-main b { font-size: .78rem; }
     .adv-node-state { font-size: .66rem; }
   }
-

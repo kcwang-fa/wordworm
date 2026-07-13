@@ -8,6 +8,15 @@
   #gameover h2 { color: var(--orange); font-family: var(--font-zh-game); font-size: 1.6rem; letter-spacing: .05em; }
   #gameover .stats { font-family: var(--font-zh-ui); font-size: 1rem; font-weight: 700; line-height: 1.9; letter-spacing: .025em; }
   #gameover .stats b { color: var(--gold); }
+  .gameover-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .gameover-actions button {
+    min-width: 128px;
+  }
 
 	  #adv-gameover {
 	    position: fixed; inset: 0; background: #120807;
@@ -49,7 +58,7 @@
 	  #adv-gameover h2 { color: var(--orange); font-family: var(--font-zh-game); font-size: clamp(1.35rem, 4vw, 1.8rem); letter-spacing: .05em; }
 	  #adv-gameover .stats { font-family: var(--font-zh-ui); font-size: 1rem; font-weight: 700; line-height: 1.9; color: var(--parchment); letter-spacing: .025em; }
 	  #adv-gameover .stats b { color: var(--gold); }
-	  #adv-gameover #adv-restart { position: relative; z-index: 1; }
+	  #adv-gameover .gameover-actions { position: relative; z-index: 1; }
 	  @media (max-width: 680px) {
 	    .adv-gameover-art { object-position: center bottom; }
 	    .adv-gameover-panel {
@@ -473,9 +482,12 @@
     display: flex; justify-content: flex-end;
     margin-top: 16px;
   }
+  #adv-story-modal.tap-to-close .adv-story-modal-actions {
+    display: none;
+  }
 
   @media (max-width: 420px) {
-    .tile { width: 42px; height: 42px; font-size: 1.1rem; }
+    .tile { width: 44px; height: 44px; font-size: 1.1rem; }
     .col.offset { margin-top: 23px; }
     #controls { gap: 6px; }
     button { padding: 8px 10px; font-size: .8rem; white-space: nowrap; }

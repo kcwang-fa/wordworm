@@ -162,7 +162,7 @@ function bgmTick() {
   bgmStep++;
 }
 function updateSoundButtons() {
-  const buttons = [document.getElementById('mute'), document.getElementById('sound-toggle')].filter(Boolean);
+  const buttons = [document.getElementById('sound-toggle')].filter(Boolean);
   for (const btn of buttons) {
     btn.textContent = muted ? '🔊 開啟音效' : '🔇 關閉音效';
     btn.setAttribute('aria-pressed', muted ? 'true' : 'false');
@@ -197,7 +197,6 @@ document.addEventListener('pointerdown', function once() {
   startBgm();
   document.removeEventListener('pointerdown', once);
 }, { once: true });
-document.getElementById('mute').onclick = toggleAudioMuted;
-document.getElementById('sound-toggle').onclick = toggleAudioMuted;
+const soundToggleBtn = document.getElementById('sound-toggle');
+if (soundToggleBtn) soundToggleBtn.onclick = toggleAudioMuted;
 updateSoundButtons();
-

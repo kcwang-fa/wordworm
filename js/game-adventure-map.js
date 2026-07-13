@@ -65,6 +65,7 @@ function openStoryModal(title, paragraphs, comic = null, options = {}) {
   modal.classList.toggle('has-full-comic', hasFullComic);
   modal.classList.toggle('has-ending-slides', hasSlides);
   modal.classList.toggle('show-paragraphs', hasComic && !!options.showParagraphsWithComic);
+  modal.classList.toggle('tap-to-close', hasComic && !showParagraphs);
   titleEl.textContent = title;
   body.innerHTML = '';
   if (hasSlides) {
@@ -134,6 +135,7 @@ function closeStoryModal() {
   modal.classList.remove('has-ending-slides');
   modal.classList.remove('ending-slide-last');
   modal.classList.remove('show-paragraphs');
+  modal.classList.remove('tap-to-close');
   modal.removeAttribute('aria-label');
   if (wasOpen && afterClose) afterClose();
 }
@@ -476,8 +478,12 @@ document.getElementById('adv-map-path').onclick = e => {
 document.getElementById('adv-map-reset').onclick = restartAdventureGame;
 document.getElementById('adv-battle-reset').onclick = restartAdventureGame;
 document.getElementById('adv-back-map').onclick = showAdventureMap;
-document.getElementById('adv-story-close').onclick = closeStoryModal;
+document.getElementById('adv-story-close').onclick = e => {
+  e.stopPropagation();
+  closeStoryModal();
+};
 document.getElementById('adv-story-modal').onclick = e => {
+  if (e.target.closest('#adv-story-close')) return;
   if (e.currentTarget.classList.contains('has-ending-slides')) {
     advanceStorySlide();
     return;

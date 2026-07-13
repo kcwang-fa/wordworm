@@ -61,7 +61,7 @@
     background:
       radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,200,110,.3), transparent 70%),
       linear-gradient(180deg, rgba(21,12,5,.2), rgba(21,12,5,.45)),
-      url("../assets/library-background-gpt.png") center center / cover no-repeat,
+      url("../assets/library-background-gpt.webp") center center / cover no-repeat,
       linear-gradient(160deg, #2c1d0d 0%, #47311a 60%, #2c1d0d 100%);
   }
   body.mode-adventure {
@@ -80,7 +80,7 @@
       radial-gradient(ellipse 62% 34% at 50% 0%, rgba(255,194,95,.28), transparent 72%),
       radial-gradient(ellipse 56% 46% at 78% 32%, rgba(139,60,255,.16), transparent 70%),
       linear-gradient(180deg, rgba(18,8,10,.22), rgba(18,8,10,.5)),
-      url("../assets/library-background-gpt.png") center center / cover no-repeat,
+      url("../assets/library-background-gpt.webp") center center / cover no-repeat,
       linear-gradient(160deg, #17080f 0%, #302012 54%, #120812 100%);
     background-size: auto, auto, auto, auto, auto, auto, cover, auto;
   }
@@ -123,7 +123,7 @@
     opacity: 1;
     background:
       linear-gradient(180deg, rgba(20,12,5,.22) 0%, rgba(20,12,5,.08) 36%, rgba(20,12,5,.38) 100%),
-      url("../assets/home-cover.png") center center / cover no-repeat;
+      url("../assets/home-cover.webp") center center / cover no-repeat;
   }
   body.home-screen #library-bg::after {
     content: "";
@@ -192,6 +192,44 @@
     margin: 0;
     justify-content: center;
   }
+  .more-menu {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+  }
+  #more-menu-panel {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    z-index: 4;
+    width: min(230px, calc(100vw - 36px));
+    transform: translateX(-50%);
+    display: grid;
+    gap: 7px;
+    padding: 9px;
+    border: 1px solid rgba(255,238,184,.56);
+    border-radius: 12px;
+    background: rgba(32,17,6,.94);
+    box-shadow: 0 12px 28px rgba(0,0,0,.42), inset 0 0 0 1px rgba(255,238,184,.12);
+  }
+  #more-menu-panel[hidden] { display: none; }
+  .more-menu-item {
+    width: 100%;
+    min-height: 44px;
+    padding: 9px 12px;
+    border: 1px solid rgba(255,238,184,.28);
+    border-radius: 8px;
+    color: #fff0cf;
+    background: rgba(255,255,255,.08);
+    font-family: var(--font-zh-ui);
+    font-size: .88rem;
+    font-weight: 850;
+    text-align: left;
+    cursor: pointer;
+  }
+  .more-menu-item:active {
+    transform: translateY(1px);
+  }
   body.home-screen .mode-btn {
     /* 四顆主模式鈕並列（一般／冒險／每日／小書蟲），窄螢幕交給後面的 RWD 堆疊 */
     min-width: min(176px, calc((100vw - 98px) / 4));
@@ -235,6 +273,7 @@
   }
   body.home-screen .top-action-btn,
   body:not(.home-screen) .mode-entry { display: none; }
+  body:not(.home-screen) #more-menu { display: none; }
   body:not(.home-screen) #mode-select {
     justify-content: center;
     flex-wrap: wrap;

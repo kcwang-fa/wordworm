@@ -17,6 +17,33 @@ document.getElementById('modesel-adventure').onclick = () => selectGameMode('adv
 document.getElementById('modesel-daily').onclick = () => selectGameMode('daily');
 document.getElementById('modesel-kids').onclick = () => selectGameMode('kids');
 document.getElementById('home-return').onclick = returnHome;
+document.getElementById('classic-home').onclick = returnHome;
+document.getElementById('adv-home').onclick = returnHome;
+
+function closeMoreMenu() {
+  const panel = document.getElementById('more-menu-panel');
+  const toggle = document.getElementById('more-toggle');
+  if (!panel || !toggle) return;
+  panel.hidden = true;
+  toggle.setAttribute('aria-expanded', 'false');
+}
+document.getElementById('more-toggle').onclick = e => {
+  e.stopPropagation();
+  const panel = document.getElementById('more-menu-panel');
+  const toggle = document.getElementById('more-toggle');
+  const willOpen = panel.hidden;
+  panel.hidden = !willOpen;
+  toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+};
+document.getElementById('more-menu-panel').onclick = e => {
+  if (e.target.closest('.more-menu-item')) closeMoreMenu();
+};
+document.addEventListener('click', e => {
+  if (!e.target.closest('#more-menu')) closeMoreMenu();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeMoreMenu();
+});
 
 /* ================= 測試開關 ================= */
 function shouldShowDebugWinScreen() {

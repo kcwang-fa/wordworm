@@ -6,14 +6,27 @@
  * 冒險模式的改動不應該碰這個檔案。
  * ============================================================ */
 
+let submitWaitingForDictionary = false;
+function setSubmitDictionaryLoading(isLoading) {
+  const btn = document.getElementById('submit');
+  if (!btn) return;
+  btn.disabled = isLoading;
+  btn.textContent = isLoading ? '載入中…' : (gameMode === 'adventure' ? 'Attack / 攻擊' : '拼字！');
+}
 async function submit() {
-  if (over) return;
+  if (over || submitWaitingForDictionary) return;
   const w = currentWord();
   // Boggle 慣例：Qu 磚貢獻 Q+U 兩個字母；這裡檢查的是字母數，不是磚數。
   if (w.length < 3) { toast('至少 3 個字母'); return; }
   if (!DICT) {
+    submitWaitingForDictionary = true;
+    setSubmitDictionaryLoading(true);
     try { await ensureDictionaryLoaded(); }
     catch (e) { return; }
+    finally {
+      submitWaitingForDictionary = false;
+      setSubmitDictionaryLoading(false);
+    }
   }
   if (!DICT.has(w.toLowerCase())) { sfx.bad(); setFace('sad'); bubble(quip(QUIPS.bad)); shake();
     setTimeout(() => setFace('normal'), 1200); return; }

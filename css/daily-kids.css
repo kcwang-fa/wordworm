@@ -487,6 +487,16 @@
   #daily-progress b, #daily-tiles b { color: var(--gold); }
   #daily-actions { display: flex; gap: 6px; }
   #daily-actions button { padding: 4px 12px; font-size: .78rem; }
+  #daily-endrun.danger-action {
+    color: #fff2e8;
+    border-color: rgba(255,154,82,.78);
+    background: linear-gradient(180deg, #c7442d, #7e2418);
+    box-shadow: 0 2px 0 #4a120c, inset 0 1px 0 rgba(255,255,255,.22);
+  }
+  #daily-endrun.danger-action:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
+  }
 
   /* 用掉的磚＝永久的洞：暗下去、不可點（pointer-events:none 讓
      拖曳選字的 elementFromPoint 直接穿過洞） */
@@ -506,7 +516,18 @@
   #daily-locked-tomorrow { margin-top: 12px; font-size: .85rem; opacity: .8; }
   #daily-countdown {
     font-family: var(--font-letter);
+    display: inline-block;
+    margin-top: 5px;
+    padding: 4px 12px;
+    border-radius: 10px;
     font-size: 1.7rem; letter-spacing: .12em; color: var(--gold);
+    background: rgba(255,217,122,.1);
+    box-shadow: inset 0 0 0 1px rgba(255,217,122,.18), 0 0 18px rgba(255,217,122,.16);
+    animation: dailyCountdownGlow 1.8s ease-in-out infinite alternate;
+  }
+  @keyframes dailyCountdownGlow {
+    from { transform: translateY(0); filter: brightness(1); }
+    to { transform: translateY(-1px); filter: brightness(1.18); }
   }
 
   /* 結算 modal：顯示機制同 #gameover（加 .show 顯示） */
@@ -552,4 +573,3 @@
     /* 首頁三顆鈕在極窄螢幕縮小內距與字級，盡量一排放下 */
     body.home-screen .mode-btn { padding: 10px 8px; font-size: .9rem; min-height: 48px; }
   }
-

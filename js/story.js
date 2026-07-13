@@ -81,12 +81,12 @@ const ADVENTURE_COMICS = {
   intro: {
     ribbon: 'Introduction',
     title: '活字圖書館的裂縫',
-    fullImage: 'assets/story/intro-comic-fixed.png',
+    fullImage: 'assets/story/intro-comic-fixed.webp',
     panels: [
       {
         size: 'half',
         scene: 'library',
-        image: 'assets/story/intro-1-library.png',
+        image: 'assets/story/intro-1-library.webp',
         ribbon: '午夜，活字圖書館...',
         actors: ['worm'],
         bubble: '書架在動？',
@@ -96,7 +96,7 @@ const ADVENTURE_COMICS = {
       {
         size: 'half',
         scene: 'archive',
-        image: 'assets/story/intro-2-crack.png',
+        image: 'assets/story/intro-2-crack.webp',
         actors: ['worm', 'codex'],
         bubble: '字典裂了！',
         bubbleClass: 'on-art intro-bubble-2',
@@ -105,7 +105,7 @@ const ADVENTURE_COMICS = {
       {
         size: 'wide',
         scene: 'open-book',
-        image: 'assets/story/intro-3-spell.png',
+        image: 'assets/story/intro-3-spell.webp',
         actors: ['worm', 'book'],
         bubble: '今晚要加班了。',
         bubbleClass: 'on-art intro-bubble-3',
@@ -118,7 +118,7 @@ const ADVENTURE_COMICS = {
     title: '已由單字蟲蟲校正',
     slides: [
       {
-        image: 'assets/story/chapter-7-ending-1-golem-peace.png',
+        image: 'assets/story/chapter-7-ending-1-golem-peace.webp',
         alt: '終章活字巨像跪在安靜下來的圖書館中，胸口的原初字典泛著金色修補光痕',
         paragraphs: [
           '最後一個單字落下時，整座圖書館安靜了。',
@@ -127,7 +127,7 @@ const ADVENTURE_COMICS = {
         ]
       },
       {
-        image: 'assets/story/chapter-7-ending-2-library-restored.png',
+        image: 'assets/story/chapter-7-ending-2-library-restored.webp',
         alt: '入口書庫恢復秩序，紙頁鼠整理目錄卡，紫墨與逗號角色安靜待在旁邊',
         paragraphs: [
           '你爬回入口書庫。',
@@ -137,7 +137,7 @@ const ADVENTURE_COMICS = {
         ]
       },
       {
-        image: 'assets/story/chapter-7-ending-3-book-spine.png',
+        image: 'assets/story/chapter-7-ending-3-book-spine.webp',
         alt: '單字蟲蟲打著呵欠鑽回字典書脊，晨光照進恢復平靜的圖書館',
         paragraphs: [
           '你打了個呵欠，鑽回字典書脊裡。',
@@ -157,7 +157,7 @@ const ADVENTURE_COMICS = {
         size: 'wide',
         scene: 'core',
         className: 'final-boss-intro-panel',
-        image: 'assets/story/chapter-7-final-boss-intro.png',
+        image: 'assets/story/chapter-7-final-boss-intro.webp',
         actors: ['worm', 'golem'],
         caption: '錯誤無法被完全修正。刪除文字，即可刪除錯誤。'
       }
@@ -168,63 +168,63 @@ const ADVENTURE_COMICS = {
       ribbon: 'Chapter 1',
       scene: 'library',
       panels: [
-        { size: 'half', scene: 'library', image: 'assets/story/chapter-1-library.png', actors: ['worm'], bubble: '目錄卡被啃掉了？', caption: '入口書庫堆滿灰塵與破紙，字母散得到處都是。' },
-        { size: 'half', scene: 'paper', image: 'assets/story/chapter-1-paper-mouse.png', actors: ['worm', 'mouse'], bubble: '把 E 還來。', caption: '紙頁鼠躲在書架間，嘴邊還沾著半個字母。' },
-        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-1-catalog-repair.png', actors: ['book'], bubble: '修復目錄，才能往深處走。', caption: '目標：讓圖書館重新認得自己的目錄。' }
+        { size: 'half', scene: 'library', image: 'assets/story/chapter-1-library.webp', actors: ['worm'], bubble: '目錄卡被啃掉了？', caption: '入口書庫堆滿灰塵與破紙，字母散得到處都是。' },
+        { size: 'half', scene: 'paper', image: 'assets/story/chapter-1-paper-mouse.webp', actors: ['worm', 'mouse'], bubble: '把 E 還來。', caption: '紙頁鼠躲在書架間，嘴邊還沾著半個字母。' },
+        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-1-catalog-repair.webp', actors: ['book'], bubble: '修復目錄，才能往深處走。', caption: '目標：讓圖書館重新認得自己的目錄。' }
       ]
     },
     'ink-gallery': {
       ribbon: 'Chapter 2',
       scene: 'ink',
       panels: [
-        { size: 'half', scene: 'ink', image: 'assets/story/chapter-2-ink-gallery.png', actors: ['worm'], bubble: '這墨水也太有主見。', caption: '墨痕迴廊裡，每個錯字都像剛被影印過三十次。' },
-        { size: 'half', scene: 'archive', image: 'assets/story/chapter-2-missing-word-ghost.png', actors: ['worm', 'blob'], bubble: '別把關鍵詞吃掉！', caption: '漏字幽靈躲在句子中間，專門吞掉重要的詞。' },
-        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-2-index-repair.png', actors: ['book'], bubble: '修復索引，路才會回來。', caption: '目標：讓圖書館的道路重新連起來。' }
+        { size: 'half', scene: 'ink', image: 'assets/story/chapter-2-ink-gallery.webp', actors: ['worm'], bubble: '這墨水也太有主見。', caption: '墨痕迴廊裡，每個錯字都像剛被影印過三十次。' },
+        { size: 'half', scene: 'archive', image: 'assets/story/chapter-2-missing-word-ghost.webp', actors: ['worm', 'blob'], bubble: '別把關鍵詞吃掉！', caption: '漏字幽靈躲在句子中間，專門吞掉重要的詞。' },
+        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-2-index-repair.webp', actors: ['book'], bubble: '修復索引，路才會回來。', caption: '目標：讓圖書館的道路重新連起來。' }
       ]
     },
     'crooked-fairytale': {
       ribbon: 'Chapter 3',
       scene: 'fairy',
       panels: [
-        { size: 'half', scene: 'fairy', image: 'assets/story/chapter-3-fairytale-chaos.png', actors: ['worm'], bubble: '童話角色不照劇本走了。', caption: '餅乾士兵、睡帽貓與玻璃鞋影子都迷失在錯誤段落裡。' },
-        { size: 'half', scene: 'paper', image: 'assets/story/chapter-3-paper-queen.png', actors: ['worm', 'queen'], bubble: '句子不需要向妳低頭啦。', caption: '紙皇冠女王要求所有文字服從她的排版。' },
-        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-3-story-order.png', actors: ['book'], bubble: '故事需要結尾。真的。', caption: '目標：讓童話重新有開頭、轉折和結尾。' }
+        { size: 'half', scene: 'fairy', image: 'assets/story/chapter-3-fairytale-chaos.webp', actors: ['worm'], bubble: '童話角色不照劇本走了。', caption: '餅乾士兵、睡帽貓與玻璃鞋影子都迷失在錯誤段落裡。' },
+        { size: 'half', scene: 'paper', image: 'assets/story/chapter-3-paper-queen.webp', actors: ['worm', 'queen'], bubble: '句子不需要向妳低頭啦。', caption: '紙皇冠女王要求所有文字服從她的排版。' },
+        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-3-story-order.webp', actors: ['book'], bubble: '故事需要結尾。真的。', caption: '目標：讓童話重新有開頭、轉折和結尾。' }
       ]
     },
     'star-chart-room': {
       ribbon: 'Chapter 4',
       scene: 'stars',
       panels: [
-        { size: 'half', scene: 'stars', image: 'assets/story/chapter-4-star-room.png', actors: ['worm'], bubble: '星座名稱拼錯，導航會很刺激。', caption: '星圖閱覽室裡，連星星都開始迷路。' },
-        { size: 'half', scene: 'archive', image: 'assets/story/chapter-4-observatory-golem.png', actors: ['worm', 'golem'], bubble: '請校正天空座標。', caption: '觀測塔魔像只相信過期的星圖。' },
-        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-4-star-map.png', actors: ['book'], bubble: '找到核心的路。', caption: '目標：校正星圖，找出通往圖書館核心的方向。' }
+        { size: 'half', scene: 'stars', image: 'assets/story/chapter-4-star-room.webp', actors: ['worm'], bubble: '星座名稱拼錯，導航會很刺激。', caption: '星圖閱覽室裡，連星星都開始迷路。' },
+        { size: 'half', scene: 'archive', image: 'assets/story/chapter-4-observatory-golem.webp', actors: ['worm', 'golem'], bubble: '請校正天空座標。', caption: '觀測塔魔像只相信過期的星圖。' },
+        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-4-star-map.webp', actors: ['book'], bubble: '找到核心的路。', caption: '目標：校正星圖，找出通往圖書館核心的方向。' }
       ]
     },
     'forbidden-greenhouse': {
       ribbon: 'Chapter 5',
       scene: 'greenhouse',
       panels: [
-        { size: 'half', scene: 'greenhouse', image: 'assets/story/chapter-5-greenhouse.png', actors: ['worm'], bubble: '註解長得比正文快。', caption: '禁書溫室裡，知識像藤蔓一樣失控生長。' },
-        { size: 'half', scene: 'ink', image: 'assets/story/chapter-5-mandrake.png', actors: ['worm', 'plant'], bubble: '花粉不要污染字母！', caption: '千頁曼陀羅散播詛咒花粉，讓單字變得虛弱。' },
-        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-5-trim-growth.png', actors: ['book'], bubble: '該開花的開花，該剪掉的剪掉。', caption: '目標：讓禁書停止失控生長。' }
+        { size: 'half', scene: 'greenhouse', image: 'assets/story/chapter-5-greenhouse.webp', actors: ['worm'], bubble: '註解長得比正文快。', caption: '禁書溫室裡，知識像藤蔓一樣失控生長。' },
+        { size: 'half', scene: 'ink', image: 'assets/story/chapter-5-mandrake.webp', actors: ['worm', 'plant'], bubble: '花粉不要污染字母！', caption: '千頁曼陀羅散播詛咒花粉，讓單字變得虛弱。' },
+        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-5-trim-growth.webp', actors: ['book'], bubble: '該開花的開花，該剪掉的剪掉。', caption: '目標：讓禁書停止失控生長。' }
       ]
     },
     'storm-index-harbor': {
       ribbon: 'Chapter 6',
       scene: 'harbor',
       panels: [
-        { size: 'half', scene: 'harbor', image: 'assets/story/chapter-6-index-harbor.png', actors: ['worm'], bubble: '目錄居然有港口？', caption: '地下索引港裡，失散的章節在暴風中漂流。' },
-        { size: 'half', scene: 'stars', image: 'assets/story/chapter-6-chapter-kraken.png', actors: ['worm', 'kraken'], bubble: '別拖走還沒寫完的段落！', caption: '章節海怪躲在浪裡，專門拉扯書頁。' },
-        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-6-harbor-repair.png', actors: ['book'], bubble: '讓章節回到自己的書裡。', caption: '目標：修好索引港，讓故事重新能夠翻頁。' }
+        { size: 'half', scene: 'harbor', image: 'assets/story/chapter-6-index-harbor.webp', actors: ['worm'], bubble: '目錄居然有港口？', caption: '地下索引港裡，失散的章節在暴風中漂流。' },
+        { size: 'half', scene: 'stars', image: 'assets/story/chapter-6-chapter-kraken.webp', actors: ['worm', 'kraken'], bubble: '別拖走還沒寫完的段落！', caption: '章節海怪躲在浪裡，專門拉扯書頁。' },
+        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-6-harbor-repair.webp', actors: ['book'], bubble: '讓章節回到自己的書裡。', caption: '目標：修好索引港，讓故事重新能夠翻頁。' }
       ]
     },
     'living-type-core': {
       ribbon: 'Final Chapter',
       scene: 'core',
       panels: [
-        { size: 'half', scene: 'core', image: 'assets/story/chapter-7-type-core.png', actors: ['worm'], bubble: '這裡就是裂縫中心。', caption: '活字核心像一顆心臟，在黑暗中一下一下發光。' },
-        { size: 'half', scene: 'core', image: 'assets/story/chapter-7-type-golem.png', actors: ['worm', 'golem'], bubble: '刪除所有文字？這需求不行。', caption: '終章活字巨像收到錯誤指令，準備抹去整座圖書館。' },
-        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-7-final-word.png', actors: ['book'], bubble: '只要還有故事，就不能全數刪除。', caption: '目標：用最後的單字喚醒圖書館。' }
+        { size: 'half', scene: 'core', image: 'assets/story/chapter-7-type-core.webp', actors: ['worm'], bubble: '這裡就是裂縫中心。', caption: '活字核心像一顆心臟，在黑暗中一下一下發光。' },
+        { size: 'half', scene: 'core', image: 'assets/story/chapter-7-type-golem.webp', actors: ['worm', 'golem'], bubble: '刪除所有文字？這需求不行。', caption: '終章活字巨像收到錯誤指令，準備抹去整座圖書館。' },
+        { size: 'wide', scene: 'open-book', image: 'assets/story/chapter-7-final-word.webp', actors: ['book'], bubble: '只要還有故事，就不能全數刪除。', caption: '目標：用最後的單字喚醒圖書館。' }
       ]
     }
   }

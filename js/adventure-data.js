@@ -345,39 +345,39 @@ const ADVENTURE_CHAPTERS = [
 ];
 const ADV_STAGE_THEMES = {
   'dusty-library': {
-    far: 'assets/stages/dusty-library-far.png',
-    mid: 'assets/stages/dusty-library-mid.png',
-    ground: 'assets/stages/dusty-library-ground.png',
+    far: 'assets/stages/dusty-library-far.webp',
+    mid: 'assets/stages/dusty-library-mid.webp',
+    ground: 'assets/stages/dusty-library-ground.webp',
   },
   'ink-gallery': {
-    far: 'assets/stages/ink-gallery-far.png',
-    mid: 'assets/stages/ink-gallery-mid.png',
-    ground: 'assets/stages/ink-gallery-ground.png',
+    far: 'assets/stages/ink-gallery-far.webp',
+    mid: 'assets/stages/ink-gallery-mid.webp',
+    ground: 'assets/stages/ink-gallery-ground.webp',
   },
   'crooked-fairytale': {
-    far: 'assets/stages/crooked-fairytale-far.png',
-    mid: 'assets/stages/crooked-fairytale-mid.png',
-    ground: 'assets/stages/crooked-fairytale-ground.png',
+    far: 'assets/stages/crooked-fairytale-far.webp',
+    mid: 'assets/stages/crooked-fairytale-mid.webp',
+    ground: 'assets/stages/crooked-fairytale-ground.webp',
   },
   'star-chart-room': {
-    far: 'assets/stages/star-chart-room-far.png',
-    mid: 'assets/stages/star-chart-room-mid.png',
-    ground: 'assets/stages/star-chart-room-ground.png',
+    far: 'assets/stages/star-chart-room-far.webp',
+    mid: 'assets/stages/star-chart-room-mid.webp',
+    ground: 'assets/stages/star-chart-room-ground.webp',
   },
   'forbidden-greenhouse': {
-    far: 'assets/stages/forbidden-greenhouse-far.png',
-    mid: 'assets/stages/forbidden-greenhouse-mid.png',
-    ground: 'assets/stages/forbidden-greenhouse-ground.png',
+    far: 'assets/stages/forbidden-greenhouse-far.webp',
+    mid: 'assets/stages/forbidden-greenhouse-mid.webp',
+    ground: 'assets/stages/forbidden-greenhouse-ground.webp',
   },
   'storm-index-harbor': {
-    far: 'assets/stages/storm-index-harbor-far.png',
-    mid: 'assets/stages/storm-index-harbor-mid.png',
-    ground: 'assets/stages/storm-index-harbor-ground.png',
+    far: 'assets/stages/storm-index-harbor-far.webp',
+    mid: 'assets/stages/storm-index-harbor-mid.webp',
+    ground: 'assets/stages/storm-index-harbor-ground.webp',
   },
   'living-type-core': {
-    far: 'assets/stages/living-type-core-far.png',
-    mid: 'assets/stages/living-type-core-mid.png',
-    ground: 'assets/stages/living-type-core-ground.png',
+    far: 'assets/stages/living-type-core-far.webp',
+    mid: 'assets/stages/living-type-core-mid.webp',
+    ground: 'assets/stages/living-type-core-ground.webp',
   },
 };
 let advLevelCounter = 0;

@@ -27,16 +27,21 @@
 <body class="home-screen">
   <div id="library-bg" aria-hidden="true"></div>
   <h1>Word Worm 單字蟲蟲</h1>
-  <div id="app-version" aria-label="版本號">v1.0.0</div>
+  <div id="app-version" aria-label="版本號">v1.0.1</div>
   <div id="mode-select">
-    <button id="profile-open" class="mode-btn profile-action-btn">👤 玩家</button>
     <button id="modesel-classic" class="mode-btn mode-entry">📖 一般模式</button>
     <button id="modesel-adventure" class="mode-btn mode-entry">⚔️ 冒險模式</button>
     <button id="modesel-daily" class="mode-btn mode-entry">📅 每日挑戰</button>
     <button id="modesel-kids" class="mode-btn mode-entry">🐛 小書蟲</button>
     <button id="wotd-open" class="mode-btn mode-entry utility-btn">🔎 每日單字</button>
-    <button id="wordbook-open" class="mode-btn mode-entry utility-btn">⭐ 我的單字本</button>
-    <button id="sync-open" class="mode-btn sync-action-btn">🔁 同步進度</button>
+    <div id="more-menu" class="more-menu mode-entry">
+      <button id="more-toggle" class="mode-btn utility-btn" type="button" aria-expanded="false" aria-controls="more-menu-panel">⋯ 更多</button>
+      <div id="more-menu-panel" role="menu" aria-label="更多選項" hidden>
+        <button id="profile-open" class="more-menu-item" type="button" role="menuitem">👤 玩家</button>
+        <button id="wordbook-open" class="more-menu-item" type="button" role="menuitem">⭐ 我的單字本</button>
+        <button id="sync-open" class="more-menu-item" type="button" role="menuitem">🔁 同步進度</button>
+      </div>
+    </div>
     <button id="home-return" class="mode-btn top-action-btn">🏠 回到首頁</button>
     <button id="sound-toggle" class="mode-btn top-action-btn" aria-pressed="false" title="關閉音效">🔇 關閉音效</button>
   </div>
@@ -131,7 +136,7 @@
             <div id="adv-combatants">
               <div id="adv-player-combatant" class="adv-combatant">
                 <div id="adv-player-sprite" class="adv-sprite-card" aria-label="玩家蟲蟲">
-                  <img class="adv-character-img adv-player-img" src="assets/characters/bookworm-hero.png" alt="日式奇幻書蟲">
+                  <img class="adv-character-img adv-player-img" src="assets/characters/bookworm-hero.webp" width="720" height="577" decoding="async" alt="日式奇幻書蟲">
                 </div>
                 <div class="adv-nameplate">
                   <div class="adv-name-row"><span id="adv-player-name">Lex Lv.1</span><span id="adv-player-hptext">100/100</span></div>
@@ -164,7 +169,7 @@
           <span id="daily-tiles">已用 <b>0</b> 磚｜剩 <b>49</b> 磚</span>
           <span id="daily-actions">
             <button id="daily-help" class="secondary" title="查看規則">❓ 規則</button>
-            <button id="daily-endrun" class="secondary">結束挑戰</button>
+            <button id="daily-endrun" class="secondary danger-action">放棄挑戰</button>
           </span>
         </div>
         <section id="daily-locked" aria-label="今日已完成">
@@ -213,8 +218,7 @@
       <div id="controls">
         <button id="submit">拼字！</button>
         <button id="clear" class="secondary">清除</button>
-        <button id="shuffle" class="secondary">洗牌 (-燃燒)</button>
-        <button id="mute" class="secondary" aria-pressed="false" title="切換音效">🔇 關閉音效</button>
+        <button id="shuffle" class="secondary">洗牌：出燃燒磚</button>
         <button id="mode" class="secondary">🎲 經典</button>
       </div>
       <aside id="adv-items-panel" class="adv-side-panel" aria-label="道具欄">
@@ -344,7 +348,10 @@
       最佳單字：<b id="fbest">—</b><br>
       <span id="fhiscore"></span>
     </div>
-    <button id="restart">再玩一次</button>
+    <div class="gameover-actions">
+      <button id="restart">再玩一次</button>
+      <button id="classic-home" class="secondary">🏠 回首頁</button>
+    </div>
   </div>
   <!-- 每日挑戰結算（顯示機制同 #gameover：加 .show 顯示） -->
   <div id="daily-gameover">
@@ -366,14 +373,17 @@
     </div>
   </div>
   <div id="adv-gameover">
-    <img class="adv-gameover-art" src="assets/ui/adv-gameover-defeat.png" alt="Lex exhausted on an open storybook with a cracked magic staff">
+    <img class="adv-gameover-art" src="assets/ui/adv-gameover-defeat.webp" width="1024" height="1536" loading="lazy" decoding="async" alt="Lex exhausted on an open storybook with a cracked magic staff">
     <div class="adv-gameover-panel">
       <h2>💥 被打敗了！</h2>
       <div class="stats">
         打到第 <b id="adv-fchapter">1</b> 章<br>
         擊敗怪物：<b id="adv-fkills">0</b> 隻
       </div>
-      <button id="adv-restart">重新挑戰</button>
+      <div class="gameover-actions">
+        <button id="adv-restart">重新挑戰</button>
+        <button id="adv-home" class="secondary">🏠 回首頁</button>
+      </div>
     </div>
   </div>
   <div id="adv-story-modal" role="dialog" aria-modal="true" aria-labelledby="adv-story-modal-title">
