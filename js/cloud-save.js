@@ -268,11 +268,6 @@ async function wordwormCloudLogout() {
   if (error) wordwormCloudStatus('登出失敗：' + error.message);
 }
 
-function wordwormCloudOpenPanel() {
-  if (typeof openSyncModal === 'function') openSyncModal();
-  else document.getElementById('sync-open')?.click();
-}
-
 async function wordwormCloudHandleSession(nextSession) {
   wordwormCloudSession = nextSession;
   wordwormCloudUpdateUi();
@@ -288,11 +283,9 @@ async function wordwormCloudHandleSession(nextSession) {
 }
 
 function wordwormCloudBindUi() {
-  const open = document.getElementById('cloud-open');
   const login = document.getElementById('cloud-login');
   const logout = document.getElementById('cloud-logout');
   const syncNow = document.getElementById('cloud-sync-now');
-  if (open) open.addEventListener('click', wordwormCloudOpenPanel);
   if (login) login.addEventListener('click', wordwormCloudLogin);
   if (logout) logout.addEventListener('click', wordwormCloudLogout);
   if (syncNow) syncNow.addEventListener('click', () => wordwormCloudSyncCurrentProfile({ force: false, reason: 'manual' }));
