@@ -312,6 +312,16 @@
         </div>
         <button id="sync-close" class="icon-btn" type="button" title="關閉" aria-label="關閉">✕</button>
       </div>
+      <div class="sync-panel cloud-panel">
+        <h3>Google 雲端存檔</h3>
+        <p id="cloud-auth-status" aria-live="polite">尚未登入 Google</p>
+        <div class="sync-actions">
+          <button id="cloud-login" type="button">使用 Google 登入</button>
+          <button id="cloud-logout" class="secondary" type="button" hidden>登出</button>
+          <button id="cloud-sync-now" class="secondary" type="button" disabled>立即檢查上傳</button>
+        </div>
+        <p class="cloud-help">登入後會每 10 秒檢查一次目前玩家；存檔內容沒有變就不會上傳。</p>
+      </div>
       <div class="sync-panel">
         <h3>這台裝置 → 另一台裝置</h3>
         <p>在電腦按「產生同步資料」，會匯出目前玩家；把連結傳到手機打開，或把同步碼貼到手機的匯入欄。</p>
@@ -330,6 +340,7 @@
           <button id="sync-import" type="button">匯入進度</button>
         </div>
       </div>
+      <p id="cloud-status" aria-live="polite"></p>
       <p id="sync-status" aria-live="polite"></p>
     </article>
   </div>
@@ -454,6 +465,8 @@
     </div>
   </div>
 
+<script src="vendor/supabase.min.js"></script>
+<script src="js/cloud-config.js"></script>
 <script src="js/game-profile.js"></script>
 <script src="js/story.js"></script>
 <script src="js/adventure-data.js"></script>
@@ -474,6 +487,7 @@
 <script src="js/game-boot.js"></script>
 <script src="js/kids.js"></script>
 <script src="js/word-of-day.js"></script>
+<script src="js/cloud-save.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

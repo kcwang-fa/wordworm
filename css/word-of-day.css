@@ -33,7 +33,7 @@
     font-size: 1.18rem;
     letter-spacing: .02em;
   }
-  .sync-panel p, #sync-status {
+  .sync-panel p, #sync-status, #cloud-status {
     margin: 0;
     color: var(--parchment);
     font-size: .9rem;
@@ -65,7 +65,18 @@
     user-select: text;
     -webkit-user-select: text;
   }
-  #sync-status {
+  .cloud-panel {
+    border-color: rgba(143,212,122,.38);
+    background: rgba(20,62,34,.2);
+  }
+  #cloud-auth-status {
+    color: #fff0cf;
+  }
+  .cloud-help {
+    color: var(--tan);
+    font-size: .84rem;
+  }
+  #sync-status, #cloud-status {
     min-height: 1.4em;
     margin-top: 10px;
     color: var(--gold);

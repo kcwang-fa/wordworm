@@ -21,6 +21,7 @@ const WORDWORM_PROFILE_BASE_KEYS = [
   'ww_favorite_words',
   'wordworm_gamemode',
   'wordworm_easymode',
+  'wordworm_adjacent_hint_seen_v1',
   'wordworm_story_intro_seen_v1',
 ];
 

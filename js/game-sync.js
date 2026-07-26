@@ -8,21 +8,24 @@
 /* ================= 裝置間進度同步（無後端：同步碼 / 同步連結） ================= */
 const SYNC_PAYLOAD_VERSION = 1;
 const SYNC_HASH_PREFIX = '#sync=';
-const SYNC_STORAGE_KEYS = [
-  'wordworm_save_v1',
-  'wordworm_hiscore',
-  'wordworm_save_adventure_v1',
-  'wordworm_adv_progress',
-  'wordworm_daily_save_v1',
-  'wordworm_daily_meta_v1',
-  'wordworm_daily_leaderboard_id_v1',
-  'wordworm_kids_save_v1',
-  'wordworm_kids_volume',
-  'ww_favorite_words',
-  'wordworm_gamemode',
-  'wordworm_easymode',
-  'wordworm_story_intro_seen_v1',
-];
+const SYNC_STORAGE_KEYS = typeof WORDWORM_PROFILE_BASE_KEYS !== 'undefined'
+  ? WORDWORM_PROFILE_BASE_KEYS.slice()
+  : [
+    'wordworm_save_v1',
+    'wordworm_hiscore',
+    'wordworm_save_adventure_v1',
+    'wordworm_adv_progress',
+    'wordworm_daily_save_v1',
+    'wordworm_daily_meta_v1',
+    'wordworm_daily_leaderboard_id_v1',
+    'wordworm_kids_save_v1',
+    'wordworm_kids_volume',
+    'ww_favorite_words',
+    'wordworm_gamemode',
+    'wordworm_easymode',
+    'wordworm_adjacent_hint_seen_v1',
+    'wordworm_story_intro_seen_v1',
+  ];
 let lastSyncCode = '';
 let lastSyncLink = '';
 
