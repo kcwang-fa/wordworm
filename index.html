@@ -41,7 +41,7 @@
       <div id="more-menu-panel" role="menu" aria-label="更多選項" hidden>
         <button id="wordbook-open" class="more-menu-item" type="button" role="menuitem">⭐ 我的單字本</button>
         <button id="daily-leaderboard-menu" class="more-menu-item" type="button" role="menuitem">🌍 每日排行榜</button>
-        <button id="sync-open" class="more-menu-item" type="button" role="menuitem">🔁 同步進度</button>
+        <button id="sync-open" class="more-menu-item" type="button" role="menuitem">☁️ 雲端存檔</button>
       </div>
     </div>
     <button id="home-return" class="mode-btn top-action-btn">🏠 回到首頁</button>
@@ -308,8 +308,8 @@
     <article id="sync-card" class="word-card sync-card">
       <div class="word-card-top">
         <div>
-          <div class="word-card-kicker">Progress Sync</div>
-          <h2 id="sync-title">同步進度</h2>
+          <div class="word-card-kicker">Cloud Save</div>
+          <h2 id="sync-title">雲端存檔</h2>
         </div>
         <button id="sync-close" class="icon-btn" type="button" title="關閉" aria-label="關閉">✕</button>
       </div>
@@ -323,26 +323,7 @@
         </div>
         <p class="cloud-help">登入後會每 10 秒檢查一次目前玩家；存檔內容沒有變就不會上傳。</p>
       </div>
-      <div class="sync-panel">
-        <h3>這台裝置 → 另一台裝置</h3>
-        <p>在電腦按「產生同步資料」，會匯出目前玩家；把連結傳到手機打開，或把同步碼貼到手機的匯入欄。</p>
-        <div class="sync-actions">
-          <button id="sync-export" type="button">產生同步資料</button>
-          <button id="sync-copy-link" class="secondary" type="button">複製同步連結</button>
-          <button id="sync-copy-code" class="secondary" type="button">複製同步碼</button>
-        </div>
-        <textarea id="sync-export-code" class="sync-code" readonly placeholder="同步碼會出現在這裡"></textarea>
-      </div>
-      <div class="sync-panel">
-        <h3>匯入到這台裝置</h3>
-        <p>匯入會覆蓋目前玩家的 Word Worm 進度。建議先確認不要把比較新的手機進度蓋掉。</p>
-        <textarea id="sync-import-code" class="sync-code" placeholder="貼上同步碼或同步連結"></textarea>
-        <div class="sync-actions">
-          <button id="sync-import" type="button">匯入進度</button>
-        </div>
-      </div>
       <p id="cloud-status" aria-live="polite"></p>
-      <p id="sync-status" aria-live="polite"></p>
     </article>
   </div>
   <div id="profile-modal" class="word-modal" role="dialog" aria-modal="true" aria-labelledby="profile-title" hidden>
@@ -488,7 +469,7 @@
 <script src="js/game-boot.js"></script>
 <script src="js/kids.js"></script>
 <script src="js/word-of-day.js"></script>
-<script src="js/cloud-save.js?v=v1.0.7"></script>
+<script src="js/cloud-save.js?v=v1.0.8"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

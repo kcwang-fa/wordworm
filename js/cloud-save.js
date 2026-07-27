@@ -27,6 +27,7 @@ function wordwormCloudStatus(message) {
   const status = document.getElementById('cloud-status');
   if (status) status.textContent = message || '';
 }
+window.wordwormCloudStatus = wordwormCloudStatus;
 
 function wordwormCloudSetAuthText(message) {
   const label = document.getElementById('cloud-auth-status');

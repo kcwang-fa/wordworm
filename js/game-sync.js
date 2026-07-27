@@ -105,7 +105,11 @@ function openSyncModal(prefill = '') {
   modal.hidden = false;
   modal.classList.add('show');
   setSyncStatus(prefill ? '偵測到同步連結。確認要覆蓋目前玩家的進度後，按「匯入進度」。' : '');
-  if (prefill) document.getElementById('sync-import-code').value = prefill;
+  const importCode = document.getElementById('sync-import-code');
+  if (prefill && importCode) importCode.value = prefill;
+  if (prefill && !importCode && typeof wordwormCloudStatus === 'function') {
+    wordwormCloudStatus('舊同步碼功能已移除。請使用 Google 雲端存檔同步進度。');
+  }
 }
 function closeSyncModal() {
   const modal = document.getElementById('sync-modal');
@@ -184,14 +188,28 @@ function importSyncData(input) {
     setSyncStatus('讀取同步資料失敗。請確認同步碼有完整複製。');
   }
 }
-document.getElementById('sync-open').onclick = () => openSyncModal();
-document.getElementById('sync-close').onclick = closeSyncModal;
-document.getElementById('sync-modal').onclick = e => { if (e.target.id === 'sync-modal') closeSyncModal(); };
-document.getElementById('sync-export').onclick = exportSyncData;
-document.getElementById('sync-copy-link').onclick = () => {
-  const code = lastSyncCode || document.getElementById('sync-export-code').value.trim();
+const syncOpenButton = document.getElementById('sync-open');
+const syncCloseButton = document.getElementById('sync-close');
+const syncModal = document.getElementById('sync-modal');
+const syncExportButton = document.getElementById('sync-export');
+const syncCopyLinkButton = document.getElementById('sync-copy-link');
+const syncCopyCodeButton = document.getElementById('sync-copy-code');
+const syncImportButton = document.getElementById('sync-import');
+if (syncOpenButton) syncOpenButton.onclick = () => openSyncModal();
+if (syncCloseButton) syncCloseButton.onclick = closeSyncModal;
+if (syncModal) syncModal.onclick = e => { if (e.target.id === 'sync-modal') closeSyncModal(); };
+if (syncExportButton) syncExportButton.onclick = exportSyncData;
+if (syncCopyLinkButton) syncCopyLinkButton.onclick = () => {
+  const exportCode = document.getElementById('sync-export-code');
+  const code = lastSyncCode || (exportCode ? exportCode.value.trim() : '');
   copySyncText(code ? (lastSyncLink || syncLinkForCode(code)) : '', '同步連結');
 };
-document.getElementById('sync-copy-code').onclick = () => copySyncText(lastSyncCode || document.getElementById('sync-export-code').value.trim(), '同步碼');
-document.getElementById('sync-import').onclick = () => importSyncData(document.getElementById('sync-import-code').value);
+if (syncCopyCodeButton) syncCopyCodeButton.onclick = () => {
+  const exportCode = document.getElementById('sync-export-code');
+  copySyncText(lastSyncCode || (exportCode ? exportCode.value.trim() : ''), '同步碼');
+};
+if (syncImportButton) syncImportButton.onclick = () => {
+  const importCode = document.getElementById('sync-import-code');
+  importSyncData(importCode ? importCode.value : '');
+};
 if (location.hash.startsWith(SYNC_HASH_PREFIX)) openSyncModal(location.href);
